@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="color-scheme: dark;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asorn - About Me</title>
+    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="shortcut icon" href="./assets/public/favicon.svg"/>
+</head>
+<body>
+    <canvas class="fireworks"></canvas>
+    <div class="head">
+        <div class="main">
+            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.svg"></a>
+            <div class="menu">
+                <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
+                <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
+                <li class="magical btn" onclick="window.location.href='./blog.html'">知识</li>
+                <li class="magical btn nav" onclick="window.location.href='./about.html'">关于</li>
+            </div>
+            <div class="menu" id="menu-expand">
+                <li class="magical btn skin" id="menu-expand-child"><i class="icon menu-icon"></i></li>
+            </div>
+            <div id="menu-panel">
+                <div class="menu-panel-content">
+                    <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
+                    <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
+                    <li class="magical btn" onclick="window.location.href='./blog.html'">知识</li>
+                    <li class="magical btn nav" onclick="window.location.href='./about.html'">关于</li>
+                </div>
+            </div>
+        </div>
+        <blockquote><img src="./assets/public/logo.svg"></blockquote>
+    </div>
+    <div class="about">
+        <div class="about-top">
+            <div class="about-name">介绍</div>
+            <div class="about-info">
+                <div class="about-info-left">
+                    <div class="about-info-title">经历与性格</div>
+                    <div class="introduce-desc">
+                        心向远方，步履生风。理想是暗夜微光，引我们穿越迷雾；成长是岁月沉淀，赠我们从容与锋芒。<br><br>
+                        在尝试中突破边界，在坚持中积蓄力量。莫问山高路远，热爱自会照亮征程。以初心为舵，以行动为桨，平凡日常亦能酿出诗意与光芒。<br><br>
+                        愿你我步履所至，皆是星辰；耕耘之处，终见花开。<br><br>
+                        经历方面： 曾参加过企业和学生会宣传工作 ，具有良好的团结协作能力 ，较有主见也喜欢倾听他人的意见<br><br>                                                                                                                                                                                         
+                        性格方面 ：耐力与毅力比较好 ，能够坚持做某一件事情 ，乐观开朗 ，抗压能力强 ，并且适应能力良好<br><br>
+                        <!-- In addition, I have won three patents for appearance invention, which can be found in the <a href="http://epub.cnipa.gov.cn/" target="_blank">China National Intellectual Property Administration ↗</a> Enter my name on the official website to search. -->
+                    </div>
+                </div>
+                <div class="about-info-right">
+                    <div class="contact">
+                        <div class="about-info-title">联系</div>
+                        <div class="contact-desc">
+                            <div class="list">
+                                <div class="list-label">Email：</div>
+                                <div href="javascript:" class="list-value" id="email" tabindex="0" role="button"  title="点击复制邮箱">
+                                    <a id="emailCopied">15165883828@163.com</a>
+                                </div>
+                                <span class="list-value copied">copied&nbsp;✓</span>
+                            </div>
+                            <div class="list">
+                                <div class="list-label">Wechat：</div>
+                                <div class="list-value">
+                                    <a class="tooltip">DreamHQ
+                                        <div class="tooltip-box">
+                                            <img src="./assets/about/wechat.jpg">
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="resume">
+                        <div class="about-info-title resume-title">简历</div>
+                        <div class="resume-desc">
+                            <div class="resume-desc-helptext">Download my resume (PDF & 1MB)</div>
+                            <div class="magical resume-btn"><a href="" target="_blank">Download</a></div>
+                            <!-- <div class="magical resume-btn"><a href="https://asorn.cn/" target="_blank">Download</a></div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="about-middle">
+            <div class="power">
+                <div class="list-00">
+                    <div class="magical power-card-number">
+                        <a>
+                            <div class="card-title">4</div>
+                            <div class="card-text">Work</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card-number">
+                        <a>
+                            <div class="card-title">15⁺</div>
+                            <div class="card-text">Project</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card-number">
+                        <a>
+                            <div class="card-title">7⁺</div>
+                            <div class="card-text">Article</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card-number">
+                        <a>
+                            <div class="card-title">20⁺</div>
+                            <div class="card-text">Match</div>
+                        </a>
+                    </div>
+                </div>
+                <div class="list-01">
+                    <div class="magical power-card">
+                        <a>
+                            <div class="card-img" style="background-image: url('./assets/about/abstract.svg')"></div>
+                            <div class="card-text">My abilities</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card">
+                        <a>
+                            <div class="card-img" style="background-image: url('./assets/about/menu.svg')"></div>
+                            <div class="card-text">My abilities</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card">
+                        <a>
+                            <div class="card-img" style="background-image: url('./assets/about/code.svg')"></div>
+                            <div class="card-text">My abilities</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card">
+                        <a>
+                            <div class="card-img" style="background-image: url('./assets/about/pin.svg')"></div>
+                            <div class="card-text">My abilities</div>
+                        </a>
+                    </div>
+                    <div class="magical power-card">
+                        <a>
+                            <div class="card-img" style="background-image: url('./assets/about/pen.svg')"></div>
+                            <div class="card-text">My abilities</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="about-bottom">
+            <div class="experience">
+                <div class="item">
+                    <div class="time">❖ 2025.12~ Now</div>
+                    <div class="name">
+                        <!-- <div class="company"><a href="https://asorn.cn/" target="_blank">Company One ↗</a></div> -->
+                        <!-- <div class="job">UI Designer</div> -->
+                    </div>
+                    <div class="project-experience">
+                        <div class="item">
+                            <div class="title">Project Title</div>
+                            <div class="desc">
+                                <ul>
+                                    <li>学习云边协同架构与嵌入式技术，掌握阿里云ECS、边缘计算节点部署与STM32单片机开发，完成温湿度采集与远程控制的边缘端原型。</li>
+                                    <li>“建行杯”山东省大学生创新大赛（2026）获一省金、一省银</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="time">❖ 2025.02 ~ 2025.10</div>
+                    <div class="name">
+                        <!-- <div class="company"><a href="https://asorn.cn/" target="_blank">Company Two ↗</a></div> -->
+                        <!-- <div class="job">Product Designer</div> -->
+                    </div>
+                    <div class="project-experience">
+                        <div class="item">
+                            <div class="title">One</div>
+                            <div class="desc">
+                                <ul>
+                                    <li>当选校团委科创赛事服务部部长，牵头组建赛事筹备团队，制定部门年度工作计划，负责全校科创赛事的宣传、报名与组织协调工作。</li>
+                                    <li>同步启动Java与Python学习，重点攻克Java面向对象、集合框架与Python基础语法、文件操作，独立实现简易图书管理系统与数据可视化小工具。</li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="title">Two</div>
+                            <div class="desc">
+                                <ul>
+                                    <li>团队开发“鲁遇”<br>
+                                        基于- 前端：Vue 2.6 + Element UI 2.15（管理后台）、uni-app 3.0（微信小程序端）、Axios（接口请求）、Vuex（状态管理）<br>
+                                            - 后端：Spring Boot 2.7.0、MyBatis-Plus 3.5.1（ORM框架，大幅简化CRUD代码）、Spring Task（轻量定时任务）、Hutool（工具类库）<br>
+                                            - 数据库与存储：MySQL 8.0（主库，存储核心业务数据）、阿里云OSS（存储会员头像、课程海报）<br>
+                                            - 第三方集成：微信小程序登录API、微信支付JSAPI（会员充值、课程购买）、微信模板消息（预约提醒、到期提醒）<br>
+                                            - 部署运维：阿里云轻量应用服务器（2核4G）、Nginx 1.20（反向代理、静态资源托管）、宝塔面板（可视化运维）</li>
+                                    <li>个人独立开发应用型社区瑜伽馆<br>
+                                            - 前端：Vue 2.7 + Element UI 2.15（医院管理后台）、uni-app 3.1（微信公众号端）、ECharts 5.3（数据统计图表）<br>
+                                            - 后端：Spring Boot 2.7.3、Spring Security 5.7 + JWT、MyBatis-Plus 3.5.2、RabbitMQ 3.9（异步消息队列）<br>
+                                            - 数据库与存储：MySQL 8.0（主从架构，读写分离）、阿里云OSS、Redis 6.2（缓存用户会话、挂号号源）<br>
+                                            - 安全与合规：AES-256加密存储患者身份证号、手机号、病历等敏感数据、接口参数签名校验、SQL注入防护、XSS攻击防护、操作日志全记录<br>
+                                            - 第三方集成：微信公众号授权登录、微信支付、阿里云短信服务<br>
+                                            - 部署运维：Docker 20.10（容器化部署，实现环境隔离）、Docker Compose（多容器编排）、阿里云ECS（2核8G）、Nginx（反向代理、HTTPS配置）<br>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="title">Three</div>
+                            <div class="desc">
+                                <ul>
+                                    <li>系统学习大模型基础理论与应用开发，掌握Transformer架构、Prompt工程与LangChain框架，基于开源大模型搭建智能问答助手。</li>
+                                    <li>Java高级开发工程师、人工智能开发工程师</li>
+                                    <li>获得计算程序设计大赛一等奖、“蓝桥杯”一等奖。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="time">❖ 2024.06 ~ 2024.11</div>
+                    <div class="name">
+                        <!-- <div class="company"><a href="https://asorn.cn/" target="_blank">Company Three ↗</a></div> -->
+                        <!-- <div class="job">UI Designer</div> -->
+                    </div>
+                    <div class="project-experience">
+                        <div class="item">
+                            <div class="title">Project Title</div>
+                            <div class="desc">
+                                <ul>
+                                    <li>接触自动化工控领域，自学西门子S7-1200与三菱FX3U系列PLC基础指令、梯形图编程与触摸屏组态，完成电机正反转、传送带控制等8个工业控制仿真项目;</li>
+                                    <!-- <li>This is a project description that can introduce one's project achievements, project experience, and achievements.</li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="copyright">
+            <div>© 2023 Design by <a href="https://asorn.cn/" target="_blank">Asorn</a></div>
+            <span>|</span>
+            <div class="fillings">
+                <a href="https://asorn.cn/" target="_blank">Asorn</a>
+            </div>
+            <span>|</span>
+            <div class="friends">
+                <a href="https://zdo.fun/" target="_blank">ZDO</a>
+            </div>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="shape-light"></div>
+        <div class="shape-star">
+            <div class="rising-stars rising-stars-visible">
+                <div style="height:1px;width:1px"></div>
+                <div style="height:2px;width:2px"></div>
+                <div style="height:1px;width:1px"></div>
+            </div>
+        </div>
+        <div class="shape-earth"></div>
+    </div>
+</body>
+<script src="./js/main.min.js"></script>
+<script src='./js/anime.js'></script>
+<script src='./js/firework.js'></script>
+</html>

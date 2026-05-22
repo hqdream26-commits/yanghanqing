@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="color-scheme: dark;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杨翰卿 - 技术博客</title>
+    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="shortcut icon" href="./assets/public/favicon.svg" />
+    
+    <!-- 引入Markdown解析和代码高亮库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
+    
+    <!-- 文章详情面板样式（专业技术排版） -->
+    <style>
+        /* 遮罩层 */
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 998;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+        .mask.show { display: block; }
+        
+        /* 文章详情侧边面板 */
+        .article-detail-panel {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 650px;
+            max-width: 100vw;
+            height: 100vh;
+            background: #121217;
+            border-left: 1px solid #2a2a35;
+            z-index: 999;
+            overflow-y: auto;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        .article-detail-panel.show { right: 0; }
+        
+        /* 面板头部 */
+        .detail-header {
+            position: sticky;
+            top: 0;
+            background: #121217;
+            padding: 30px 40px 20px;
+            border-bottom: 1px solid #2a2a35;
+            z-index: 10;
+        }
+        .detail-header h2 {
+            margin: 0 40px 15px 0;
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        .detail-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: none;
+            background: #252530;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .detail-close:hover {
+            background: #ff4757;
+            transform: rotate(90deg);
+        }
+        
+        /* 元信息 */
+        .detail-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #999;
+            font-size: 14px;
+        }
+        .detail-meta img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+        }
+        .detail-meta .tag {
+            background: #2d2d3a;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #61dafb;
+        }
+        
+        /* 文章内容容器 */
+        .detail-content {
+            padding: 30px 40px 60px;
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        
+        /* Markdown元素样式 */
+        .detail-content h1, .detail-content h2, .detail-content h3 {
+            color: #ffffff;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .detail-content h1 { font-size: 24px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .detail-content h2 { font-size: 20px; }
+        .detail-content h3 { font-size: 18px; }
+        
+        .detail-content p { margin: 15px 0; }
+        
+        .detail-content ul, .detail-content ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+        .detail-content li { margin: 8px 0; }
+        
+        .detail-content strong { color: #ffffff; }
+        
+        .detail-content a {
+            color: #61dafb;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        .detail-content a:hover { border-bottom-color: #61dafb; }
+        
+        .detail-content blockquote {
+            border-left: 4px solid #61dafb;
+            padding: 10px 20px;
+            margin: 20px 0;
+            background: #1e1e28;
+            color: #b0b0b0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        /* 表格样式 */
+        .detail-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .detail-content th, .detail-content td {
+            border: 1px solid #333;
+            padding: 10px 15px;
+            text-align: left;
+        }
+        .detail-content th {
+            background: #252530;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .detail-content tr:nth-child(even) { background: #1a1a22; }
+        
+        /* 代码块样式（带复制按钮） */
+        .detail-content pre {
+            position: relative;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #282c34 !important;
+        }
+        .detail-content code {
+            font-family: "Fira Code", "Consolas", monospace;
+            font-size: 14px;
+        }
+        .detail-content pre code {
+            display: block;
+            padding: 20px;
+            overflow-x: auto;
+            line-height: 1.6;
+        }
+        .detail-content :not(pre) > code {
+            background: #252530;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ff79c6;
+        }
+        
+        /* 复制按钮 */
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            background: #3a3a4a;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+        }
+        .detail-content pre:hover .copy-btn { opacity: 1; }
+        .copy-btn:hover { background: #4a4a5a; }
+        .copy-btn.copied {
+            background: #2ed573;
+            color: #fff;
+        }
+        
+        /* 滚动条美化 */
+        .article-detail-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        .article-detail-panel::-webkit-scrollbar-track {
+            background: #121217;
+        }
+        .article-detail-panel::-webkit-scrollbar-thumb {
+            background: #3a3a4a;
+            border-radius: 4px;
+        }
+        .article-detail-panel::-webkit-scrollbar-thumb:hover {
+            background: #4a4a5a;
+        }
+        
+        /* 禁止页面滚动 */
+        body.no-scroll { overflow: hidden; }
+        
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .article-detail-panel { width: 100vw; }
+            .detail-header { padding: 20px 20px 15px; }
+            .detail-content { padding: 20px 20px 40px; }
+            .detail-header h2 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 遮罩层 -->
+    <div class="mask" id="mask" onclick="closeArticleDetail()"></div>
+
+    <canvas class="fireworks"></canvas>
+    <div class="head">
+        <div class="main">
+            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.svg"></a>
+            <div class="menu">
+                <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
+                <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
+                <li class="magical btn nav" onclick="window.location.href='./blog.html'">知识</li>
+                <li class="magical btn" onclick="window.location.href='./about.html'">关于</li>
+            </div>
+            <div class="menu" id="menu-expand">
+                <li class="magical btn skin" id="menu-expand-child"><i class="icon menu-icon"></i></li>
+            </div>
+            <div id="menu-panel">
+                <div class="menu-panel-content">
+                    <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
+                    <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
+                    <li class="magical btn nav" onclick="window.location.href='./blog.html'">知识</li>
+                    <li class="magical btn" onclick="window.location.href='./about.html'">关于</li>
+                </div>
+            </div>
+        </div>
+        <blockquote><img src="./assets/public/logo.svg"></blockquote>
+    </div>
+    
+    <div class="blog">
+        <div class="blog-left">
+            <div class="blog-left-line"><img src="./assets/blog/line-dot.svg"></div>
+        </div>
+        <div class="blog-list" id="blogList">
+            <!-- 文章列表将通过JS动态生成 -->
+        </div>
+    </div>
+
+    <!-- 文章详情侧边面板 -->
+    <div class="article-detail-panel" id="articleDetail">
+        <div class="detail-header">
+            <h2 id="detailTitle">文章标题</h2>
+            <button class="detail-close" onclick="closeArticleDetail()">×</button>
+            <div class="detail-meta">
+                <img id="detailAvatar" src="./assets/blog/avatar.svg" alt="头像">
+                <span id="detailName">杨翰卿</span>
+                <span id="detailTime">时间</span>
+                <span class="tag" id="detailTag">技术</span>
+            </div>
+        </div>
+        <div class="detail-content" id="detailContent"></div>
+    </div>
+
+    <div class="footer">
+        <div class="copyright">
+            <div>© 2025 Design by <a href="" target="_blank">杨翰卿</a></div>
+            <span>|</span>
+            <div class="fillings">
+                <a href="https://asorn.cn/" target="_blank">Asorn</a>
+            </div>
+            <span>|</span>
+            <div class="friends">
+                <a href="https://zdo.fun/" target="_blank">ZDO</a>
+            </div>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="shape-light"></div>
+        <div class="shape-star">
+            <div class="rising-stars rising-stars-visible">
+                <div style="height:1px;width:1px"></div>
+                <div style="height:2px;width:2px"></div>
+                <div style="height:1px;width:1px"></div>
+            </div>
+        </div>
+        <div class="shape-earth"></div>
+    </div>
+
+    <script>
+        // ===================== 配置Markdown解析器 =====================
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true,
+            headerIds: false
+        });
+
+        // ===================== 博客文章数据（可扩展） =====================
+        const articles = [
+            {
+                title: "Java基础面试题大全",
+                time: "2025-05-20",
+                tag: "Java",
+                content: `# Java基础面试题汇总
+
+## 1. Java数据类型
+Java中的数据类型分为**基本数据类型**和**引用数据类型**两大类。
+
+### 1.1 基本数据类型（8种）
+| 数据类型 | 位数 | 取值范围 | 默认值 | 示例 |
+|---|---|---|---|---|
+| byte | 8位 | -128 到 127 | 0 | \`byte num = 10;\` |
+| short | 16位 | -32768 到 32767 | 0 | \`short num = 100;\` |
+| int | 32位 | -2147483648 到 2147483647 | 0 | \`int num = 1000;\` |
+| long | 64位 | -9223372036854775808 到 9223372036854775807 | 0L | \`long num = 1000000L;\` |
+| float | 32位 | 单精度浮点数 | 0.0f | \`float num = 3.14f;\` |
+| double | 64位 | 双精度浮点数 | 0.0d | \`double num = 3.14159;\` |
+| char | 16位 | 0 到 65535 | '\\u0000' | \`char ch = 'A';\` |
+| boolean | 1位 | true 或 false | false | \`boolean flag = true;\` |
+
+### 1.2 引用数据类型
+- 类（Class）
+- 接口（Interface）
+- 数组（Array）
+
+> **注意**：引用类型存储的是对象在内存中的地址，而不是对象本身。
+
+## 2. final关键字
+final可以修饰**类**、**方法**和**变量**，但不能修饰构造器。
+
+### 2.1 修饰类
+被final修饰的类**不能被继承**，但可以被实例化。例如：
+- String类
+- System类
+- 所有包装类（Integer、Long等）
+
+### 2.2 修饰方法
+被final修饰的方法**不能被子类重写**，但可以被子类继承使用。
+
+> **重要**：final和abstract不能同时使用，因为abstract方法必须被重写。
+
+### 2.3 修饰变量
+被final修饰的变量称为**常量**，只能赋值一次：
+- 成员常量：必须在定义时、构造器或代码块中初始化
+- 局部常量：使用前必须赋值
+- 静态常量：只能在定义时或静态代码块中初始化
+
+\`\`\`java
+public class FinalExample {
+    // 静态常量
+    public static final int MAX_VALUE = 100;
+    
+    // 成员常量
+    private final String name;
+    
+    public FinalExample(String name) {
+        this.name = name;
+    }
+    
+    // final方法
+    public final void printInfo() {
+        System.out.println("Name: " + name);
+    }
+}
+\`\`\`
+
+## 3. ==和equals()的区别
+### ==运算符
+- 对于**基本数据类型**：比较的是值是否相等
+- 对于**引用数据类型**：比较的是内存地址是否相等（是否是同一个对象）
+
+### equals()方法
+- Object类中默认实现与==等价（比较地址）
+- 大多数类（如String、Integer）会重写equals()方法，实现**内容比较**
+
+\`\`\`java
+String s1 = new String("hello");
+String s2 = new String("hello");
+
+System.out.println(s1 == s2); // false（不同对象）
+System.out.println(s1.equals(s2)); // true（内容相同）
+\`\`\`
+
+## 4. String为什么不可变？
+String类的不可变性是通过以下设计实现的：
+1. 存储字符的数组是\`private final char[] value\`
+2. 没有提供修改内容的公共方法
+3. 所有修改操作都会返回一个新的String对象
+
+### 不可变的好处
+- **线程安全**：多个线程可以安全共享同一个String对象
+- **性能优化**：可以使用字符串常量池，节省内存
+- **安全性**：用于存储敏感信息（如密码）时不会被篡改
+
+> **提示**：如果需要频繁修改字符串，使用StringBuilder（单线程）或StringBuffer（多线程）。
+`
+            },
+            {
+                title: "CSS核心知识点总结",
+                time: "2025-05-18",
+                tag: "CSS",
+                content: `# CSS核心知识点
+
+## 1. 盒模型
+CSS盒模型是CSS布局的基础，分为两种：
+
+### 1.1 标准盒模型（content-box）
+\`\`\`css
+box-sizing: content-box;
+\`\`\`
+- 元素总宽度 = width + padding + border + margin
+- width只包含内容区域
+
+### 1.2 怪异盒模型（border-box）
+\`\`\`css
+box-sizing: border-box;
+\`\`\`
+- 元素总宽度 = width + margin
+- width包含内容、padding和border
+
+> **推荐**：全局设置\`box-sizing: border-box\`，让布局更直观。
+
+## 2. 选择器优先级
+CSS选择器优先级从高到低：
+1. !important（最高）
+2. 内联样式（style属性）
+3. ID选择器（#id）
+4. 类选择器、属性选择器、伪类选择器
+5. 标签选择器、伪元素选择器
+6. 通配符选择器（*）
+
+### 优先级计算
+- 内联样式：1000
+- ID选择器：100
+- 类/属性/伪类：10
+- 标签/伪元素：1
+
+\`\`\`css
+/* 优先级：100 + 10 + 1 = 111 */
+#container .box p {
+    color: red;
+}
+\`\`\`
+
+## 3. Flex布局
+Flex是现代CSS布局的首选方案，分为**容器属性**和**项目属性**。
+
+### 3.1 容器属性
+\`\`\`css
+.container {
+    display: flex;
+    flex-direction: row; /* 主轴方向：row/column */
+    flex-wrap: wrap; /* 是否换行：nowrap/wrap */
+    justify-content: center; /* 主轴对齐 */
+    align-items: center; /* 交叉轴对齐 */
+}
+\`\`\`
+
+### 3.2 项目属性
+\`\`\`css
+.item {
+    flex: 1; /* 等分剩余空间 */
+    order: 1; /* 排列顺序，数值越小越靠前 */
+    align-self: flex-end; /* 单独对齐 */
+}
+\`\`\`
+
+## 4. 重排与重绘
+### 4.1 重排（回流）
+当元素的**尺寸、位置或结构**发生变化时，浏览器会重新计算布局。
+- 触发操作：修改width/height、添加/删除DOM、改变字体大小等
+- 性能开销大
+
+### 4.2 重绘
+当元素的**样式**发生变化但不影响布局时，浏览器会重新绘制元素。
+- 触发操作：修改color、background-color等
+- 性能开销较小
+
+### 优化技巧
+- 避免频繁修改DOM样式，使用class批量修改
+- 使用transform和opacity实现动画（不会触发重排重绘）
+- 开启GPU加速：\`transform: translateZ(0)\`
+
+## 5. 响应式布局
+### 5.1 媒体查询
+\`\`\`css
+/* 小于768px的设备 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+}
+\`\`\`
+
+### 5.2 相对单位
+- **rem**：相对于根元素(html)的字体大小
+- **vw/vh**：相对于视口宽度/高度（1vw = 视口宽度的1%）
+- **em**：相对于父元素的字体大小
+
+\`\`\`css
+html {
+    font-size: 16px;
+}
+
+.box {
+    width: 50vw; /* 视口宽度的50% */
+    height: 2rem; /* 32px */
+}
+\`\`\`
+`
+            },
+            {
+                title: "JavaScript事件循环机制",
+                time: "2025-05-15",
+                tag: "JavaScript",
+                content: `# JavaScript事件循环机制
+
+## 1. 为什么JavaScript是单线程？
+JavaScript作为浏览器脚本语言，主要用途是与用户交互和操作DOM。如果是多线程，会带来复杂的同步问题：
+- 一个线程修改DOM，另一个线程删除DOM，浏览器无法确定如何处理
+- 单线程简化了编程模型，避免了复杂的线程同步
+
+## 2. 事件循环（Event Loop）
+事件循环是JavaScript实现异步的核心机制。
+
+### 2.1 执行栈
+所有同步代码都会在**执行栈**中执行，函数调用会入栈，执行完成后出栈。
+
+### 2.2 任务队列
+异步任务不会立即执行，会被加入**任务队列**，等待执行栈为空时执行。
+
+任务分为两种：
+- **宏任务（MacroTask）**：script整体代码、setTimeout、setInterval、AJAX、UI渲染
+- **微任务（MicroTask）**：Promise.then、async/await、MutationObserver
+
+### 2.3 执行顺序
+1. 执行同步代码（宏任务）
+2. 执行所有微任务
+3. 渲染UI
+4. 执行下一个宏任务
+
+> **重要**：微任务总是在当前宏任务执行完后立即执行，在UI渲染之前。
+
+## 3. 代码示例
+\`\`\`javascript
+console.log('start');
+
+setTimeout(() => {
+    console.log('setTimeout');
+}, 0);
+
+Promise.resolve()
+    .then(() => {
+        console.log('promise1');
+    })
+    .then(() => {
+        console.log('promise2');
+    });
+
+console.log('end');
+\`\`\`
+
+### 输出结果
+\`\`\`
+start
+end
+promise1
+promise2
+setTimeout
+\`\`\`
+
+### 执行过程
+1. 执行同步代码，输出\`start\`和\`end\`
+2. 遇到setTimeout，加入宏任务队列
+3. 遇到Promise.then，加入微任务队列
+4. 执行所有微任务，输出\`promise1\`和\`promise2\`
+5. 执行下一个宏任务（setTimeout），输出\`setTimeout\`
+
+## 4. async/await
+async/await是Promise的语法糖，本质上还是基于微任务。
+
+\`\`\`javascript
+async function async1() {
+    console.log('async1 start');
+    await async2();
+    console.log('async1 end');
+}
+
+async function async2() {
+    console.log('async2');
+}
+
+console.log('script start');
+async1();
+console.log('script end');
+\`\`\`
+
+### 输出结果
+\`\`\`
+script start
+async1 start
+async2
+script end
+async1 end
+\`\`\`
+
+> **注意**：await后面的代码会被加入微任务队列。
+
+## 5. Node.js事件循环
+Node.js的事件循环与浏览器略有不同，分为6个阶段：
+1. **timers**：执行setTimeout和setInterval回调
+2. **pending callbacks**：执行系统操作回调
+3. **idle, prepare**：内部使用
+4. **poll**：获取新的I/O事件
+5. **check**：执行setImmediate回调
+6. **close callbacks**：执行关闭回调
+
+> **区别**：Node.js中微任务在每个阶段之间执行，而不是每个宏任务之后。
+`
+            },
+            {
+                title: "浏览器输入URL后发生了什么",
+                time: "2025-05-10",
+                tag: "浏览器",
+                content: `# 浏览器输入URL后发生了什么
+
+## 1. 导航阶段
+### 1.1 URL解析
+浏览器首先解析输入的URL，确定协议、域名、端口、路径和查询参数。
+
+例如：\`https://www.example.com:8080/path?name=test#hash\`
+- 协议：https
+- 域名：www.example.com
+- 端口：8080
+- 路径：/path
+- 查询参数：name=test
+- 哈希：hash
+
+### 1.2 DNS解析
+将域名转换为IP地址，查询顺序：
+1. 浏览器缓存
+2. 操作系统缓存（hosts文件）
+3. 路由器缓存
+4. ISP DNS缓存
+5. 递归查询DNS服务器
+
+### 1.3 建立TCP连接
+通过**三次握手**建立TCP连接：
+1. 客户端发送SYN包（seq=x）
+2. 服务器返回SYN+ACK包（seq=y, ack=x+1）
+3. 客户端发送ACK包（ack=y+1）
+
+### 1.4 发送HTTP请求
+建立连接后，浏览器发送HTTP请求，包含：
+- 请求行：方法、URL、HTTP版本
+- 请求头：User-Agent、Accept、Cookie等
+- 请求体：POST请求的数据
+
+## 2. 服务器处理阶段
+1. 服务器接收请求，解析HTTP报文
+2. 路由匹配，处理业务逻辑
+3. 生成HTTP响应，包含：
+   - 状态行：状态码、状态描述
+   - 响应头：Content-Type、Cache-Control等
+   - 响应体：HTML、JSON等数据
+
+## 3. 渲染阶段
+浏览器接收响应后，开始解析和渲染页面。
+
+### 3.1 解析HTML生成DOM树
+\`\`\`
+HTML字节流 → 分词器 → Token → 节点 → DOM树
+\`\`\`
+
+### 3.2 解析CSS生成CSSOM树
+\`\`\`
+CSS字节流 → 解析器 → CSS规则 → CSSOM树
+\`\`\`
+
+### 3.3 生成渲染树（Render Tree）
+将DOM树和CSSOM树合并，只包含可见的节点。
+
+### 3.4 布局（Layout）
+计算每个节点的位置和大小，生成布局树。
+
+### 3.5 绘制（Paint）
+将每个节点绘制到屏幕上，分为多个图层。
+
+### 3.6 合成（Composite）
+将多个图层合并为最终的屏幕图像，由GPU完成。
+
+## 4. 断开连接
+通过**四次挥手**关闭TCP连接：
+1. 客户端发送FIN包（seq=u）
+2. 服务器返回ACK包（ack=u+1）
+3. 服务器发送FIN包（seq=w）
+4. 客户端返回ACK包（ack=w+1）
+
+## 5. 关键优化点
+- **DNS预解析**：\`<link rel="dns-prefetch" href="//example.com">\`
+- **TCP复用**：HTTP/1.1的Keep-Alive
+- **缓存策略**：强缓存（Cache-Control）和协商缓存（ETag）
+- **资源压缩**：Gzip、Brotli压缩
+- **懒加载**：图片和组件按需加载
+- **CDN加速**：静态资源就近访问
+`
+            },
+            {
+                title: "HTTP缓存机制详解",
+                time: "2025-05-05",
+                tag: "网络",
+                content: `# HTTP缓存机制
+
+HTTP缓存是前端性能优化的重要手段，可以减少网络请求，提高页面加载速度。
+
+## 1. 缓存分类
+### 1.1 强缓存
+不需要向服务器发送请求，直接从本地缓存读取资源。
+
+#### 响应头字段
+- **Cache-Control**（HTTP/1.1）：优先级更高
+  - \`max-age=3600\`：缓存有效期3600秒
+  - \`public\`：客户端和代理服务器都可以缓存
+  - \`private\`：只有客户端可以缓存
+  - \`no-cache\`：跳过强缓存，使用协商缓存
+  - \`no-store\`：不使用任何缓存
+
+- **Expires**（HTTP/1.0）：
+  - 值为绝对时间，如\`Expires: Thu, 01 Jan 2025 00:00:00 GMT\`
+  - 缺点：依赖客户端时间，可能不准确
+
+### 1.2 协商缓存
+强缓存失效后，浏览器发送请求到服务器，由服务器判断是否使用缓存。
+
+#### 基于最后修改时间
+- **响应头**：\`Last-Modified: Wed, 21 Apr 2025 08:00:00 GMT\`
+- **请求头**：\`If-Modified-Since: Wed, 21 Apr 2025 08:00:00 GMT\`
+
+服务器比较时间：
+- 如果资源未修改：返回304 Not Modified，使用缓存
+- 如果资源已修改：返回200 OK和新的资源
+
+#### 基于ETag
+ETag是资源的唯一标识（通常是文件内容的哈希值）。
+
+- **响应头**：\`ETag: "abc123"\`
+- **请求头**：\`If-None-Match: "abc123"\`
+
+> **优势**：比Last-Modified更精确，能感知到1秒内的修改。
+
+## 2. 缓存位置
+浏览器缓存按优先级从高到低：
+1. **Service Worker**：开发者可控的缓存
+2. **Memory Cache**：内存缓存，速度快，关闭页面失效
+3. **Disk Cache**：硬盘缓存，速度较慢，持久化存储
+4. **Push Cache**：HTTP/2推送缓存，会话结束失效
+
+## 3. 缓存策略
+### 3.1 不常变化的资源
+设置较长的强缓存时间，配合文件指纹：
+\`\`\`http
+Cache-Control: public, max-age=31536000
+\`\`\`
+当文件内容变化时，文件名中的哈希值会改变，从而获取新资源。
+
+### 3.2 经常变化的资源
+使用协商缓存：
+\`\`\`http
+Cache-Control: no-cache
+ETag: "abc123"
+\`\`\`
+每次请求都验证资源是否更新。
+
+### 3.3 不缓存的资源
+\`\`\`http
+Cache-Control: no-store, no-cache, must-revalidate
+\`\`\`
+
+## 4. 实际应用
+### HTML文件
+设置较短的缓存时间或不缓存：
+\`\`\`http
+Cache-Control: no-cache
+\`\`\`
+
+### JS/CSS/图片
+设置长缓存+文件指纹：
+\`\`\`http
+Cache-Control: public, max-age=31536000
+\`\`\`
+
+### 接口数据
+根据业务需求设置：
+- 实时数据：\`no-cache\`
+- 非实时数据：\`max-age=60\`（缓存1分钟）
+
+## 5. 常见问题
+### 为什么设置了max-age还是会发请求？
+- 强制刷新页面（Ctrl+F5）会跳过强缓存
+- 浏览器地址栏回车会检查强缓存
+- 点击链接跳转会检查强缓存
+
+### 304和200的区别？
+- 200：服务器返回完整的资源
+- 304：服务器只返回响应头，使用本地缓存的资源
+`
+            }
+        ];
+
+        // ===================== 动态生成文章列表 =====================
+        function renderBlogList() {
+            const blogList = document.getElementById('blogList');
+            blogList.innerHTML = articles.map((article, index) => `
+                <div class="item">
+                    <a href="javascript:;" onclick="showArticleDetail(${index})">
+                        <div class="text">
+                            <div class="title-area">
+                                <div class="title">
+                                    <div class="name">${article.title}</div>
+                                    <div class="link"> ↗</div>
+                                </div>
+                                <div class="tag">${article.tag}</div>
+                            </div>
+                            <div class="desc">${article.content.substring(0, 120)}...</div>
+                        </div>
+                        <div class="info">
+                            <div class="info-avatar"><img src="./assets/blog/avatar.svg"></div>
+                            <div class="info-name">杨翰卿</div>
+                            <div class="info-time">${article.time}</div>
+                        </div>
+                    </a>
+                    <div class="content-divider"></div>
+                </div>
+            `).join('');
+        }
+
+        // ===================== 打开文章详情 =====================
+        function showArticleDetail(index) {
+            const article = articles[index];
+            
+            // 填充基本信息
+            document.getElementById('detailTitle').innerText = article.title;
+            document.getElementById('detailTime').innerText = article.time;
+            document.getElementById('detailTag').innerText = article.tag;
+            
+            // 解析Markdown内容
+            const htmlContent = marked.parse(article.content);
+            document.getElementById('detailContent').innerHTML = htmlContent;
+            
+            // 为所有代码块添加复制按钮
+            addCopyButtons();
+            
+            // 显示面板
+            document.getElementById('articleDetail').classList.add('show');
+            document.getElementById('mask').classList.add('show');
+            document.body.classList.add('no-scroll');
+            
+            // 滚动到顶部
+            document.getElementById('articleDetail').scrollTop = 0;
+        }
+
+        // ===================== 关闭文章详情 =====================
+        function closeArticleDetail() {
+            document.getElementById('articleDetail').classList.remove('show');
+            document.getElementById('mask').classList.remove('show');
+            document.body.classList.remove('no-scroll');
+        }
+
+        // ===================== 添加代码复制按钮 =====================
+        function addCopyButtons() {
+            const codeBlocks = document.querySelectorAll('.detail-content pre');
+            
+            codeBlocks.forEach((pre, index) => {
+                // 创建复制按钮
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.innerText = '复制代码';
+                copyBtn.setAttribute('data-index', index);
+                
+                // 绑定点击事件
+                copyBtn.addEventListener('click', function() {
+                    const code = pre.querySelector('code').innerText;
+                    
+                    // 复制到剪贴板
+                    navigator.clipboard.writeText(code).then(() => {
+                        this.innerText = '已复制 ✓';
+                        this.classList.add('copied');
+                        
+                        // 2秒后恢复
+                        setTimeout(() => {
+                            this.innerText = '复制代码';
+                            this.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        this.innerText = '复制失败';
+                        console.error('复制失败:', err);
+                    });
+                });
+                
+                pre.appendChild(copyBtn);
+            });
+        }
+
+        // ===================== 原有鼠标魔法效果 =====================
+        window.addEventListener("mousemove", function (e) {
+            document.querySelectorAll(".magical").forEach(element => {
+                const rect = element.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const offsetY = e.clientY - rect.top;
+                element.style.setProperty("--mouse-x", `${offsetX}px`);
+                element.style.setProperty("--mouse-y", `${offsetY}px`);
+            });
+        });
+
+        // ===================== 页面初始化 =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBlogList();
+            
+            // 支持ESC键关闭面板
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeArticleDetail();
+                }
+            });
+        });
+    </script>
+    
+    <script src="./js/main.min.js"></script>
+    <script src='./js/anime.js'></script>
+    <script src='./js/firework.js'></script>
+</body>
+</html>
