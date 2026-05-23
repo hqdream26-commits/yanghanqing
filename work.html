@@ -1,17 +1,386 @@
+<!-- //参考学习asorn  https://asorn.cn/ -->
 <!DOCTYPE html>
 <html lang="zh-CN" style="color-scheme: dark;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asorn - My Work</title>
+    <title>杨翰卿 - 作品集</title>
     <link rel="stylesheet" href="./css/style.min.css">
     <link rel="shortcut icon" href="./assets/public/favicon.svg"/>
+    <style>
+        body {
+            margin: 0;
+            padding-top: 80px;
+        }
+        .head {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 18, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* ---------- 横向填满的音乐播放器 ---------- */
+        .full-width-player {
+            width: 100%;
+            height: calc(100vh / 14);
+            min-height: 56px;
+            max-height: 80px;
+            background: linear-gradient(180deg, rgba(78, 78, 100, 0.48) 0%, rgba(78, 78, 100, 0.2) 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            box-sizing: border-box;
+            gap: 16px;
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid rgba(78, 78, 100, 0.48);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+        }
+        .full-width-player::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(99, 97, 220, 0.2) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+        .ctrl-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(78, 78, 100, 0.48);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            color: #E8E8F6;
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+            flex-shrink: 0;
+            user-select: none;
+        }
+        .ctrl-btn:hover {
+            background: rgba(99, 97, 220, 0.4);
+            border-color: #6361DC;
+            box-shadow: 0 0 15px rgba(99, 97, 220, 0.5);
+            transform: scale(1.08);
+        }
+        .ctrl-btn:active {
+            transform: scale(0.95);
+        }
+        .ctrl-btn.loading {
+            animation: pulse 1.2s ease-in-out infinite;
+            border-color: #ffaa00;
+            color: #ffaa00;
+        }
+        .ctrl-btn.error-state {
+            border-color: #ff4757;
+            color: #ff4757;
+            animation: shake 0.5s ease;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        .play-btn {
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+        }
+        .song-info-area {
+            flex: 1;
+            min-width: 0;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .song-title-main {
+            font-size: 15px;
+            font-weight: 600;
+            color: #E8E8F6;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+        .song-title-main.error-text {
+            color: #ff6b7a;
+        }
+        .song-artist-main {
+            font-size: 12px;
+            color: #B3B3C1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.3s;
+        }
+        .song-artist-main.error-hint {
+            color: #ffaa00;
+            font-style: italic;
+        }
+        .progress-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 240px;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+        .progress-container {
+            flex: 1;
+            height: 5px;
+            background: rgba(78, 78, 100, 0.48);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #6361DC;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(99, 97, 220, 0.6);
+            transition: width 0.1s linear;
+        }
+        .time-display {
+            font-size: 11px;
+            color: #B3B3C1;
+            width: 32px;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+        .volume-area {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+        .volume-area input[type="range"] {
+            width: 70px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(78, 78, 100, 0.48);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+        .volume-area input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #6361DC;
+            box-shadow: 0 0 8px rgba(99, 97, 220, 0.5);
+            border: none;
+        }
+        .song-switch-area {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+        /* 播放状态指示点 */
+        .playing-indicator {
+            display: none;
+            gap: 3px;
+            align-items: flex-end;
+            height: 16px;
+            margin-left: 4px;
+        }
+        .playing-indicator.active {
+            display: flex;
+        }
+        .playing-indicator span {
+            width: 3px;
+            background: #6361DC;
+            border-radius: 2px;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+        .playing-indicator span:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .playing-indicator span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+        .playing-indicator span:nth-child(3) { height: 10px; animation-delay: 0.3s; }
+        .playing-indicator span:nth-child(4) { height: 6px; animation-delay: 0.45s; }
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.4); }
+        }
+        @media (max-width: 768px) {
+            .full-width-player {
+                padding: 0 12px;
+                gap: 8px;
+            }
+            .progress-area {
+                width: 120px;
+            }
+            .song-title-main {
+                font-size: 13px;
+            }
+            .volume-area input[type="range"] {
+                width: 40px;
+            }
+        }
+
+        /* ---------- 作品详情弹窗样式 ---------- */
+        .project-modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .project-modal-mask.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .project-modal {
+            background: #1a1a24;
+            border: 1px solid #2a2a40;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 720px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(30px);
+            transition: transform 0.3s ease;
+            padding: 32px 36px 40px;
+            box-sizing: border-box;
+        }
+        .project-modal-mask.active .project-modal {
+            transform: translateY(0);
+        }
+        .project-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2a2a38;
+            border: none;
+            color: #ccc;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+        .project-modal-close:hover {
+            background: #ff4757;
+            color: #E8E8F6;
+            transform: rotate(90deg);
+        }
+        .project-modal-image {
+            width: 100%;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            object-fit: cover;
+            max-height: 320px;
+            border: 1px solid #2e2e40;
+        }
+        .project-modal-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #E8E8F6;
+            margin: 0 0 8px 0;
+            letter-spacing: 0.5px;
+        }
+        .project-modal-tag {
+            display: inline-block;
+            background: #2d2d3a;
+            padding: 4px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            color: #61dafb;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .project-modal-desc {
+            color: #c0c0d0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        .project-modal-detail {
+            color: #a0a0b8;
+            font-size: 15px;
+            line-height: 1.8;
+            border-left: 3px solid #61dafb;
+            padding-left: 16px;
+            margin: 20px 0 24px;
+        }
+        .project-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #61dafb;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+            border-bottom: 1px solid transparent;
+        }
+        .project-modal-link:hover {
+            color: #E8E8F6;
+            border-bottom-color: #61dafb;
+        }
+        .project-modal-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        .project-modal::-webkit-scrollbar { width: 6px; }
+        .project-modal::-webkit-scrollbar-track { background: #1a1a24; }
+        .project-modal::-webkit-scrollbar-thumb { background: #3a3a4a; border-radius: 3px; }
+    </style>
 </head>
 <body>
     <canvas class="fireworks"></canvas>
+
+    <!-- 固定导航栏 -->
     <div class="head">
         <div class="main">
-            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.svg"></a>
+            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.png" width="62px" height="30px"></a>
             <div class="menu">
                 <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
                 <li class="magical btn nav" onclick="window.location.href='./work.html'">作品</li>
@@ -32,167 +401,568 @@
         </div>
         <blockquote><img src="./assets/public/logo.svg"></blockquote>
     </div>
-        <div class="work">
-            <div class="card-list">
-                <!-- <div class="magical item">
-                    <a href="https://asorn.cn/" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/empty.png"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">Title</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-web">Web</div>
-                            </div>
-                            <div class="desc">Welcome to my open source blog</div>
-                        </div>
-                    </a>
-                </div> -->
-                <div class="magical item">
-                    <a href="" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/数坞.png"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">数坞</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-assets">Match</div>
-                            </div>
-                            <div class="desc">负碳建材生产线智能检测与维保平台</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="magical item">
-                    <a href="" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/鲁遇.png"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">鲁遇</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-app">Developer</div>
-                            </div>
-                            <div class="desc">文旅管理系统</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="magical item">
-                    <a href="" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/程序设计大赛.jpg"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">程序设计大赛一等奖</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-2b">ToB</div>
-                            </div>
-                            <!-- <div class="desc">Welcome to my open source blog</div> -->
-                        </div>
-                    </a>
-                </div>
-                <div class="magical item">
-                    <a href="" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/蓝桥杯.jpg"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">蓝桥杯一等奖</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-other">Other</div>
-                            </div>
-                            <!-- <div class="desc">Welcome to my open source blog</div> -->
-                        </div>
-                    </a>
-                </div>
-                <div class="magical item">
-                    <a href="" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/青鸟计划.jpg"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">青鸟计划</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-other">Other</div>
-                            </div>
-                            <!-- <div class="desc">Welcome to my open source blog</div> -->
-                        </div>
-                    </a>
-                </div>
-                <!-- <div class="magical item">
-                    <a href="https://asorn.cn/" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/empty.png"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">Title</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-other">Other</div>
-                            </div>
-                            <div class="desc">Welcome to my open source blog</div>
-                        </div>
-                    </a>
-                </div> -->
-                <!-- <div class="magical item">
-                    <a href="https://asorn.cn/" target="_blank">
-                        <div class="dark"><img class="cover" src="./assets/work/empty.png"></div>
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">Title</div>
-                                    <div class="name link"> ↗</div>
-                                </div>
-                                <div class="tag tag-other">Other</div>
-                            </div>
-                            <div class="desc">Welcome to my open source blog</div>
-                        </div>
-                    </a>
-                </div> -->
+
+    <!-- 横向填满的音乐播放器 -->
+    <div class="full-width-player" id="player">
+        <!-- 音频元素：初始不设置src，由JS动态加载 -->
+        <audio id="bgMusic" preload="auto"></audio>
+
+        <!-- 切换歌曲按钮（左） -->
+        <div class="song-switch-area">
+            <button class="ctrl-btn" id="prevBtn" title="上一首">⏮</button>
+        </div>
+
+        <!-- 播放/暂停 -->
+        <div class="player-controls">
+            <button class="ctrl-btn play-btn" id="playPauseBtn" title="点击播放">▶</button>
+            <div class="playing-indicator" id="playingIndicator">
+                <span></span><span></span><span></span><span></span>
             </div>
         </div>
-        <div class="footer">
-            <div class="copyright">
-                <div>© 2023 Design by <a href="" target="_blank">Asorn</a></div>
-                <span>|</span>
-                <div class="fillings">
-                    <!-- <a href="https://asorn.cn/" target="_blank">Asorn</a> -->
-                </div>
-                <span>|</span>
-                <div class="friends">
-                    <a href="https://zdo.fun/" target="_blank">ZDO</a>
-                </div>
+
+        <!-- 切换歌曲按钮（右） -->
+        <div class="song-switch-area">
+            <button class="ctrl-btn" id="nextBtn" title="下一首">⏭</button>
+        </div>
+
+        <!-- 歌曲信息 -->
+        <div class="song-info-area">
+            <div class="song-title-main" id="songTitleDisplay">准备就绪 · 点击播放</div>
+            <div class="song-artist-main" id="songArtistDisplay">请确保音乐文件已放置在正确路径</div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-area">
+            <span class="time-display" id="currentTime">0:00</span>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <span class="time-display" id="durationTime">0:00</span>
+        </div>
+
+        <!-- 音量控制 -->
+        <div class="volume-area">
+            <button class="ctrl-btn" id="muteBtn" style="font-size:14px;" title="静音切换">🔊</button>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.6">
+        </div>
+    </div>
+
+    <!-- 作品卡片区域 -->
+    <div class="work">
+        <div class="card-list">
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(0)">
+                    <div class="dark"><img class="cover" src="./assets/work/数坞.png" alt="数坞"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">数坞</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-assets">Match</div>
+                        </div>
+                        <div class="desc">负碳建材生产线智能检测与维保平台</div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(1)">
+                    <div class="dark"><img class="cover" src="./assets/work/鲁遇.png" alt="鲁遇"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">鲁遇</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-app">Developer</div>
+                        </div>
+                        <div class="desc">文旅管理系统</div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(2)">
+                    <div class="dark"><img class="cover" src="./assets/work/程序设计大赛.jpg" alt="程序设计大赛一等奖"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">程序设计大赛一等奖</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-2b">ToB</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(3)">
+                    <div class="dark"><img class="cover" src="./assets/work/蓝桥杯.jpg" alt="蓝桥杯一等奖"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">蓝桥杯一等奖</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-other">Other</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(4)">
+                    <div class="dark"><img class="cover" src="./assets/work/青鸟计划.jpg" alt="青鸟计划"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">青鸟计划</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-other">Other</div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
-        <div class="widget">
-            <div class="shape-light"></div>
-            <div class="shape-star">
-                <div class="rising-stars rising-stars-visible">
-                    <div style="height:1px;width:1px"></div>
-                    <div style="height:2px;width:2px"></div>
-                    <div style="height:1px;width:1px"></div>
-                </div>
-            </div>
-            <div class="shape-earth"></div>
+    </div>
+
+    <!-- 作品详情弹窗 -->
+    <div class="project-modal-mask" id="projectModalMask" onclick="closeProjectDetail()">
+        <div class="project-modal" onclick="event.stopPropagation()">
+            <button class="project-modal-close" onclick="closeProjectDetail()">✕</button>
+            <img class="project-modal-image" id="modalImage" src="" alt="作品图片">
+            <h2 class="project-modal-title" id="modalTitle"></h2>
+            <span class="project-modal-tag" id="modalTag"></span>
+            <p class="project-modal-desc" id="modalDesc"></p>
+            <div class="project-modal-detail" id="modalDetail"></div>
+            <a class="project-modal-link" id="modalLink" href="#" target="_blank">
+                访问项目
+                <svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm4 12v5H4V6h5V4H2v18h18v-7h-2z"/></svg>
+            </a>
         </div>
-</body>
-<script>
-    window.addEventListener("mousemove", function (e) {
-        document.querySelectorAll(".magical").forEach(element => {
-            const rect = element.getBoundingClientRect();
-            const offsetX = e.clientX - rect.left;
-            const offsetY = e.clientY - rect.top;
-            element.style.setProperty("--mouse-x", `${offsetX}px`);
-            element.style.setProperty("--mouse-y", `${offsetY}px`);
+    </div>
+
+    <div class="footer">
+        <div class="copyright">
+            <div>© 2025 Design by <a href="" target="_blank">杨翰卿</a></div>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="shape-light"></div>
+        <div class="shape-star">
+            <div class="rising-stars rising-stars-visible">
+                <div style="height:1px;width:1px"></div>
+                <div style="height:2px;width:2px"></div>
+                <div style="height:1px;width:1px"></div>
+            </div>
+        </div>
+        <div class="shape-earth"></div>
+    </div>
+
+    <script>
+        // ===================== 音乐播放器（完善错误处理与备用音频） =====================
+        (function() {
+            // ========== 歌曲列表配置 ==========
+            // 如果本地文件不存在，会自动尝试使用在线备用音频
+            const playlist = [
+                {
+                    title: '我本将心向月明',
+                    artist: '传统诗词 · 轻音乐',
+                    src: 'assets/music/我本将心向明月.mp3',
+                    // 备用在线音频（当本地文件加载失败时使用）
+                    fallback: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+                },
+                {
+                    title: 'SS那个石家庄人',
+                    artist: '小帅老师小曲',
+                    src: 'assets/music/SS那个石家庄人.mp3',
+                    fallback: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+                },
+                {
+                    title: '《两 难》-海山来了',
+                    artist: '加木',
+                    src: 'assets/music/加木《两 难》-海山来了.mp3',
+                    fallback: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+                }
+            ];
+
+            let currentIndex = 0;
+            let isPlaying = false;
+            let isMuted = false;
+            let lastVolume = 0.6;
+            let loadAttempted = false;
+            let usingFallback = false;
+
+            const audio = document.getElementById('bgMusic');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const currentTimeSpan = document.getElementById('currentTime');
+            const durationTimeSpan = document.getElementById('durationTime');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const muteBtn = document.getElementById('muteBtn');
+            const songTitleDisplay = document.getElementById('songTitleDisplay');
+            const songArtistDisplay = document.getElementById('songArtistDisplay');
+            const playingIndicator = document.getElementById('playingIndicator');
+
+            function formatTime(seconds) {
+                if (isNaN(seconds) || seconds === Infinity) return '0:00';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            // 清除错误状态样式
+            function clearErrorState() {
+                playPauseBtn.classList.remove('error-state', 'loading');
+                songTitleDisplay.classList.remove('error-text');
+                songArtistDisplay.classList.remove('error-hint');
+                usingFallback = false;
+            }
+
+            // 显示加载状态
+            function showLoadingState() {
+                playPauseBtn.classList.add('loading');
+                playPauseBtn.textContent = '⏳';
+                songArtistDisplay.textContent = '正在加载音频...';
+            }
+
+            // 显示错误状态
+            function showErrorState(message) {
+                playPauseBtn.classList.remove('loading');
+                playPauseBtn.classList.add('error-state');
+                playPauseBtn.textContent = '⚠';
+                songTitleDisplay.classList.add('error-text');
+                songArtistDisplay.classList.add('error-hint');
+                songArtistDisplay.textContent = message || '音频加载失败，请检查文件路径';
+                playingIndicator.classList.remove('active');
+                isPlaying = false;
+            }
+
+            // 加载歌曲（带备用方案）
+            function loadSong(index, useFallback = false) {
+                const song = playlist[index];
+                clearErrorState();
+                showLoadingState();
+                
+                // 选择使用原始路径还是备用路径
+                const audioSrc = useFallback ? song.fallback : song.src;
+                
+                console.log(`🎵 正在加载: ${song.title}`);
+                console.log(`📁 路径: ${audioSrc}`);
+                console.log(`🔄 是否使用备用源: ${useFallback ? '是' : '否'}`);
+                
+                audio.src = audioSrc;
+                songTitleDisplay.textContent = useFallback ? `${song.title} (在线备用)` : song.title;
+                songArtistDisplay.textContent = song.artist;
+                audio.load();
+                loadAttempted = false;
+                usingFallback = useFallback;
+            }
+
+            // 音频加载成功
+            audio.addEventListener('loadeddata', () => {
+                console.log('✅ 音频加载成功');
+                clearErrorState();
+                loadAttempted = true;
+                durationTimeSpan.textContent = formatTime(audio.duration);
+                playPauseBtn.textContent = isPlaying ? '⏸' : '▶';
+                songArtistDisplay.textContent = playlist[currentIndex].artist;
+                
+                // 如果之前在播放状态，自动恢复播放
+                if (isPlaying) {
+                    audio.play().then(() => {
+                        playingIndicator.classList.add('active');
+                        playPauseBtn.textContent = '⏸';
+                    }).catch(e => {
+                        console.warn('自动恢复播放失败:', e.message);
+                        isPlaying = false;
+                        playPauseBtn.textContent = '▶';
+                        playingIndicator.classList.remove('active');
+                    });
+                }
+            });
+
+            // 音频加载失败 → 尝试备用源
+            audio.addEventListener('error', (e) => {
+                const song = playlist[currentIndex];
+                console.error('❌ 音频加载失败:', audio.src);
+                console.error('错误详情:', audio.error ? audio.error.message : '未知错误');
+                
+                // 如果还没有尝试过备用源，且存在备用源，则自动切换
+                if (!usingFallback && song.fallback && song.fallback !== song.src) {
+                    console.log('🔄 尝试使用在线备用音频...');
+                    showLoadingState();
+                    songArtistDisplay.textContent = '本地文件未找到，正在切换在线备用...';
+                    loadSong(currentIndex, true);
+                } else if (usingFallback) {
+                    // 备用源也失败了
+                    showErrorState('在线备用音频也无法加载，请检查网络连接');
+                    console.error('❌ 备用音频也加载失败');
+                } else {
+                    // 没有备用源
+                    showErrorState(`文件不存在: ${song.src}`);
+                    console.error('💡 请将音乐文件放置到以下路径:');
+                    console.error(`   ${song.src}`);
+                }
+            });
+
+            // 播放/暂停切换
+            function togglePlay() {
+                if (audio.src === '' || audio.src === window.location.href) {
+                    // 音频尚未加载，先加载
+                    console.log('🎵 首次加载音频...');
+                    loadSong(currentIndex);
+                    // 加载完成后自动播放
+                    const onLoaded = () => {
+                        audio.removeEventListener('loadeddata', onLoaded);
+                        audio.play().then(() => {
+                            isPlaying = true;
+                            playPauseBtn.textContent = '⏸';
+                            playingIndicator.classList.add('active');
+                        }).catch(err => {
+                            console.warn('播放失败:', err.message);
+                            showErrorState('播放被浏览器阻止，请再次点击播放按钮');
+                        });
+                    };
+                    audio.addEventListener('loadeddata', onLoaded, { once: true });
+                    return;
+                }
+
+                if (isPlaying) {
+                    audio.pause();
+                    isPlaying = false;
+                    playPauseBtn.textContent = '▶';
+                    playingIndicator.classList.remove('active');
+                    console.log('⏸ 已暂停');
+                } else {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        playPauseBtn.textContent = '⏸';
+                        playingIndicator.classList.add('active');
+                        clearErrorState();
+                        console.log('▶ 正在播放');
+                    }).catch(err => {
+                        console.warn('播放失败:', err.message);
+                        // 浏览器可能阻止了自动播放，需要用户再次交互
+                        showErrorState('请点击播放按钮开始播放');
+                        isPlaying = false;
+                        playPauseBtn.textContent = '▶';
+                        playingIndicator.classList.remove('active');
+                    });
+                }
+            }
+
+            playPauseBtn.addEventListener('click', togglePlay);
+
+            // 音频事件监听
+            audio.addEventListener('play', () => {
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸';
+                playingIndicator.classList.add('active');
+                clearErrorState();
+            });
+            
+            audio.addEventListener('pause', () => {
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+                playingIndicator.classList.remove('active');
+            });
+            
+            audio.addEventListener('ended', () => {
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+                playingIndicator.classList.remove('active');
+                // 自动播放下一首
+                console.log('🎵 当前曲目播放完毕，切换到下一首');
+                currentIndex = (currentIndex + 1) % playlist.length;
+                loadSong(currentIndex);
+                // 加载完成后自动播放
+                const onLoaded = () => {
+                    audio.removeEventListener('loadeddata', onLoaded);
+                    audio.play().catch(e => console.warn('自动播放下一首失败'));
+                };
+                audio.addEventListener('loadeddata', onLoaded, { once: true });
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (audio.duration && isFinite(audio.duration)) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    progressBar.style.width = percent + '%';
+                    currentTimeSpan.textContent = formatTime(audio.currentTime);
+                }
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                if (isFinite(audio.duration)) {
+                    durationTimeSpan.textContent = formatTime(audio.duration);
+                }
+            });
+
+            // 进度条点击
+            progressContainer.addEventListener('click', (e) => {
+                if (!audio.duration || !isFinite(audio.duration)) return;
+                const rect = progressContainer.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                audio.currentTime = (clickX / width) * audio.duration;
+            });
+
+            // 上一首/下一首
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+                loadSong(currentIndex);
+                const onLoaded = () => {
+                    audio.removeEventListener('loadeddata', onLoaded);
+                    if (isPlaying) audio.play().catch(e => console.warn('切换歌曲播放失败'));
+                };
+                audio.addEventListener('loadeddata', onLoaded, { once: true });
+                isPlaying = true;
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % playlist.length;
+                loadSong(currentIndex);
+                const onLoaded = () => {
+                    audio.removeEventListener('loadeddata', onLoaded);
+                    if (isPlaying) audio.play().catch(e => console.warn('切换歌曲播放失败'));
+                };
+                audio.addEventListener('loadeddata', onLoaded, { once: true });
+                isPlaying = true;
+            });
+
+            // 音量控制
+            audio.volume = volumeSlider.value;
+            volumeSlider.addEventListener('input', (e) => {
+                const vol = parseFloat(e.target.value);
+                audio.volume = vol;
+                if (vol === 0) {
+                    muteBtn.textContent = '🔇';
+                    isMuted = true;
+                } else {
+                    muteBtn.textContent = '🔊';
+                    isMuted = false;
+                    lastVolume = vol;
+                }
+            });
+
+            muteBtn.addEventListener('click', () => {
+                if (isMuted) {
+                    audio.volume = lastVolume || 0.6;
+                    volumeSlider.value = audio.volume;
+                    muteBtn.textContent = '🔊';
+                    isMuted = false;
+                } else {
+                    lastVolume = audio.volume;
+                    audio.volume = 0;
+                    volumeSlider.value = 0;
+                    muteBtn.textContent = '🔇';
+                    isMuted = true;
+                }
+            });
+
+            // 页面加载时预加载第一首歌（不自动播放，等用户点击）
+            console.log('🎶 音乐播放器已就绪');
+            console.log('📋 播放列表:');
+            playlist.forEach((song, i) => {
+                console.log(`   ${i + 1}. ${song.title} - ${song.artist}`);
+            });
+            console.log('💡 请点击播放按钮开始播放');
+            console.log('⚠ 如果本地文件不存在，将自动使用在线备用音频');
+            
+            // 延迟加载并自动播放第一首歌
+            setTimeout(() => {
+                if (!loadAttempted && audio.src === '' || audio.src === window.location.href) {
+                    isPlaying = true; // 设置播放状态为 true
+                    loadSong(currentIndex);
+                }
+            }, 500);
+            
+            // 添加第一次交互时确保播放（应对浏览器自动播放策略）
+            document.addEventListener('click', function firstInteraction() {
+                if (audio.paused && loadAttempted) {
+                    audio.play().catch(() => {
+                        isPlaying = true;
+                        playPauseBtn.textContent = '⏸';
+                        playingIndicator.classList.add('active');
+                    });
+                }
+                document.removeEventListener('click', firstInteraction);
+            }, { once: false });
+
+        })();
+
+        // ===================== 作品数据定义 =====================
+        const projects = [
+            {
+                title: '数坞',
+                tag: 'Match · 工业互联网',
+                desc: '负碳建材生产线智能检测与维保平台，融合物联网与AI视觉技术。',
+                detail: '项目基于HarmonyOS与Spring Cloud微服务架构，搭建了从传感器数据采集、边缘计算到云端分析的完整链路。针对负碳建材生产环境，定制了高温粉尘下的视觉检测算法，设备故障预警准确率达到96%。荣获省级智能制造创新应用奖。',
+                image: './assets/work/数坞.png',
+                link: 'https://example.com/shuwu'
+            },
+            {
+                title: '鲁遇',
+                tag: 'Developer · 文旅数字化',
+                desc: '文旅管理系统，为景区提供票务、导览、数据分析一体化解决方案。',
+                detail: '采用Vue3 + TypeScript + Node.js全栈开发，集成微信支付与地图SDK，支持多景区分权管理。通过用户行为分析优化游览路线推荐，帮助合作景区实现线上转化率提升40%。已部署于3个5A级景区，日均处理订单超5000笔。',
+                image: './assets/work/鲁遇.png',
+                link: ''
+            },
+            {
+                title: '程序设计大赛一等奖',
+                tag: 'ToB · 算法竞赛',
+                desc: '在省级程序设计大赛中凭借高性能算法设计与工程实现能力斩获一等奖。',
+                detail: '比赛题目涵盖动态规划优化、图论建模、大数据处理等方向。团队在4小时内完成全部7道高难度试题，其中"城市紧急物资调度"一题采用改进的最大流算法，将时间复杂度从O(n³)优化至O(n²logn)，获得评委高度评价。',
+                image: './assets/work/程序设计大赛.jpg',
+                link: ''
+            },
+            {
+                title: '蓝桥杯一等奖',
+                tag: 'Other · 学科竞赛',
+                desc: '蓝桥杯全国软件和信息技术专业人才大赛省级一等奖。',
+                detail: '参赛方向为Java软件开发，赛题涵盖数据结构、算法设计、并发编程及JVM调优。通过系统刷题与源码阅读，在决赛中取得了全省前5%的优异成绩。该经历极大提升了代码严谨性与问题抽象能力。',
+                image: './assets/work/蓝桥杯.jpg',
+                link: ''
+            },
+            {
+                title: '青鸟计划',
+                tag: 'Other · 社会实践',
+                desc: '参与"青鸟计划"大学生实习实践活动，深入企业完成技术调研与开发任务。',
+                detail: '在为期两个月的社会实践中，协助团队完成了技术文档的规范化整理。',
+                image: './assets/work/青鸟计划.jpg',
+                link: ''
+            }
+        ];
+
+        function showProjectDetail(index) {
+            const project = projects[index];
+            if (!project) return;
+            document.getElementById('modalImage').src = project.image;
+            document.getElementById('modalImage').alt = project.title;
+            document.getElementById('modalTitle').textContent = project.title;
+            document.getElementById('modalTag').textContent = project.tag;
+            document.getElementById('modalDesc').textContent = project.desc;
+            document.getElementById('modalDetail').textContent = project.detail;
+            const linkEl = document.getElementById('modalLink');
+            if (project.link) {
+                linkEl.href = project.link;
+                linkEl.style.display = 'inline-flex';
+            } else {
+                linkEl.style.display = 'none';
+            }
+            document.getElementById('projectModalMask').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectDetail() {
+            document.getElementById('projectModalMask').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeProjectDetail();
         });
-    });
-</script>
-<script src="./js/main.min.js"></script>
-<script src='./js/anime.js'></script>
-<script src='./js/firework.js'></script>
+
+        window.addEventListener("mousemove", function(e) {
+            document.querySelectorAll(".magical").forEach(element => {
+                const rect = element.getBoundingClientRect();
+                const offsetX = e.clientX - rect.left;
+                const offsetY = e.clientY - rect.top;
+                element.style.setProperty("--mouse-x", `${offsetX}px`);
+                element.style.setProperty("--mouse-y", `${offsetY}px`);
+            });
+        });
+    </script>
+    <script src="./js/main.min.js"></script>
+    <script src='./js/anime.js'></script>
+    <script src='./js/firework.js'></script>
+</body>
 </html>

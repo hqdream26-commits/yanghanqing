@@ -1,3 +1,4 @@
+<!-- //参考学习asorn  https://asorn.cn/ -->
 <!DOCTYPE html>
 <html lang="zh-CN" style="color-scheme: dark;">
 <head>
@@ -6,12 +7,12 @@
     <title>杨翰卿 - 技术博客</title>
     <link rel="stylesheet" href="./css/style.min.css">
     <link rel="shortcut icon" href="./assets/public/favicon.svg" />
-    
     <!-- 引入Markdown解析和代码高亮库 -->
-    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js">
+    </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css">
-    
     <!-- 文章详情面板样式（专业技术排版） -->
     <style>
         /* 遮罩层 */
@@ -21,13 +22,16 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             z-index: 998;
             display: none;
             backdrop-filter: blur(4px);
         }
-        .mask.show { display: block; }
-        
+
+        .mask.show {
+            display: block;
+        }
+
         /* 文章详情侧边面板 */
         .article-detail-panel {
             position: fixed;
@@ -42,10 +46,13 @@
             overflow-y: auto;
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-sizing: border-box;
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
         }
-        .article-detail-panel.show { right: 0; }
-        
+
+        .article-detail-panel.show {
+            right: 0;
+        }
+
         /* 面板头部 */
         .detail-header {
             position: sticky;
@@ -55,6 +62,7 @@
             border-bottom: 1px solid #2a2a35;
             z-index: 10;
         }
+
         .detail-header h2 {
             margin: 0 40px 15px 0;
             color: #ffffff;
@@ -62,6 +70,7 @@
             font-weight: 600;
             line-height: 1.3;
         }
+
         .detail-close {
             position: absolute;
             top: 25px;
@@ -79,11 +88,12 @@
             align-items: center;
             justify-content: center;
         }
+
         .detail-close:hover {
             background: #ff4757;
             transform: rotate(90deg);
         }
-        
+
         /* 元信息 */
         .detail-meta {
             display: flex;
@@ -92,11 +102,13 @@
             color: #999;
             font-size: 14px;
         }
+
         .detail-meta img {
             width: 28px;
             height: 28px;
             border-radius: 50%;
         }
+
         .detail-meta .tag {
             background: #2d2d3a;
             padding: 3px 10px;
@@ -104,7 +116,7 @@
             font-size: 12px;
             color: #61dafb;
         }
-        
+
         /* 文章内容容器 */
         .detail-content {
             padding: 30px 40px 60px;
@@ -113,36 +125,60 @@
             font-size: 16px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
-        
+
         /* Markdown元素样式 */
-        .detail-content h1, .detail-content h2, .detail-content h3 {
+        .detail-content h1,
+        .detail-content h2,
+        .detail-content h3 {
             color: #ffffff;
             margin-top: 30px;
             margin-bottom: 15px;
             font-weight: 600;
         }
-        .detail-content h1 { font-size: 24px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .detail-content h2 { font-size: 20px; }
-        .detail-content h3 { font-size: 18px; }
-        
-        .detail-content p { margin: 15px 0; }
-        
-        .detail-content ul, .detail-content ol {
+
+        .detail-content h1 {
+            font-size: 24px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .detail-content h2 {
+            font-size: 20px;
+        }
+
+        .detail-content h3 {
+            font-size: 18px;
+        }
+
+        .detail-content p {
+            margin: 15px 0;
+        }
+
+        .detail-content ul,
+        .detail-content ol {
             margin: 15px 0;
             padding-left: 25px;
         }
-        .detail-content li { margin: 8px 0; }
-        
-        .detail-content strong { color: #ffffff; }
-        
+
+        .detail-content li {
+            margin: 8px 0;
+        }
+
+        .detail-content strong {
+            color: #ffffff;
+        }
+
         .detail-content a {
             color: #61dafb;
             text-decoration: none;
             border-bottom: 1px solid transparent;
             transition: border-color 0.2s;
         }
-        .detail-content a:hover { border-bottom-color: #61dafb; }
-        
+
+        .detail-content a:hover {
+            border-bottom-color: #61dafb;
+        }
+
         .detail-content blockquote {
             border-left: 4px solid #61dafb;
             padding: 10px 20px;
@@ -151,7 +187,7 @@
             color: #b0b0b0;
             border-radius: 0 4px 4px 0;
         }
-        
+
         /* 表格样式 */
         .detail-content table {
             width: 100%;
@@ -159,18 +195,24 @@
             margin: 20px 0;
             font-size: 14px;
         }
-        .detail-content th, .detail-content td {
+
+        .detail-content th,
+        .detail-content td {
             border: 1px solid #333;
             padding: 10px 15px;
             text-align: left;
         }
+
         .detail-content th {
             background: #252530;
             color: #ffffff;
             font-weight: 600;
         }
-        .detail-content tr:nth-child(even) { background: #1a1a22; }
-        
+
+        .detail-content tr:nth-child(even) {
+            background: #1a1a22;
+        }
+
         /* 代码块样式（带复制按钮） */
         .detail-content pre {
             position: relative;
@@ -179,23 +221,26 @@
             overflow: hidden;
             background: #282c34 !important;
         }
+
         .detail-content code {
             font-family: "Fira Code", "Consolas", monospace;
             font-size: 14px;
         }
+
         .detail-content pre code {
             display: block;
             padding: 20px;
             overflow-x: auto;
             line-height: 1.6;
         }
-        .detail-content :not(pre) > code {
+
+        .detail-content :not(pre)>code {
             background: #252530;
             padding: 2px 6px;
             border-radius: 4px;
             color: #ff79c6;
         }
-        
+
         /* 复制按钮 */
         .copy-btn {
             position: absolute;
@@ -211,48 +256,154 @@
             opacity: 0;
             transition: all 0.2s;
         }
-        .detail-content pre:hover .copy-btn { opacity: 1; }
-        .copy-btn:hover { background: #4a4a5a; }
+
+        .detail-content pre:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: #4a4a5a;
+        }
+
         .copy-btn.copied {
             background: #2ed573;
             color: #fff;
         }
-        
+
         /* 滚动条美化 */
         .article-detail-panel::-webkit-scrollbar {
             width: 8px;
         }
+
         .article-detail-panel::-webkit-scrollbar-track {
             background: #121217;
         }
+
         .article-detail-panel::-webkit-scrollbar-thumb {
             background: #3a3a4a;
             border-radius: 4px;
         }
+
         .article-detail-panel::-webkit-scrollbar-thumb:hover {
             background: #4a4a5a;
         }
-        
+
         /* 禁止页面滚动 */
-        body.no-scroll { overflow: hidden; }
-        
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* ===================== 博客引言区块样式 ===================== */
+        .blog-intro-card {
+            position: relative;
+            border: 1px solid #2a2a40;
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #1a1a28 0%, #151520 40%, #1a1a2e 100%);
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .blog-intro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #61dafb, #a78bfa, #61dafb);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .blog-intro-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(97, 218, 251, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .blog-intro-card .intro-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .blog-intro-card .intro-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .blog-intro-card .intro-text {
+            font-size: 15px;
+            color: #b8b8c8;
+            line-height: 1.8;
+            margin: 0;
+            max-width: 95%;
+        }
+
+        .blog-intro-card .intro-text strong {
+            color: #61dafb;
+        }
+
+        .blog-intro-card .intro-highlight {
+            display: inline-block;
+            background: rgba(97, 218, 251, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #61dafb;
+            font-weight: 500;
+        }
+
         /* 响应式适配 */
         @media (max-width: 768px) {
-            .article-detail-panel { width: 100vw; }
-            .detail-header { padding: 20px 20px 15px; }
-            .detail-content { padding: 20px 20px 40px; }
-            .detail-header h2 { font-size: 22px; }
+            .article-detail-panel {
+                width: 100vw;
+            }
+
+            .detail-header {
+                padding: 20px 20px 15px;
+            }
+
+            .detail-content {
+                padding: 20px 20px 40px;
+            }
+
+            .detail-header h2 {
+                font-size: 22px;
+            }
+
+            .blog-intro-card {
+                padding: 20px 18px;
+                border-radius: 10px;
+            }
+
+            .blog-intro-card .intro-title {
+                font-size: 18px;
+            }
+
+            .blog-intro-card .intro-text {
+                font-size: 14px;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <!-- 遮罩层 -->
     <div class="mask" id="mask" onclick="closeArticleDetail()"></div>
-
     <canvas class="fireworks"></canvas>
     <div class="head">
         <div class="main">
-            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.svg"></a>
+            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.png" width="62px" height="30px"></a>
             <div class="menu">
                 <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
                 <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
@@ -273,16 +424,14 @@
         </div>
         <blockquote><img src="./assets/public/logo.svg"></blockquote>
     </div>
-    
     <div class="blog">
         <div class="blog-left">
             <div class="blog-left-line"><img src="./assets/blog/line-dot.svg"></div>
         </div>
         <div class="blog-list" id="blogList">
-            <!-- 文章列表将通过JS动态生成 -->
+            <!-- 文章列表将通过JS动态生成（包含引言卡片） -->
         </div>
     </div>
-
     <!-- 文章详情侧边面板 -->
     <div class="article-detail-panel" id="articleDetail">
         <div class="detail-header">
@@ -297,7 +446,6 @@
         </div>
         <div class="detail-content" id="detailContent"></div>
     </div>
-
     <div class="footer">
         <div class="copyright">
             <div>© 2025 Design by <a href="" target="_blank">杨翰卿</a></div>
@@ -322,7 +470,6 @@
         </div>
         <div class="shape-earth"></div>
     </div>
-
     <script>
         // ===================== 配置Markdown解析器 =====================
         marked.setOptions({
@@ -337,9 +484,365 @@
             headerIds: false
         });
 
-        // ===================== 博客文章数据（可扩展） =====================
-        const articles = [
-            {
+        // ===================== 博客文章数据（共11篇文章，含引言卡片） =====================
+        const articles = [{
+                title: "React Hooks核心原理与实战",
+                time: "2025-05-25",
+                tag: "React",
+                content: `# React Hooks核心原理与实战
+
+## 1. useState：状态管理
+useState用于在函数组件中添加状态。
+
+### 基本用法
+\`\`\`javascript
+import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>当前计数: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        增加
+      </button>
+    </div>
+  );
+}
+\`\`\`
+
+### 状态更新规则
+- **异步更新**：状态更新不会立即生效
+- **批量更新**：多个setState会合并执行
+- **函数式更新**：推荐使用函数形式获取最新状态
+
+\`\`\`javascript
+// ✅ 推荐：函数式更新
+setCount(prevCount => prevCount + 1);
+
+// ❌ 不推荐：直接使用当前状态
+setCount(count + 1);
+\`\`\`
+
+## 2. useEffect：副作用处理
+useEffect用于处理组件的副作用，如数据获取、订阅等。
+
+### 依赖数组
+\`\`\`javascript
+useEffect(() => {
+  // 副作用逻辑
+  return () => {
+    // 清理逻辑
+  };
+}, [dependencies]); // 依赖数组
+\`\`\`
+
+### 常见场景
+| 依赖数组 | 执行时机 | 使用场景 |
+|---|---|---|
+| [] | 组件挂载和卸载 | 初始化、订阅 |
+| [dep] | dep变化时 | 监听特定状态 |
+| 无依赖 | 每次渲染后 | 不推荐 |
+
+### 实战示例
+\`\`\`javascript
+function UserList() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(data => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('获取用户列表失败:', error);
+        setLoading(false);
+      });
+    return () => {
+      console.log('组件卸载');
+    };
+  }, []);
+
+  if (loading) return <div>加载中...</div>;
+  return (
+    <ul>
+      {users.map(user => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+\`\`\`
+
+## 3. useMemo与useCallback
+### useMemo：缓存计算结果
+\`\`\`javascript
+const expensiveValue = useMemo(() => {
+  console.log('执行耗时计算');
+  return items.filter(item => item.active);
+}, [items]);
+\`\`\`
+
+### useCallback：缓存函数
+\`\`\`javascript
+const handleClick = useCallback((id) => {
+  console.log('点击了:', id);
+}, []);
+\`\`\`
+
+> **性能优化建议**：不要过度使用，只有在确定有性能问题时才使用。
+
+## 4. 自定义Hooks
+### 示例：useFetch
+\`\`\`javascript
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch(url, { signal: controller.signal })
+      .then(res => res.json())
+      .then(setData)
+      .catch(err => {
+        if (err.name !== 'AbortError') setError(err);
+      })
+      .finally(() => setLoading(false));
+    return () => controller.abort();
+  }, [url]);
+
+  return { data, loading, error };
+}
+\`\`\`
+
+## 5. Hooks使用规则
+1. **只在顶层调用**：不要在循环、条件或嵌套函数中调用
+2. **只在React函数中调用**：不要在普通JavaScript函数中调用
+3. **命名规范**：自定义Hook以use开头
+
+\`\`\`javascript
+// ❌ 错误示例
+if (condition) {
+  const [state, setState] = useState();
+}
+// ✅ 正确示例
+const [state, setState] = useState();
+if (condition) { /* 使用state */ }
+\`\`\`
+`
+            }, {
+                title: "TypeScript高级类型技巧",
+                time: "2025-05-23",
+                tag: "TypeScript",
+                content: `# TypeScript高级类型技巧
+
+## 1. 条件类型
+条件类型允许根据条件选择不同的类型。
+
+### 基本语法
+\`\`\`typescript
+type IsString<T> = T extends string ? true : false;
+type A = IsString<'hello'>; // true
+type B = IsString<123>; // false
+\`\`\`
+
+### Exclude与Extract
+\`\`\`typescript
+type T0 = Exclude<'a' | 'b' | 'c', 'a'>; // 'b' | 'c'
+type T1 = Extract<'a' | 'b' | 'c', 'a' | 'd'>; // 'a'
+\`\`\`
+
+## 2. 映射类型
+### Readonly与Partial
+\`\`\`typescript
+type Readonly<T> = { readonly [P in keyof T]: T[P] };
+type Partial<T> = { [P in keyof T]?: T[P] };
+type Required<T> = { [P in keyof T]-?: T[P] };
+
+interface Config {
+  host: string;
+  port?: number;
+  timeout?: number;
+}
+type PartialConfig = Partial<Config>;
+type RequiredConfig = Required<Config>;
+\`\`\`
+
+## 3. 模板字面量类型
+\`\`\`typescript
+type Size = 'small' | 'medium' | 'large';
+type Variant = 'primary' | 'secondary' | 'danger';
+type ClassName = \`\${Size}-\${Variant}\`;
+const className: ClassName = 'medium-primary'; // ✅
+\`\`\`
+
+## 4. 工具类型实战
+### 实现Pick、Omit、Record
+\`\`\`typescript
+type MyPick<T, K extends keyof T> = { [P in K]: T[P] };
+type MyOmit<T, K extends keyof any> = { [P in keyof T as P extends K ? never : P]: T[P] };
+type MyRecord<K extends keyof any, T> = { [P in K]: T };
+
+interface User { id: number; name: string; email: string; age: number; }
+type UserInfo = MyPick<User, 'id' | 'name'>;
+type UserWithoutEmail = MyOmit<User, 'email'>;
+type State = MyRecord<'loading' | 'error' | 'success', boolean>;
+\`\`\`
+
+## 5. 泛型约束与默认值
+\`\`\`typescript
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+function createArray<T = string>(length: number, value: T): T[] {
+  return Array(length).fill(value);
+}
+\`\`\`
+
+> **最佳实践**：合理使用泛型约束，避免过度复杂的类型定义。
+`
+            }, {
+                title: "前端性能优化实战指南",
+                time: "2025-05-21",
+                tag: "性能优化",
+                content: `# 前端性能优化实战指南
+
+## 1. 加载性能优化
+### 代码分割（Code Splitting）
+\`\`\`javascript
+const loadDashboard = () => import('./Dashboard');
+function App() {
+  const [showDashboard, setShowDashboard] = useState(false);
+  const handleClick = async () => {
+    await loadDashboard();
+    setShowDashboard(true);
+  };
+  return (
+    <div>
+      <button onClick={handleClick}>加载仪表板</button>
+      {showDashboard && <Dashboard />}
+    </div>
+  );
+}
+\`\`\`
+
+### 预加载与预获取
+\`\`\`html
+<link rel="preload" href="/styles/main.css" as="style">
+<link rel="prefetch" href="/scripts/next-page.js">
+\`\`\`
+
+### 懒加载图片
+\`\`\`javascript
+function LazyImage({ src, alt }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <img
+      src={loaded ? src : 'placeholder.jpg'}
+      alt={alt}
+      onLoad={() => setLoaded(true)}
+      loading="lazy"
+    />
+  );
+}
+\`\`\`
+
+## 2. 运行时性能优化
+### 虚拟列表
+\`\`\`javascript
+import { FixedSizeList as List } from 'react-window';
+const Row = ({ index, style }) => <div style={style}>Row {index}</div>;
+const VirtualList = () => (
+  <List height={600} itemCount={10000} itemSize={35} width="100%">
+    {Row}
+  </List>
+);
+\`\`\`
+
+### 防抖与节流
+\`\`\`javascript
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
+function useThrottle(value, delay) {
+  const [throttledValue, setThrottledValue] = useState(value);
+  const lastRan = useRef(Date.now());
+  useEffect(() => {
+    const now = Date.now();
+    if (now - lastRan.current >= delay) {
+      setThrottledValue(value);
+      lastRan.current = now;
+    } else {
+      const timer = setTimeout(() => {
+        setThrottledValue(value);
+        lastRan.current = Date.now();
+      }, delay - (now - lastRan.current));
+      return () => clearTimeout(timer);
+    }
+  }, [value, delay]);
+  return throttledValue;
+}
+\`\`\`
+
+## 3. 内存优化
+### 避免内存泄漏
+\`\`\`javascript
+function useEventListener(event, handler) {
+  useEffect(() => {
+    window.addEventListener(event, handler);
+    return () => window.removeEventListener(event, handler);
+  }, [event, handler]);
+}
+\`\`\`
+
+### 使用WeakMap
+\`\`\`javascript
+const privateData = new WeakMap();
+class User {
+  constructor(name) { privateData.set(this, { name }); }
+  getName() { return privateData.get(this).name; }
+}
+\`\`\`
+
+## 4. 构建优化
+### Tree Shaking
+\`\`\`javascript
+// ✅ 使用命名导出
+export function helper() {}
+export const constant = 42;
+// ❌ 避免默认导出整个对象
+\`\`\`
+
+## 5. 监控与分析
+\`\`\`javascript
+window.addEventListener('load', () => {
+  const fcp = performance.getEntriesByName('first-contentful-paint')[0];
+  console.log('FCP:', fcp.startTime);
+});
+\`\`\`
+
+### Lighthouse评分优化
+| 指标 | 目标值 | 优化建议 |
+|---|---|---|
+| FCP | < 1.8s | 优化关键渲染路径 |
+| LCP | < 2.5s | 优化图片、预加载 |
+| FID | < 100ms | 减少长任务 |
+| CLS | < 0.1 | 避免布局偏移 |
+
+> **工具推荐**：WebPageTest、Lighthouse、Chrome DevTools Performance
+`
+            }, {
                 title: "Java基础面试题大全",
                 time: "2025-05-20",
                 tag: "Java",
@@ -371,10 +874,7 @@ Java中的数据类型分为**基本数据类型**和**引用数据类型**两�
 final可以修饰**类**、**方法**和**变量**，但不能修饰构造器。
 
 ### 2.1 修饰类
-被final修饰的类**不能被继承**，但可以被实例化。例如：
-- String类
-- System类
-- 所有包装类（Integer、Long等）
+被final修饰的类**不能被继承**，但可以被实例化。例如：String类、System类、所有包装类（Integer、Long等）。
 
 ### 2.2 修饰方法
 被final修饰的方法**不能被子类重写**，但可以被子类继承使用。
@@ -391,14 +891,13 @@ final可以修饰**类**、**方法**和**变量**，但不能修饰构造器。
 public class FinalExample {
     // 静态常量
     public static final int MAX_VALUE = 100;
-    
     // 成员常量
     private final String name;
-    
+
     public FinalExample(String name) {
         this.name = name;
     }
-    
+
     // final方法
     public final void printInfo() {
         System.out.println("Name: " + name);
@@ -418,9 +917,8 @@ public class FinalExample {
 \`\`\`java
 String s1 = new String("hello");
 String s2 = new String("hello");
-
-System.out.println(s1 == s2); // false（不同对象）
-System.out.println(s1.equals(s2)); // true（内容相同）
+System.out.println(s1 == s2);       // false（不同对象）
+System.out.println(s1.equals(s2));  // true（内容相同）
 \`\`\`
 
 ## 4. String为什么不可变？
@@ -435,9 +933,420 @@ String类的不可变性是通过以下设计实现的：
 - **安全性**：用于存储敏感信息（如密码）时不会被篡改
 
 > **提示**：如果需要频繁修改字符串，使用StringBuilder（单线程）或StringBuffer（多线程）。
+
+## 5. 面向对象三大特性
+
+### 5.1 封装（Encapsulation）
+将数据和操作数据的方法绑定在一起，隐藏内部实现细节，只暴露必要的接口。
+
+\`\`\`java
+public class BankAccount {
+    private double balance; // 私有属性，外部无法直接访问
+
+    public double getBalance() { return balance; }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+        } else {
+            throw new IllegalArgumentException("存款金额必须大于0");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+        } else {
+            throw new IllegalArgumentException("余额不足或金额无效");
+        }
+    }
+}
+\`\`\`
+
+> 封装的核心：**高内聚、低耦合**，通过访问修饰符（private、protected、public）控制可见性。
+
+### 5.2 继承（Inheritance）
+子类继承父类的属性和方法，实现代码复用。Java只支持**单继承**（一个类只能有一个直接父类），但支持**多重继承**（通过接口）。
+
+\`\`\`java
+// 父类
+public class Animal {
+    protected String name;
+
+    public Animal(String name) { this.name = name; }
+
+    public void eat() {
+        System.out.println(name + "正在吃东西");
+    }
+}
+
+// 子类
+public class Dog extends Animal {
+    public Dog(String name) { super(name); }
+
+    @Override
+    public void eat() {
+        System.out.println(name + "正在吃狗粮");
+    }
+
+    public void bark() {
+        System.out.println(name + "汪汪叫");
+    }
+}
+
+// 使用
+Dog dog = new Dog("旺财");
+dog.eat();  // 输出：旺财正在吃狗粮
+dog.bark(); // 输出：旺财汪汪叫
+\`\`\`
+
+### 5.3 多态（Polymorphism）
+同一个行为具有多个不同表现形式。多态的三个必要条件：**继承**、**重写**、**父类引用指向子类对象**。
+
+\`\`\`java
+Animal myPet = new Dog("小黑"); // 父类引用指向子类对象
+myPet.eat(); // 调用的是Dog重写后的eat()方法（运行时多态）
+
+// 多态的好处
+Animal[] zoo = { new Dog("旺财"), new Cat("小花"), new Bird("小飞") };
+for (Animal a : zoo) {
+    a.eat(); // 每个动物以不同方式"吃"，无需区分类型
+}
+\`\`\`
+
+## 6. 抽象类与接口
+
+### 6.1 抽象类（abstract class）
+- 不能实例化，只能被继承
+- 可以包含抽象方法和具体方法
+- 可以有构造器
+- 单继承
+
+\`\`\`java
+public abstract class Shape {
+    protected String color;
+
+    public Shape(String color) { this.color = color; }
+
+    // 抽象方法——子类必须实现
+    public abstract double getArea();
+
+    // 具体方法
+    public void display() {
+        System.out.println("这是一个" + color + "的图形，面积：" + getArea());
+    }
+}
+
+public class Circle extends Shape {
+    private double radius;
+    public Circle(String color, double radius) {
+        super(color);
+        this.radius = radius;
+    }
+    @Override
+    public double getArea() { return Math.PI * radius * radius; }
+}
+\`\`\`
+
+### 6.2 接口（interface）
+- 完全抽象（Java 8+可以有default方法）
+- 一个类可以实现多个接口
+- 接口之间可以多继承
+
+\`\`\`java
+public interface Flyable {
+    void fly(); // 默认public abstract
+    default void land() { System.out.println("正在降落..."); }
+}
+
+public interface Swimmable {
+    void swim();
+}
+
+// 一个类实现多个接口
+public class Duck implements Flyable, Swimmable {
+    @Override
+    public void fly() { System.out.println("鸭子在飞"); }
+    @Override
+    public void swim() { System.out.println("鸭子在游泳"); }
+}
+\`\`\`
+
+### 6.3 抽象类 vs 接口
+| 对比项 | 抽象类 | 接口 |
+|---|---|---|
+| 继承 | 单继承 | 多实现 |
+| 构造器 | 有 | 无 |
+| 方法 | 抽象+具体 | 抽象+default |
+| 成员变量 | 任意类型 | 仅public static final |
+| 使用场景 | is-a关系 | can-do能力 |
+
+## 7. 集合框架
+
+### 7.1 常用集合类
+| 类型 | 实现类 | 特点 |
+|---|---|---|
+| List | ArrayList | 数组实现，查询快O(1)，增删慢O(n) |
+| List | LinkedList | 双向链表，增删快O(1)，查询慢O(n) |
+| Set | HashSet | 基于HashMap，无序，O(1)查找 |
+| Set | TreeSet | 红黑树，有序，O(log n) |
+| Map | HashMap | 数组+链表+红黑树，O(1)平均 |
+| Map | TreeMap | 红黑树，键有序 |
+
+### 7.2 HashMap原理
+\`\`\`java
+// HashMap存储结构（简化示意）
+// JDK 1.8：数组 + 链表 + 红黑树（链表长度>8时转红黑树）
+Map<String, Integer> map = new HashMap<>();
+map.put("apple", 1);
+map.put("banana", 2);
+
+// put流程：
+// 1. 计算key的hashCode
+// 2. 通过hash值确定数组索引
+// 3. 若该位置为空，直接插入
+// 4. 若冲突，用链表/红黑树存储（拉链法）
+// 5. 若容量超过阈值（默认0.75），扩容为原来的2倍
+\`\`\`
+
+## 8. 异常处理机制
+
+### 8.1 异常分类
+\`\`\`
+Throwable
+├── Error（严重错误，不处理）
+└── Exception
+    ├── RuntimeException（运行时异常，可处理可不处理）
+    │   ├── NullPointerException
+    │   ├── IndexOutOfBoundsException
+    │   └── ArithmeticException
+    └── CheckedException（编译时异常，必须处理）
+        ├── IOException
+        ├── SQLException
+        └── ClassNotFoundException
+\`\`\`
+
+### 8.2 try-catch-finally
+\`\`\`java
+public void readFile(String path) {
+    FileReader reader = null;
+    try {
+        reader = new FileReader(path);
+        // 读取文件...
+    } catch (FileNotFoundException e) {
+        System.err.println("文件未找到: " + e.getMessage());
+    } catch (IOException e) {
+        System.err.println("IO异常: " + e.getMessage());
+    } finally {
+        // 无论是否发生异常，finally块都会执行
+        if (reader != null) {
+            try { reader.close(); } catch (IOException e) { e.printStackTrace(); }
+        }
+    }
+}
+
+// try-with-resources（Java 7+自动关闭资源）
+public void readFileAuto(String path) {
+    try (FileReader reader = new FileReader(path);
+         BufferedReader br = new BufferedReader(reader)) {
+        String line = br.readLine();
+        System.out.println(line);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    // reader和br会自动调用close()
+}
+\`\`\`
+
+## 9. 多线程基础
+
+### 9.1 创建线程的四种方式
+\`\`\`java
+// 方式1：继承Thread类
+class MyThread extends Thread {
+    @Override
+    public void run() { System.out.println("线程运行中..."); }
+}
+new MyThread().start();
+
+// 方式2：实现Runnable接口（推荐——避免单继承限制）
+class MyRunnable implements Runnable {
+    @Override
+    public void run() { System.out.println("线程运行中..."); }
+}
+new Thread(new MyRunnable()).start();
+
+// 方式3：实现Callable接口（有返回值，可抛异常）
+class MyCallable implements Callable<String> {
+    @Override
+    public String call() throws Exception { return "执行结果"; }
+}
+FutureTask<String> task = new FutureTask<>(new MyCallable());
+new Thread(task).start();
+String result = task.get(); // 获取返回值（阻塞）
+
+// 方式4：线程池（推荐——复用线程，性能更好）
+ExecutorService executor = Executors.newFixedThreadPool(5);
+executor.submit(() -> System.out.println("线程池执行"));
+executor.shutdown();
+\`\`\`
+
+### 9.2 线程安全与synchronized
+\`\`\`java
+public class Counter {
+    private int count = 0;
+
+    // synchronized保证同一时刻只有一个线程访问
+    public synchronized void increment() {
+        count++;
+    }
+
+    // 同步代码块（粒度更细）
+    public void incrementBlock() {
+        synchronized (this) {
+            count++;
+        }
+    }
+
+    public synchronized int getCount() { return count; }
+}
+\`\`\`
+
+## 10. JVM内存模型简介
+
+### 10.1 运行时数据区域
+| 区域 | 线程共享 | 存储内容 | 异常 |
+|---|---|---|---|
+| 堆（Heap） | 是 | 对象实例、数组 | OutOfMemoryError |
+| 方法区（Method Area） | 是 | 类信息、常量、静态变量 | OutOfMemoryError |
+| 虚拟机栈（VM Stack） | 否 | 局部变量、方法调用 | StackOverflowError |
+| 本地方法栈 | 否 | native方法 | StackOverflowError |
+| 程序计数器 | 否 | 当前执行指令地址 | 无 |
+
+### 10.2 堆内存结构（分代模型）
+\`\`\`
+堆内存 = 年轻代(1/3) + 老年代(2/3)
+年轻代 = Eden区(8/10) + Survivor0(1/10) + Survivor1(1/10)
+\`\`\`
+
+- **Eden区**：新对象首先分配在这里
+- **Survivor区**：经过一次Minor GC存活的对象
+- **老年代**：长期存活的对象（经过多次GC或大对象直接进入）
+
+> **GC触发**：Eden区满 → Minor GC；老年代满 → Full GC（STW，暂停所有用户线程）。
+
+> **面试重点**：理解==与equals、String不可变、面向对象三大特性、HashMap原理、异常体系、多线程创建方式、JVM内存区域，这些是Java面试中最高频的基础知识点。
 `
-            },
-            {
+            }, {
+                title: "Node.js异步编程进阶",
+                time: "2025-05-19",
+                tag: "Node.js",
+                content: `# Node.js异步编程进阶
+
+## 1. Promise链式调用
+\`\`\`javascript
+fetchUserData(userId)
+  .then(user => fetchPosts(user.id))
+  .then(posts => filterActivePosts(posts))
+  .then(activePosts => displayPosts(activePosts))
+  .catch(error => {
+    console.error('处理失败:', error);
+    showError(error.message);
+  });
+\`\`\`
+
+### Promise.all并发执行
+\`\`\`javascript
+async function loadDashboardData() {
+  try {
+    const [user, posts, notifications] = await Promise.all([
+      fetchUser(), fetchPosts(), fetchNotifications()
+    ]);
+    return { user, posts, notifications };
+  } catch (error) {
+    console.error('加载数据失败:', error);
+    throw error;
+  }
+}
+\`\`\`
+
+### Promise.race竞速
+\`\`\`javascript
+async function fetchWithTimeout(url, timeout = 5000) {
+  const fetchPromise = fetch(url);
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('请求超时')), timeout)
+  );
+  return Promise.race([fetchPromise, timeoutPromise]);
+}
+\`\`\`
+
+## 2. async/await最佳实践
+\`\`\`javascript
+// ✅ 推荐：使用try-catch
+async function getUserData() {
+  try {
+    const user = await fetchUser();
+    const posts = await fetchPosts(user.id);
+    return { user, posts };
+  } catch (error) {
+    console.error('获取用户数据失败:', error);
+    throw error;
+  }
+}
+\`\`\`
+
+## 3. Stream流处理
+\`\`\`javascript
+const fs = require('fs');
+const readline = require('readline');
+
+async function processLargeFile(filePath) {
+  const fileStream = fs.createReadStream(filePath);
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity
+  });
+  for await (const line of rl) {
+    await processLine(line);
+  }
+}
+\`\`\`
+
+## 4. Worker Threads
+\`\`\`javascript
+const { Worker } = require('worker_threads');
+
+function runTask(data) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker('./worker.js', { workerData: data });
+    worker.on('message', resolve);
+    worker.on('error', reject);
+    worker.on('exit', (code) => {
+      if (code !== 0) reject(new Error(\`Worker stopped with exit code \${code}\`));
+    });
+  });
+}
+\`\`\`
+
+## 5. 异步迭代器
+\`\`\`javascript
+async function* asyncRange(start, end) {
+  for (let i = start; i <= end; i++) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    yield i;
+  }
+}
+(async () => {
+  for await (const num of asyncRange(1, 5)) {
+    console.log(num);
+  }
+})();
+\`\`\`
+
+> **性能提示**：合理选择异步模式，避免回调地狱和过度嵌套。
+`
+            }, {
                 title: "CSS核心知识点总结",
                 time: "2025-05-18",
                 tag: "CSS",
@@ -479,99 +1388,608 @@ CSS选择器优先级从高到低：
 
 \`\`\`css
 /* 优先级：100 + 10 + 1 = 111 */
-#container .box p {
-    color: red;
-}
+#container .box p { color: red; }
 \`\`\`
 
 ## 3. Flex布局
-Flex是现代CSS布局的首选方案，分为**容器属性**和**项目属性**。
-
 ### 3.1 容器属性
 \`\`\`css
 .container {
-    display: flex;
-    flex-direction: row; /* 主轴方向：row/column */
-    flex-wrap: wrap; /* 是否换行：nowrap/wrap */
-    justify-content: center; /* 主轴对齐 */
-    align-items: center; /* 交叉轴对齐 */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 \`\`\`
 
 ### 3.2 项目属性
 \`\`\`css
 .item {
-    flex: 1; /* 等分剩余空间 */
-    order: 1; /* 排列顺序，数值越小越靠前 */
-    align-self: flex-end; /* 单独对齐 */
+  flex: 1;
+  order: 1;
+  align-self: flex-end;
 }
 \`\`\`
 
 ## 4. 重排与重绘
-### 4.1 重排（回流）
-当元素的**尺寸、位置或结构**发生变化时，浏览器会重新计算布局。
-- 触发操作：修改width/height、添加/删除DOM、改变字体大小等
-- 性能开销大
-
-### 4.2 重绘
-当元素的**样式**发生变化但不影响布局时，浏览器会重新绘制元素。
-- 触发操作：修改color、background-color等
-- 性能开销较小
-
-### 优化技巧
-- 避免频繁修改DOM样式，使用class批量修改
-- 使用transform和opacity实现动画（不会触发重排重绘）
-- 开启GPU加速：\`transform: translateZ(0)\`
+- **重排（回流）**：修改width/height、添加/删除DOM、改变字体大小等 → 性能开销大
+- **重绘**：修改color、background-color等 → 性能开销较小
+- **优化**：使用transform和opacity实现动画（不会触发重排重绘）、开启GPU加速\`transform: translateZ(0)\`
 
 ## 5. 响应式布局
-### 5.1 媒体查询
 \`\`\`css
-/* 小于768px的设备 */
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
+  .container { flex-direction: column; }
 }
 \`\`\`
-
-### 5.2 相对单位
-- **rem**：相对于根元素(html)的字体大小
-- **vw/vh**：相对于视口宽度/高度（1vw = 视口宽度的1%）
-- **em**：相对于父元素的字体大小
-
-\`\`\`css
-html {
-    font-size: 16px;
-}
-
-.box {
-    width: 50vw; /* 视口宽度的50% */
-    height: 2rem; /* 32px */
-}
-\`\`\`
+- **rem**：相对于根元素字体大小
+- **vw/vh**：相对于视口宽度/高度
+- **em**：相对于父元素字体大小
 `
-            },
-            {
+            }, {
+                title: "鸿蒙ArkTS开发入门指南",
+                time: "2025-05-17",
+                tag: "鸿蒙",
+                content: `# 鸿蒙ArkTS开发入门指南
+
+## 1. 什么是ArkTS？
+ArkTS是华为为HarmonyOS量身打造的**声明式UI开发语言**，基于TypeScript扩展而来，融合了声明式UI语法和高效的状态管理机制。它是HarmonyOS应用开发的主流语言。
+
+### 核心特点
+- **声明式UI**：描述"长什么样"而非"怎么画"
+- **类型安全**：基于TypeScript，编译期类型检查
+- **状态驱动**：数据变化自动触发UI更新
+- **组件化**：一切皆组件，支持嵌套与复用
+
+## 2. 第一个ArkTS应用
+
+### 2.1 基本结构
+\`\`\`typescript
+// Index.ets
+@Entry
+@Component
+struct Index {
+  @State message: string = 'Hello, HarmonyOS!';
+
+  build() {
+    Column() {
+      Text(this.message)
+        .fontSize(30)
+        .fontWeight(FontWeight.Bold)
+        .fontColor('#333333')
+
+      Button('点击我')
+        .margin({ top: 20 })
+        .onClick(() => {
+          this.message = '你好，鸿蒙！';
+        })
+    }
+    .width('100%')
+    .height('100%')
+    .justifyContent(FlexAlign.Center)
+  }
+}
+\`\`\`
+
+### 2.2 核心装饰器
+| 装饰器 | 作用 | 说明 |
+|---|---|---|
+| @Entry | 标记入口组件 | 一个页面只有一个@Entry |
+| @Component | 声明自定义组件 | 可被复用的UI单元 |
+| @State | 组件内部状态 | 状态变化触发UI刷新 |
+| @Prop | 父传子单向同步 | 子组件接收父组件数据 |
+| @Link | 父子双向同步 | 子组件可修改父组件状态 |
+| @Provide/@Consume | 跨层级传递 | 祖先与后代组件间数据共享 |
+
+## 3. 声明式UI语法
+
+### 3.1 容器组件
+\`\`\`typescript
+@Component
+struct MyLayout {
+  build() {
+    // 列布局——垂直排列
+    Column({ space: 16 }) {
+      Text('第一行').fontSize(18)
+      Text('第二行').fontSize(18)
+      Text('第三行').fontSize(18)
+    }
+    .padding(20)
+
+    // 行布局——水平排列
+    Row({ space: 12 }) {
+      Button('确定')
+      Button('取消')
+    }
+
+    // 弹性布局
+    Flex({ wrap: FlexWrap.Wrap }) {
+      ForEach(['A', 'B', 'C', 'D'], (item: string) => {
+        Text(item)
+          .width('45%')
+          .height(60)
+          .backgroundColor('#f0f0f0')
+          .textAlign(TextAlign.Center)
+          .margin(5)
+      })
+    }
+  }
+}
+\`\`\`
+
+### 3.2 列表渲染
+\`\`\`typescript
+@Component
+struct TodoList {
+  @State todos: string[] = ['学习ArkTS', '搭建开发环境', '完成Demo'];
+
+  build() {
+    List() {
+      ForEach(this.todos, (item: string, index: number) => {
+        ListItem() {
+          Row() {
+            Text(\`\${index + 1}. \${item}\`)
+              .fontSize(16)
+            Blank()
+            Button('删除')
+              .onClick(() => {
+                this.todos.splice(index, 1);
+              })
+          }
+          .width('100%')
+          .padding(12)
+        }
+      })
+    }
+    .width('100%')
+  }
+}
+\`\`\`
+
+## 4. 状态管理
+
+### 4.1 @State——组件内部状态
+\`\`\`typescript
+@Component
+struct Counter {
+  @State count: number = 0;
+
+  build() {
+    Column({ space: 20 }) {
+      Text(\`当前计数：\${this.count}\`).fontSize(24)
+      Row({ space: 16 }) {
+        Button('+')
+          .onClick(() => { this.count++; })
+        Button('-')
+          .onClick(() => { this.count--; })
+      }
+    }
+  }
+}
+\`\`\`
+
+### 4.2 @Prop与@Link——组件通信
+\`\`\`typescript
+// 子组件——接收数据
+@Component
+struct ChildView {
+  @Prop title: string;           // 父→子，单向
+  @Link isActive: boolean;       // 父↔子，双向
+
+  build() {
+    Column() {
+      Text(this.title).fontSize(18)
+      Toggle({ type: ToggleType.Switch, isOn: this.isActive })
+        .onChange((value: boolean) => {
+          this.isActive = value; // 修改会同步回父组件
+        })
+    }
+  }
+}
+
+// 父组件
+@Entry
+@Component
+struct ParentView {
+  @State switchOn: boolean = false;
+
+  build() {
+    ChildView({ title: '通知设置', isActive: $switchOn })
+    // $switchOn 表示传递双向绑定引用
+  }
+}
+\`\`\`
+
+## 5. 生命周期
+\`\`\`typescript
+@Entry
+@Component
+struct PageDemo {
+  @State data: string = '';
+
+  // 组件即将出现（类比onCreate）
+  aboutToAppear() {
+    console.log('组件即将出现');
+    this.loadData();
+  }
+
+  // 组件即将消失（类比onDestroy）
+  aboutToDisappear() {
+    console.log('组件即将消失');
+    // 清理资源、取消订阅
+  }
+
+  async loadData() {
+    // 模拟网络请求
+    this.data = '加载完成';
+  }
+
+  build() {
+    Column() {
+      Text(this.data).fontSize(20)
+    }
+  }
+}
+\`\`\`
+
+## 6. 常用组件速览
+| 组件 | 用途 | 示例 |
+|---|---|---|
+| Text | 文本显示 | \`Text('Hello')\` |
+| Button | 按钮 | \`Button('点击')\` |
+| Image | 图片 | \`Image($r('app.media.icon'))\` |
+| TextInput | 输入框 | \`TextInput({ placeholder: '请输入' })\` |
+| List | 列表 | \`List() { ListItem() { } }\` |
+| Grid | 网格 | \`Grid() { GridItem() { } }\` |
+| Toggle | 开关 | \`Toggle({ type: ToggleType.Switch })\` |
+| Slider | 滑块 | \`Slider({ value: 50 })\` |
+| Progress | 进度条 | \`Progress({ value: 60 })\` |
+
+> **学习建议**：从简单的计数器、Todo列表开始练手，逐步掌握状态管理和组件通信。ArkTS的声明式写法与React/Flutter有相似之处，有前端经验的开发者上手会很快。
+`
+            }, {
+                title: "鸿蒙应用开发实战技巧",
+                time: "2025-05-16",
+                tag: "鸿蒙",
+                content: `# 鸿蒙应用开发实战技巧
+
+## 1. 应用结构与配置
+
+### 1.1 项目目录结构
+\`\`\`
+MyApp/
+├── AppScope/           # 应用全局配置
+│   └── app.json5       # 应用信息配置
+├── entry/              # 主模块
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── ets/    # ArkTS源码
+│   │   │   │   ├── entryability/  # 应用入口
+│   │   │   │   ├── pages/         # 页面
+│   │   │   │   └── common/        # 公共组件
+│   │   │   └── resources/         # 资源文件
+│   │   └── module.json5           # 模块配置
+│   └── build-profile.json5
+└── build-profile.json5  # 构建配置
+\`\`\`
+
+### 1.2 路由导航
+\`\`\`typescript
+// 方式1：router.pushUrl——跳转并保留历史
+import router from '@ohos.router';
+
+Button('前往详情页')
+  .onClick(() => {
+    router.pushUrl({
+      url: 'pages/DetailPage',
+      params: { id: 123, name: '商品名称' }
+    });
+  });
+
+// 接收参数
+@Entry
+@Component
+struct DetailPage {
+  @State productId: number = 0;
+  @State productName: string = '';
+
+  aboutToAppear() {
+    const params = router.getParams() as Record<string, Object>;
+    this.productId = params['id'] as number;
+    this.productName = params['name'] as string;
+  }
+
+  build() {
+    Column() {
+      Text(\`商品ID：\${this.productId}\`).fontSize(18)
+      Text(\`商品名称：\${this.productName}\`).fontSize(18)
+    }
+  }
+}
+
+// 方式2：router.replaceUrl——替换当前页（无返回）
+router.replaceUrl({ url: 'pages/NewPage' });
+
+// 方式3：router.back——返回上一页
+router.back();
+\`\`\`
+
+## 2. 网络请求实战
+
+### 2.1 使用http模块
+\`\`\`typescript
+import http from '@ohos.net.http';
+
+// 封装网络请求工具类
+class HttpUtil {
+  static async get<T>(url: string): Promise<T> {
+    const httpRequest = http.createHttp();
+    try {
+      const response = await httpRequest.request(
+        url,
+        {
+          method: http.RequestMethod.GET,
+          header: { 'Content-Type': 'application/json' },
+          connectTimeout: 10000,
+          readTimeout: 10000
+        }
+      );
+      if (response.responseCode === 200) {
+        return JSON.parse(response.result as string) as T;
+      }
+      throw new Error(\`请求失败，状态码：\${response.responseCode}\`);
+    } finally {
+      httpRequest.destroy(); // 务必销毁，释放资源
+    }
+  }
+
+  static async post<T>(url: string, data: object): Promise<T> {
+    const httpRequest = http.createHttp();
+    try {
+      const response = await httpRequest.request(
+        url,
+        {
+          method: http.RequestMethod.POST,
+          header: { 'Content-Type': 'application/json' },
+          extraData: JSON.stringify(data),
+          connectTimeout: 10000,
+          readTimeout: 10000
+        }
+      );
+      if (response.responseCode === 200) {
+        return JSON.parse(response.result as string) as T;
+      }
+      throw new Error(\`请求失败，状态码：\${response.responseCode}\`);
+    } finally {
+      httpRequest.destroy();
+    }
+  }
+}
+
+// 使用示例
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+@Component
+struct UserPage {
+  @State user: User | null = null;
+  @State loading: boolean = true;
+
+  async aboutToAppear() {
+    try {
+      this.user = await HttpUtil.get<User>('https://api.example.com/user/1');
+    } catch (error) {
+      console.error('获取用户信息失败:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  build() {
+    Column() {
+      if (this.loading) {
+        LoadingProgress().width(40).height(40)
+      } else if (this.user) {
+        Text(\`姓名：\${this.user.name}\`).fontSize(20)
+        Text(\`邮箱：\${this.user.email}\`).fontSize(16)
+      } else {
+        Text('加载失败，请重试').fontColor(Color.Red)
+      }
+    }
+  }
+}
+\`\`\`
+
+## 3. 数据持久化
+
+### 3.1 偏好型存储（Preferences）
+适用于存储简单的键值对数据，如用户设置、登录状态等。
+\`\`\`typescript
+import preferences from '@ohos.data.preferences';
+import common from '@ohos.app.ability.common';
+
+class PreferencesUtil {
+  private static context = getContext(this) as common.UIAbilityContext;
+  private static PREF_NAME = 'my_app_preferences';
+
+  static async put(key: string, value: string | number | boolean): Promise<void> {
+    const prefs = await preferences.getPreferences(this.context, this.PREF_NAME);
+    await prefs.put(key, value);
+    await prefs.flush(); // 持久化到磁盘
+  }
+
+  static async get(key: string, defaultValue: string | number | boolean): Promise<string | number | boolean> {
+    const prefs = await preferences.getPreferences(this.context, this.PREF_NAME);
+    return await prefs.get(key, defaultValue);
+  }
+
+  static async remove(key: string): Promise<void> {
+    const prefs = await preferences.getPreferences(this.context, this.PREF_NAME);
+    await prefs.delete(key);
+    await prefs.flush();
+  }
+}
+
+// 使用
+await PreferencesUtil.put('isFirstLaunch', false);
+await PreferencesUtil.put('username', '张三');
+const username = await PreferencesUtil.get('username', '默认用户');
+console.log('用户名:', username);
+\`\`\`
+
+### 3.2 关系型数据库（RelationalStore）
+适用于结构化数据，如联系人、订单等。
+\`\`\`typescript
+import relationalStore from '@ohos.data.relationalStore';
+
+const STORE_CONFIG = {
+  name: 'my_database.db',
+  securityLevel: relationalStore.SecurityLevel.S1
+};
+
+const SQL_CREATE_TABLE = \`
+  CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT,
+    created_at INTEGER DEFAULT (strftime('%s','now'))
+  )
+\`;
+
+async function initDatabase() {
+  const store = await relationalStore.getRdbStore(getContext(), STORE_CONFIG);
+  await store.executeSql(SQL_CREATE_TABLE);
+
+  // 插入
+  const rowId = await store.insert('notes', {
+    title: '学习笔记',
+    content: '今天学习了ArkTS状态管理'
+  });
+
+  // 查询
+  const predicates = new relationalStore.RdbPredicates('notes');
+  const resultSet = await store.query(predicates);
+  while (resultSet.goToNextRow()) {
+    const title = resultSet.getString(resultSet.getColumnIndex('title'));
+    console.log('笔记标题:', title);
+  }
+  resultSet.close();
+}
+\`\`\`
+
+## 4. 常用API实战
+
+### 4.1 通知推送
+\`\`\`typescript
+import notificationManager from '@ohos.notificationManager';
+
+async function sendNotification(title: string, text: string) {
+  const request: notificationManager.NotificationRequest = {
+    id: Date.now(),
+    content: {
+      notificationContentType: notificationManager.ContentType.NOTIFICATION_CONTENT_BASIC_TEXT,
+      normal: {
+        title: title,
+        text: text
+      }
+    }
+  };
+  await notificationManager.publish(request);
+  console.log('通知已发送');
+}
+\`\`\`
+
+### 4.2 设备信息获取
+\`\`\`typescript
+import deviceInfo from '@ohos.deviceInfo';
+
+@Component
+struct DeviceInfoPage {
+  @State deviceName: string = deviceInfo.marketName || 'HarmonyOS设备';
+  @State osVersion: string = deviceInfo.osFullName || 'HarmonyOS';
+  @State screenWidth: number = 0;
+  @State screenHeight: number = 0;
+
+  aboutToAppear() {
+    const displayInfo = display.getDefaultDisplaySync();
+    this.screenWidth = displayInfo.width;
+    this.screenHeight = displayInfo.height;
+  }
+
+  build() {
+    Column({ space: 12 }) {
+      Text(\`设备名称：\${this.deviceName}\`).fontSize(16)
+      Text(\`系统版本：\${this.osVersion}\`).fontSize(16)
+      Text(\`屏幕分辨率：\${this.screenWidth} × \${this.screenHeight}\`).fontSize(16)
+    }.padding(20)
+  }
+}
+\`\`\`
+
+## 5. 性能优化建议
+
+### 5.1 LazyForEach——懒加载
+处理大列表时使用LazyForEach替代ForEach，只渲染可见区域的列表项。
+\`\`\`typescript
+class DataSource implements IDataSource {
+  private dataArray: string[] = [];
+  private listeners: DataChangeListener[] = [];
+
+  constructor(data: string[]) { this.dataArray = data; }
+
+  totalCount(): number { return this.dataArray.length; }
+  getData(index: number): string { return this.dataArray[index]; }
+  registerDataChangeListener(listener: DataChangeListener) { this.listeners.push(listener); }
+  unregisterDataChangeListener() { this.listeners = []; }
+}
+
+@Component
+struct BigList {
+  private dataSource: DataSource = new DataSource(
+    Array.from({ length: 10000 }, (_, i) => \`第\${i + 1}项\`)
+  );
+
+  build() {
+    List() {
+      LazyForEach(this.dataSource, (item: string) => {
+        ListItem() {
+          Text(item).fontSize(16).padding(12)
+        }
+      })
+    }
+  }
+}
+\`\`\`
+
+### 5.2 性能检查清单
+| 优化项 | 说明 |
+|---|---|
+| 使用LazyForEach | 大列表必须懒加载 |
+| 避免深层嵌套 | 组件层级不超过10层 |
+| @State最小化 | 只把需要响应式的数据标记为@State |
+| 及时销毁资源 | http请求后destroy()，数据库用完close() |
+| 图片压缩 | 使用适当的图片尺寸和格式 |
+
+> **开发建议**：善用DevEco Studio的Profiler工具分析性能瓶颈，关注帧率和内存占用。鸿蒙生态正在快速发展，建议持续关注官方文档和社区动态。
+`
+            }, {
                 title: "JavaScript事件循环机制",
                 time: "2025-05-15",
                 tag: "JavaScript",
                 content: `# JavaScript事件循环机制
 
 ## 1. 为什么JavaScript是单线程？
-JavaScript作为浏览器脚本语言，主要用途是与用户交互和操作DOM。如果是多线程，会带来复杂的同步问题：
-- 一个线程修改DOM，另一个线程删除DOM，浏览器无法确定如何处理
-- 单线程简化了编程模型，避免了复杂的线程同步
+JavaScript作为浏览器脚本语言，主要用途是与用户交互和操作DOM。如果是多线程，会带来复杂的同步问题——一个线程修改DOM，另一个线程删除DOM，浏览器无法确定如何处理。单线程简化了编程模型。
 
 ## 2. 事件循环（Event Loop）
-事件循环是JavaScript实现异步的核心机制。
-
 ### 2.1 执行栈
 所有同步代码都会在**执行栈**中执行，函数调用会入栈，执行完成后出栈。
 
 ### 2.2 任务队列
-异步任务不会立即执行，会被加入**任务队列**，等待执行栈为空时执行。
-
-任务分为两种：
 - **宏任务（MacroTask）**：script整体代码、setTimeout、setInterval、AJAX、UI渲染
 - **微任务（MicroTask）**：Promise.then、async/await、MutationObserver
 
@@ -586,81 +2004,33 @@ JavaScript作为浏览器脚本语言，主要用途是与用户交互和操作D
 ## 3. 代码示例
 \`\`\`javascript
 console.log('start');
-
-setTimeout(() => {
-    console.log('setTimeout');
-}, 0);
-
+setTimeout(() => { console.log('setTimeout'); }, 0);
 Promise.resolve()
-    .then(() => {
-        console.log('promise1');
-    })
-    .then(() => {
-        console.log('promise2');
-    });
-
+  .then(() => { console.log('promise1'); })
+  .then(() => { console.log('promise2'); });
 console.log('end');
+// 输出：start → end → promise1 → promise2 → setTimeout
 \`\`\`
-
-### 输出结果
-\`\`\`
-start
-end
-promise1
-promise2
-setTimeout
-\`\`\`
-
-### 执行过程
-1. 执行同步代码，输出\`start\`和\`end\`
-2. 遇到setTimeout，加入宏任务队列
-3. 遇到Promise.then，加入微任务队列
-4. 执行所有微任务，输出\`promise1\`和\`promise2\`
-5. 执行下一个宏任务（setTimeout），输出\`setTimeout\`
 
 ## 4. async/await
-async/await是Promise的语法糖，本质上还是基于微任务。
-
 \`\`\`javascript
 async function async1() {
-    console.log('async1 start');
-    await async2();
-    console.log('async1 end');
+  console.log('async1 start');
+  await async2();
+  console.log('async1 end');
 }
-
-async function async2() {
-    console.log('async2');
-}
-
+async function async2() { console.log('async2'); }
 console.log('script start');
 async1();
 console.log('script end');
+// 输出：script start → async1 start → async2 → script end → async1 end
 \`\`\`
-
-### 输出结果
-\`\`\`
-script start
-async1 start
-async2
-script end
-async1 end
-\`\`\`
-
 > **注意**：await后面的代码会被加入微任务队列。
 
 ## 5. Node.js事件循环
-Node.js的事件循环与浏览器略有不同，分为6个阶段：
-1. **timers**：执行setTimeout和setInterval回调
-2. **pending callbacks**：执行系统操作回调
-3. **idle, prepare**：内部使用
-4. **poll**：获取新的I/O事件
-5. **check**：执行setImmediate回调
-6. **close callbacks**：执行关闭回调
-
-> **区别**：Node.js中微任务在每个阶段之间执行，而不是每个宏任务之后。
+Node.js的事件循环分为6个阶段：timers → pending callbacks → idle/prepare → poll → check → close callbacks。Node.js中微任务在每个阶段之间执行。
 `
-            },
-            {
+            }, {
                 title: "浏览器输入URL后发生了什么",
                 time: "2025-05-10",
                 tag: "浏览器",
@@ -668,23 +2038,10 @@ Node.js的事件循环与浏览器略有不同，分为6个阶段：
 
 ## 1. 导航阶段
 ### 1.1 URL解析
-浏览器首先解析输入的URL，确定协议、域名、端口、路径和查询参数。
-
-例如：\`https://www.example.com:8080/path?name=test#hash\`
-- 协议：https
-- 域名：www.example.com
-- 端口：8080
-- 路径：/path
-- 查询参数：name=test
-- 哈希：hash
+浏览器首先解析输入的URL，确定协议、域名、端口、路径和查询参数。例如：\`https://www.example.com:8080/path?name=test#hash\`
 
 ### 1.2 DNS解析
-将域名转换为IP地址，查询顺序：
-1. 浏览器缓存
-2. 操作系统缓存（hosts文件）
-3. 路由器缓存
-4. ISP DNS缓存
-5. 递归查询DNS服务器
+将域名转换为IP地址，查询顺序：浏览器缓存 → 操作系统缓存（hosts文件） → 路由器缓存 → ISP DNS缓存 → 递归查询DNS服务器。
 
 ### 1.3 建立TCP连接
 通过**三次握手**建立TCP连接：
@@ -693,50 +2050,18 @@ Node.js的事件循环与浏览器略有不同，分为6个阶段：
 3. 客户端发送ACK包（ack=y+1）
 
 ### 1.4 发送HTTP请求
-建立连接后，浏览器发送HTTP请求，包含：
-- 请求行：方法、URL、HTTP版本
-- 请求头：User-Agent、Accept、Cookie等
-- 请求体：POST请求的数据
+建立连接后，浏览器发送HTTP请求，包含请求行、请求头、请求体。
 
 ## 2. 服务器处理阶段
-1. 服务器接收请求，解析HTTP报文
-2. 路由匹配，处理业务逻辑
-3. 生成HTTP响应，包含：
-   - 状态行：状态码、状态描述
-   - 响应头：Content-Type、Cache-Control等
-   - 响应体：HTML、JSON等数据
+服务器接收请求 → 路由匹配 → 处理业务逻辑 → 生成HTTP响应（状态行、响应头、响应体）。
 
 ## 3. 渲染阶段
-浏览器接收响应后，开始解析和渲染页面。
-
-### 3.1 解析HTML生成DOM树
-\`\`\`
 HTML字节流 → 分词器 → Token → 节点 → DOM树
-\`\`\`
-
-### 3.2 解析CSS生成CSSOM树
-\`\`\`
 CSS字节流 → 解析器 → CSS规则 → CSSOM树
-\`\`\`
-
-### 3.3 生成渲染树（Render Tree）
-将DOM树和CSSOM树合并，只包含可见的节点。
-
-### 3.4 布局（Layout）
-计算每个节点的位置和大小，生成布局树。
-
-### 3.5 绘制（Paint）
-将每个节点绘制到屏幕上，分为多个图层。
-
-### 3.6 合成（Composite）
-将多个图层合并为最终的屏幕图像，由GPU完成。
+DOM树 + CSSOM树 → 渲染树 → 布局 → 绘制 → 合成（GPU完成）
 
 ## 4. 断开连接
-通过**四次挥手**关闭TCP连接：
-1. 客户端发送FIN包（seq=u）
-2. 服务器返回ACK包（ack=u+1）
-3. 服务器发送FIN包（seq=w）
-4. 客户端返回ACK包（ack=w+1）
+通过**四次挥手**关闭TCP连接。
 
 ## 5. 关键优化点
 - **DNS预解析**：\`<link rel="dns-prefetch" href="//example.com">\`
@@ -746,157 +2071,98 @@ CSS字节流 → 解析器 → CSS规则 → CSSOM树
 - **懒加载**：图片和组件按需加载
 - **CDN加速**：静态资源就近访问
 `
-            },
-            {
+            }, {
                 title: "HTTP缓存机制详解",
                 time: "2025-05-05",
                 tag: "网络",
                 content: `# HTTP缓存机制
-
 HTTP缓存是前端性能优化的重要手段，可以减少网络请求，提高页面加载速度。
 
 ## 1. 缓存分类
 ### 1.1 强缓存
 不需要向服务器发送请求，直接从本地缓存读取资源。
-
-#### 响应头字段
-- **Cache-Control**（HTTP/1.1）：优先级更高
-  - \`max-age=3600\`：缓存有效期3600秒
-  - \`public\`：客户端和代理服务器都可以缓存
-  - \`private\`：只有客户端可以缓存
-  - \`no-cache\`：跳过强缓存，使用协商缓存
-  - \`no-store\`：不使用任何缓存
-
-- **Expires**（HTTP/1.0）：
-  - 值为绝对时间，如\`Expires: Thu, 01 Jan 2025 00:00:00 GMT\`
-  - 缺点：依赖客户端时间，可能不准确
+- **Cache-Control**（HTTP/1.1）：\`max-age=3600\`、\`public\`、\`private\`、\`no-cache\`、\`no-store\`
+- **Expires**（HTTP/1.0）：值为绝对时间，依赖客户端时间
 
 ### 1.2 协商缓存
 强缓存失效后，浏览器发送请求到服务器，由服务器判断是否使用缓存。
-
-#### 基于最后修改时间
-- **响应头**：\`Last-Modified: Wed, 21 Apr 2025 08:00:00 GMT\`
-- **请求头**：\`If-Modified-Since: Wed, 21 Apr 2025 08:00:00 GMT\`
-
-服务器比较时间：
-- 如果资源未修改：返回304 Not Modified，使用缓存
-- 如果资源已修改：返回200 OK和新的资源
-
-#### 基于ETag
-ETag是资源的唯一标识（通常是文件内容的哈希值）。
-
-- **响应头**：\`ETag: "abc123"\`
-- **请求头**：\`If-None-Match: "abc123"\`
-
-> **优势**：比Last-Modified更精确，能感知到1秒内的修改。
+- **基于最后修改时间**：\`Last-Modified\` / \`If-Modified-Since\`
+- **基于ETag**：\`ETag: "abc123"\` / \`If-None-Match: "abc123"\`（比Last-Modified更精确）
 
 ## 2. 缓存位置
-浏览器缓存按优先级从高到低：
-1. **Service Worker**：开发者可控的缓存
-2. **Memory Cache**：内存缓存，速度快，关闭页面失效
-3. **Disk Cache**：硬盘缓存，速度较慢，持久化存储
-4. **Push Cache**：HTTP/2推送缓存，会话结束失效
+按优先级从高到低：Service Worker → Memory Cache → Disk Cache → Push Cache
 
 ## 3. 缓存策略
-### 3.1 不常变化的资源
-设置较长的强缓存时间，配合文件指纹：
-\`\`\`http
-Cache-Control: public, max-age=31536000
-\`\`\`
-当文件内容变化时，文件名中的哈希值会改变，从而获取新资源。
+- **不常变化的资源**：\`Cache-Control: public, max-age=31536000\` + 文件指纹
+- **经常变化的资源**：\`Cache-Control: no-cache\` + ETag
+- **不缓存的资源**：\`Cache-Control: no-store, no-cache, must-revalidate\`
 
-### 3.2 经常变化的资源
-使用协商缓存：
-\`\`\`http
-Cache-Control: no-cache
-ETag: "abc123"
-\`\`\`
-每次请求都验证资源是否更新。
-
-### 3.3 不缓存的资源
-\`\`\`http
-Cache-Control: no-store, no-cache, must-revalidate
-\`\`\`
-
-## 4. 实际应用
-### HTML文件
-设置较短的缓存时间或不缓存：
-\`\`\`http
-Cache-Control: no-cache
-\`\`\`
-
-### JS/CSS/图片
-设置长缓存+文件指纹：
-\`\`\`http
-Cache-Control: public, max-age=31536000
-\`\`\`
-
-### 接口数据
-根据业务需求设置：
-- 实时数据：\`no-cache\`
-- 非实时数据：\`max-age=60\`（缓存1分钟）
-
-## 5. 常见问题
-### 为什么设置了max-age还是会发请求？
+## 4. 常见问题
 - 强制刷新页面（Ctrl+F5）会跳过强缓存
-- 浏览器地址栏回车会检查强缓存
-- 点击链接跳转会检查强缓存
-
-### 304和200的区别？
-- 200：服务器返回完整的资源
 - 304：服务器只返回响应头，使用本地缓存的资源
+- 200：服务器返回完整的资源
 `
             }
         ];
 
-        // ===================== 动态生成文章列表 =====================
+        // ===================== 动态生成文章列表（含引言卡片） =====================
         function renderBlogList() {
             const blogList = document.getElementById('blogList');
-            blogList.innerHTML = articles.map((article, index) => `
-                <div class="item">
-                    <a href="javascript:;" onclick="showArticleDetail(${index})">
-                        <div class="text">
-                            <div class="title-area">
-                                <div class="title">
-                                    <div class="name">${article.title}</div>
-                                    <div class="link"> ↗</div>
-                                </div>
-                                <div class="tag">${article.tag}</div>
-                            </div>
-                            <div class="desc">${article.content.substring(0, 120)}...</div>
-                        </div>
-                        <div class="info">
-                            <div class="info-avatar"><img src="./assets/blog/avatar.svg"></div>
-                            <div class="info-name">杨翰卿</div>
-                            <div class="info-time">${article.time}</div>
-                        </div>
-                    </a>
-                    <div class="content-divider"></div>
+
+            // 引言卡片HTML
+            const introCardHTML = `
+            <div class="blog-intro-card">
+              <span class="intro-icon">🌐</span>
+              <h3 class="intro-title">拥抱互联网，学习编程</h3>
+              <p class="intro-text">
+                当下社会正经历着前所未有的<span class="intro-highlight">数字化浪潮</span>。互联网已渗透到生活的每一个角落——从移动支付到智能家居，从在线教育到远程办公，<strong>技术正在重塑世界的运行方式</strong>。学习编程不仅是掌握一门技能，更是获得了一种<strong>与未来对话的能力</strong>。无论你身处哪个行业，理解代码的逻辑、具备数字化思维，都将成为这个时代<strong>不可或缺的核心竞争力</strong>。种一棵树最好的时间是十年前，其次是现在——<strong>开始学习，永远不晚</strong>。
+              </p>
+            </div>
+          `;
+
+            // 文章列表HTML
+            const articlesHTML = articles.map((article, index) => `
+            <div class="item">
+              <a href="javascript:;" onclick="showArticleDetail(${index})">
+                <div class="text">
+                  <div class="title-area">
+                    <div class="title">
+                      <div class="name">${article.title}</div>
+                      <div class="link"> ↗</div>
+                    </div>
+                    <div class="tag">${article.tag}</div>
+                  </div>
+                  <div class="desc">${article.content.substring(0, 120)}...</div>
                 </div>
-            `).join('');
+                <div class="info">
+                  <div class="info-avatar"><img src="./assets/blog/avatar.svg"></div>
+                  <div class="info-name">杨翰卿</div>
+                  <div class="info-time">${article.time}</div>
+                </div>
+              </a>
+              <div class="content-divider"></div>
+            </div>
+          `).join('');
+
+            blogList.innerHTML = introCardHTML + articlesHTML;
         }
 
         // ===================== 打开文章详情 =====================
         function showArticleDetail(index) {
             const article = articles[index];
-            
             // 填充基本信息
             document.getElementById('detailTitle').innerText = article.title;
             document.getElementById('detailTime').innerText = article.time;
             document.getElementById('detailTag').innerText = article.tag;
-            
             // 解析Markdown内容
             const htmlContent = marked.parse(article.content);
             document.getElementById('detailContent').innerHTML = htmlContent;
-            
             // 为所有代码块添加复制按钮
             addCopyButtons();
-            
             // 显示面板
             document.getElementById('articleDetail').classList.add('show');
             document.getElementById('mask').classList.add('show');
             document.body.classList.add('no-scroll');
-            
             // 滚动到顶部
             document.getElementById('articleDetail').scrollTop = 0;
         }
@@ -911,23 +2177,19 @@ Cache-Control: public, max-age=31536000
         // ===================== 添加代码复制按钮 =====================
         function addCopyButtons() {
             const codeBlocks = document.querySelectorAll('.detail-content pre');
-            
             codeBlocks.forEach((pre, index) => {
                 // 创建复制按钮
                 const copyBtn = document.createElement('button');
                 copyBtn.className = 'copy-btn';
                 copyBtn.innerText = '复制代码';
                 copyBtn.setAttribute('data-index', index);
-                
                 // 绑定点击事件
                 copyBtn.addEventListener('click', function() {
                     const code = pre.querySelector('code').innerText;
-                    
                     // 复制到剪贴板
                     navigator.clipboard.writeText(code).then(() => {
                         this.innerText = '已复制 ✓';
                         this.classList.add('copied');
-                        
                         // 2秒后恢复
                         setTimeout(() => {
                             this.innerText = '复制代码';
@@ -938,13 +2200,12 @@ Cache-Control: public, max-age=31536000
                         console.error('复制失败:', err);
                     });
                 });
-                
                 pre.appendChild(copyBtn);
             });
         }
 
         // ===================== 原有鼠标魔法效果 =====================
-        window.addEventListener("mousemove", function (e) {
+        window.addEventListener("mousemove", function(e) {
             document.querySelectorAll(".magical").forEach(element => {
                 const rect = element.getBoundingClientRect();
                 const offsetX = e.clientX - rect.left;
@@ -957,7 +2218,6 @@ Cache-Control: public, max-age=31536000
         // ===================== 页面初始化 =====================
         document.addEventListener('DOMContentLoaded', function() {
             renderBlogList();
-            
             // 支持ESC键关闭面板
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
@@ -966,7 +2226,6 @@ Cache-Control: public, max-age=31536000
             });
         });
     </script>
-    
     <script src="./js/main.min.js"></script>
     <script src='./js/anime.js'></script>
     <script src='./js/firework.js'></script>
