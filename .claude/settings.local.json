@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(node c:/Users/DreamHQ/Desktop/yanghanqing-main/check_parse.js)"
+    ]
+  }
+}

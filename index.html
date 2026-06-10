@@ -1,0 +1,312 @@
+<!-- //参考学习asorn  https://asorn.cn/ -->
+<!DOCTYPE html>
+<html lang="zh-CN" style="color-scheme: dark;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杨翰卿 - 随笔博客</title>
+    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="stylesheet" href="./css/music-player.css">
+    <link rel="stylesheet" href="./css/ai-assistant.css">
+    <link rel="stylesheet" href="./css/meteor-shower.css">
+    <link rel="shortcut icon" href="./assets/public/favicon.svg" />
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+</head>
+
+<body>
+    <canvas class="fireworks"></canvas>
+    <div class="head">
+        <div class="main">
+            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.png" width="62px" height="30px"></a>
+            <div class="menu">
+                <li class="magical btn nav" onclick="window.location.href='./index.html'">首页</li>
+                <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
+                <li class="magical btn" onclick="window.location.href='./blog.html'">知识</li>
+                <li class="magical btn" onclick="window.location.href='./about.html'">关于</li>
+            </div>
+            <div class="menu" id="menu-expand">
+                <li class="magical btn skin" id="menu-expand-child"><i class="icon menu-icon"></i></li>
+            </div>
+            <div id="menu-panel">
+                <div class="menu-panel-content">
+                    <li class="magical btn nav" onclick="window.location.href='./index.html'">首页</li>
+                    <li class="magical btn" onclick="window.location.href='./work.html'">作品</li>
+                    <li class="magical btn" onclick="window.location.href='./blog.html'">知识</li>
+                    <li class="magical btn" onclick="window.location.href='./about.html'">关于</li>
+                </div>
+            </div>
+        </div>
+        <blockquote><img src="./assets/public/logo.svg"></blockquote>
+    </div>
+    <div class="index">
+        <div class="hello">
+            <div class="title">
+                <div class="title-hi">嗨！欢迎来到</div>
+                <a class="title-name" onclick="window.location.href='./about.html'">杨翰卿</a>
+                <!-- <a class="title-name" href="https://asorn.cn">杨翰卿</a> -->
+                <div class="title-hi">的博客(˘•ω•˘)◞⁽˙³˙⁾</div>
+            </div>
+            <div class="hello-desc" id="typed"></div>
+        </div>
+        <div class="content-divider"></div>
+        <div class="quickly-link">
+            <div class="title-hi">What did I do</div>
+            <div class="loader"></div>
+            <div class="link-card">
+                <div class="link-card-list">
+                    <div class="magical link-card-item">
+                        <a href="https://github.com" target="_blank">
+                            <img src="./assets/index/github.png" alt="">
+                            <div class="info">
+                                <div class="info-title">Github</div>
+                                <div class="info-desc">全球最大的同性交友网站</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://gitee.com" target="_blank">
+                            <img src="./assets/index/码云.png" alt="">
+                            <div class="info">
+                                <div class="info-title">Gitee</div>
+                                <div class="info-desc">开发协作平台-码云</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://www.runoob.com" target="_blank">
+                            <img src="./assets/index/菜鸟教程.png" alt="">
+                            <div class="info">
+                                <div class="info-title">Runoob</div>
+                                <div class="info-desc">菜鸟教程</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://modao.cc/" target="_blank">
+                            <img src="./assets/index/墨刀.png" alt="">
+                            <div class="info">
+                                <div class="info-title">墨刀</div>
+                                <div class="info-desc">智能原型设计</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://easyspider.net" target="_blank">
+                            <img src="./assets/index/EasySpider.png" alt="">
+                            <div class="info">
+                                <div class="info-title">EasySpider</div>
+                                <div class="info-desc">可视化爬虫工具</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://www.iconfont.cn" target="_blank">
+                            <img src="./assets/index/iconfont.png" alt="">
+                            <div class="info">
+                                <div class="info-title">iconfont</div>
+                                <div class="info-desc">阿里巴巴矢量库</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://nav.dippermap.com/" target="_blank">
+                            <img src="./assets/index/dippermap.png" alt="">
+                            <div class="info">
+                                <div class="info-title">Dippermap</div>
+                                <div class="info-desc">地理信息导航工具</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M3.5 8V0H4.5V8H3.5Z" fill="#62616F"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4.5H0V3.5H8V4.5Z" fill="#62616F"></path>
+                </svg>
+                <div class="link-card-list">
+                    <div class="magical link-card-item">
+                        <a href="https://chatgpt.com" target="_blank">
+                            <img src="./assets/index/ChatGPT.png" alt="">
+                            <div class="info">
+                                <div class="info-title">ChatGPT</div>
+                                <div class="info-desc">世界知名大模型</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://cursor.com" target="_blank">
+                            <img src="./assets/index/cursor.png" alt="">
+                            <div class="info">
+                                <div class="info-title">cursor</div>
+                                <div class="info-desc">使用 AI 编码的最佳方式</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="magical link-card-item">
+                        <a href="https://www.deepseek.com" target="_blank">
+                            <img src="./assets/index/deepseek-copy-copy-copy-copy-copy.png" alt="">
+                            <div class="info">
+                                <div class="info-title">deepseek</div>
+                                <div class="info-desc">开源推理大模型</div>
+                            </div>
+                            <div class="icon icon-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14"
+                                    fill="none">
+                                    <path
+                                        d="M10.55 7.58332H1.16663V6.41665H10.55L7.75415 3.62082L8.5791 2.79587L12.1645 6.3813C12.5062 6.72299 12.5062 7.27701 12.1645 7.61873L8.5791 11.2042L7.75415 10.3792L10.55 7.58332Z"
+                                        fill="#B3B3C1"></path>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="copyright">
+            <div>© 2026 Design by <a href="" target="_blank">杨翰卿</a></div>
+            <!-- <span>|</span> -->
+            <!-- <div class="fillings">
+                <a href="https://asorn.cn/" target="_blank">Asorn</a>
+            </div>
+            <span>|</span>
+            <div class="friends">
+                <a href="https://zdo.fun/" target="_blank">ZDO</a>
+            </div> -->
+        </div>
+    </div>
+    <div class="widget">
+        <div class="shape-light"></div>
+        <div class="shape-star">
+            <div class="rising-stars rising-stars-visible">
+                <div style="height:1px;width:1px"></div>
+                <div style="height:2px;width:2px"></div>
+                <div style="height:1px;width:1px"></div>
+            </div>
+        </div>
+        <div class="shape-earth"></div>
+    </div>
+
+    <!-- 全站背景音乐播放器 -->
+    <div class="full-width-player" id="player">
+        <audio id="bgMusic" preload="auto"></audio>
+        <div class="player-content">
+            <div class="song-switch-area">
+                <button class="ctrl-btn" id="prevBtn" title="上一首">⏮</button>
+            </div>
+            <div class="player-controls">
+                <button class="ctrl-btn play-btn" id="playPauseBtn" title="点击播放">▶</button>
+                <div class="playing-indicator" id="playingIndicator">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+            <div class="song-switch-area">
+                <button class="ctrl-btn" id="nextBtn" title="下一首">⏭</button>
+            </div>
+            <div class="song-info-area">
+                <div class="song-title-main" id="songTitleDisplay">准备就绪</div>
+                <div class="song-artist-main" id="songArtistDisplay">点击播放音乐</div>
+            </div>
+            <div class="volume-area">
+                <button class="ctrl-btn" id="muteBtn" style="font-size:14px;" title="静音切换">🔊</button>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.6">
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // 打字效果，感谢 typed.js: https://mattboldt.github.io/typed.js/docs/
+    const options = {
+        strings: [
+            ">_ welcome to my secret garden ^1000",
+            ">_ looking forward to your participation ^1000",
+        ],
+        typeSpeed: 50, // 打印速度
+        backSpeed: 20, // 回退速度
+        startDelay: 300, // 开始之前的延迟300毫秒
+        loop: true, // 是否循环
+        showCursor: false, // 不显示光标
+    };
+    const typed = new Typed('#typed', options);
+</script>
+<script src="./js/main.min.js"></script>
+<script src='./js/anime.js'></script>
+<script src='./js/firework.js'></script>
+<script src='./js/meteor-shower.js'></script>
+<script src='./js/music-player.js'></script>
+<script src="./js/ai-assistant.js"></script>
+
+</html>

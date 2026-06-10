@@ -1,0 +1,999 @@
+<!-- //参考学习asorn  https://asorn.cn/ -->
+<!DOCTYPE html>
+<html lang="zh-CN" style="color-scheme: dark;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>杨翰卿 - 作品集</title>
+    <link rel="stylesheet" href="./css/style.min.css">
+    <link rel="stylesheet" href="./css/music-player.css">
+    <link rel="stylesheet" href="./css/ai-assistant.css">
+    <link rel="stylesheet" href="./css/meteor-shower.css">
+    <link rel="shortcut icon" href="./assets/public/favicon.svg"/>
+    <style>
+        body {
+            margin: 0;
+            padding-top: 80px;
+            padding-bottom: 80px;
+        }
+        .head {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 18, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        /* ---------- 作品详情弹窗样式 ---------- */
+        .project-modal-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.82);
+            z-index: 1200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            will-change: opacity;
+        }
+        .project-modal-mask.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .project-modal {
+            background: #1a1a24;
+            border: 1px solid #2a2a40;
+            border-radius: 20px;
+            width: 92%;
+            max-width: 960px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(30px);
+            transition: transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+            padding: 36px 40px 44px;
+            box-sizing: border-box;
+            contain: layout style;
+            will-change: transform;
+        }
+        .project-modal-mask.active .project-modal {
+            transform: translateY(0);
+        }
+        .project-modal-close {
+            position: sticky;
+            float: right;
+            top: 0;
+            margin-right: -4px;
+            margin-bottom: -40px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2a2a38;
+            border: none;
+            color: #ccc;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s, color 0.15s;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+        .project-modal-close:hover {
+            background: #ff4757;
+            color: #E8E8F6;
+            transform: rotate(90deg);
+        }
+
+        /* ---------- 图片画廊 ---------- */
+        .project-gallery {
+            margin-bottom: 28px;
+        }
+        .project-gallery-main {
+            width: 100%;
+            border-radius: 14px;
+            object-fit: contain;
+            max-height: 500px;
+            background: #0d0d14;
+            border: 1px solid #2e2e40;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .project-gallery-thumbs {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .project-gallery-thumb {
+            width: 72px;
+            height: 54px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid transparent;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.25s;
+        }
+        .project-gallery-thumb:hover { opacity: 0.9; border-color: #6361DC; }
+        .project-gallery-thumb.active { opacity: 1; border-color: #61dafb; }
+
+        /* ---------- 视频区域 ---------- */
+        .project-video-section {
+            margin-bottom: 28px;
+        }
+        .project-video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #2e2e40;
+            background: #0a0a10;
+        }
+        .project-video-wrapper iframe,
+        .project-video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ---------- 标题与元信息 ---------- */
+        .project-modal-header {
+            margin-bottom: 24px;
+        }
+        .project-modal-title {
+            font-size: 27px;
+            font-weight: 700;
+            color: #E8E8F6;
+            margin: 0 0 8px 0;
+            letter-spacing: 0.5px;
+        }
+        .project-modal-tag {
+            display: inline-block;
+            background: #2d2d3a;
+            padding: 4px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            color: #61dafb;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        /* ---------- 技术栈标签 ---------- */
+        .project-tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .project-tech-tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(99,97,220,0.12);
+            border: 1px solid rgba(99,97,220,0.2);
+            color: #a78bfa;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* ---------- 内容分区 ---------- */
+        .project-modal-section {
+            margin-bottom: 24px;
+        }
+        .project-modal-section h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: #E8E8F6;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .project-modal-section h3 .section-icon {
+            font-size: 20px;
+        }
+        .project-modal-desc {
+            color: #c0c0d0;
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 0;
+        }
+        .project-modal-detail {
+            color: #a0a0b8;
+            font-size: 15px;
+            line-height: 1.8;
+            border-left: 3px solid #61dafb;
+            padding-left: 16px;
+            margin: 0;
+        }
+
+        /* ---------- 亮点列表 ---------- */
+        .project-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .project-features li {
+            background: #22222e;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #c0c0d0;
+            line-height: 1.6;
+            border: 1px solid #2e2e40;
+        }
+        .project-features li .feat-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .project-features li strong {
+            color: #E8E8F6;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ---------- 链接按钮 ---------- */
+        .project-modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .project-modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #61dafb;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(97,218,251,0.08);
+            border: 1px solid rgba(97,218,251,0.2);
+            transition: all 0.25s;
+        }
+        .project-modal-link:hover {
+            background: rgba(97,218,251,0.16);
+            border-color: #61dafb;
+            color: #E8E8F6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(97,218,251,0.15);
+        }
+        .project-modal-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .project-modal::-webkit-scrollbar { width: 6px; }
+        .project-modal::-webkit-scrollbar-track { background: #1a1a24; }
+        .project-modal::-webkit-scrollbar-thumb { background: #3a3a4a; border-radius: 3px; }
+
+        /* ---------- 评论区样式 ---------- */
+        .comments-section {
+            margin-top: 32px;
+            border-top: 1px solid #2a2a40;
+            padding-top: 24px;
+        }
+        .comments-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #E8E8F6;
+            margin-bottom: 16px;
+        }
+        .comment-form {
+            margin-bottom: 24px;
+        }
+        .comment-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .comment-input {
+            flex: 1;
+            background: #252538;
+            border: 1px solid #3a3a4a;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #E8E8F6;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .comment-input:focus {
+            border-color: #6361DC;
+        }
+        .comment-input::placeholder {
+            color: #808095;
+        }
+        .comment-textarea {
+            width: 100%;
+            background: #252538;
+            border: 1px solid #3a3a4a;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #E8E8F6;
+            font-size: 14px;
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 12px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        .comment-textarea:focus {
+            border-color: #6361DC;
+        }
+        .comment-textarea::placeholder {
+            color: #808095;
+        }
+        .comment-submit-btn {
+            background: #6361DC;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .comment-submit-btn:hover {
+            background: #7a78e8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 97, 220, 0.4);
+        }
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .comment-item {
+            background: #252538;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #3a3a4a;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .comment-author {
+            font-weight: 600;
+            color: #E8E8F6;
+            font-size: 14px;
+        }
+        .comment-time {
+            font-size: 12px;
+            color: #808095;
+        }
+        .comment-content {
+            color: #c0c0d0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .no-comments {
+            text-align: center;
+            color: #808095;
+            padding: 24px;
+            font-size: 14px;
+        }
+
+        /* ---------- 响应式 ---------- */
+        @media (max-width: 768px) {
+            .project-modal {
+                width: 96%;
+                max-width: 100%;
+                padding: 24px 18px 32px;
+                border-radius: 14px;
+            }
+            .project-modal-title { font-size: 22px; }
+            .project-modal-desc { font-size: 14px; }
+            .project-modal-detail { font-size: 13px; }
+            .project-gallery-main { max-height: 240px; }
+            .project-gallery-thumb { width: 52px; height: 40px; }
+            .project-features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas class="fireworks"></canvas>
+
+    <!-- 固定导航栏 -->
+    <div class="head">
+        <div class="main">
+            <a href="./index.html" class="logo"><img src="./assets/public/logo_text.png" width="62px" height="30px"></a>
+            <div class="menu">
+                <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
+                <li class="magical btn nav" onclick="window.location.href='./work.html'">作品</li>
+                <li class="magical btn" onclick="window.location.href='./blog.html'">知识</li>
+                <li class="magical btn" onclick="window.location.href='./about.html'">关于</li>
+            </div>
+            <div class="menu" id="menu-expand">
+                <li class="magical btn skin" id="menu-expand-child"><i class="icon menu-icon"></i></li>
+            </div>
+            <div id="menu-panel">
+                <div class="menu-panel-content">
+                    <li class="magical btn" onclick="window.location.href='./index.html'">首页</li>
+                    <li class="magical btn nav" onclick="window.location.href='./work.html'">作品</li>
+                    <li class="magical btn" onclick="window.location.href='./blog.html'">知识</li>
+                    <li class="magical btn" onclick="window.location.href='./about.html'">关于</li>
+                </div>
+            </div>
+        </div>
+        <blockquote><img src="./assets/public/logo.svg"></blockquote>
+    </div>
+
+    <!-- 作品卡片区域 -->
+    <div class="work">
+        <div class="card-list">
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(0)">
+                    <div class="dark"><img class="cover" src="./assets/work/智瞳.png" alt="智瞳"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">智瞳</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-assets">Hardware</div>
+                        </div>
+                        <div class="desc">SLV239 智能热成像测温模组</div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(1)">
+                    <div class="dark"><img class="cover" src="./assets/work/数坞.png" alt="数坞"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">数坞</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-assets">Match</div>
+                        </div>
+                        <div class="desc">负碳建材生产线智能检测与维保平台</div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(2)">
+                    <div class="dark"><img class="cover" src="./assets/work/鲁遇.png" alt="鲁遇"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">鲁遇</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-app">Developer</div>
+                        </div>
+                        <div class="desc">文旅管理系统</div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(3)">
+                    <div class="dark"><img class="cover" src="./assets/work/程序设计大赛.jpg" alt="程序设计大赛一等奖"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">程序设计大赛一等奖</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-2b">ToB</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="magical item">
+                <a href="javascript:void(0);" onclick="showProjectDetail(4)">
+                    <div class="dark"><img class="cover" src="./assets/work/蓝桥杯.jpg" alt="蓝桥杯一等奖"></div>
+                    <div class="text">
+                        <div class="title-area">
+                            <div class="title"><div class="name">蓝桥杯一等奖</div><div class="name link"> ↗</div></div>
+                            <div class="tag tag-other">Other</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 作品详情弹窗 -->
+    <div class="project-modal-mask" id="projectModalMask" onclick="closeProjectDetail()">
+        <div class="project-modal" onclick="event.stopPropagation()">
+            <button class="project-modal-close" onclick="closeProjectDetail()">✕</button>
+
+            <!-- 图片画廊 -->
+            <div class="project-gallery" id="modalGallery">
+                <img class="project-gallery-main" id="modalMainImage" src="" alt="作品主图" onclick="this.requestFullscreen?.()">
+                <div class="project-gallery-thumbs" id="modalThumbs"></div>
+            </div>
+
+            <!-- 视频区域 -->
+            <div class="project-video-section" id="modalVideoSection" style="display:none;">
+                <div class="project-video-wrapper" id="modalVideoWrapper"></div>
+            </div>
+
+            <!-- 标题与元信息 -->
+            <div class="project-modal-header">
+                <h2 class="project-modal-title" id="modalTitle"></h2>
+                <span class="project-modal-tag" id="modalTag"></span>
+            </div>
+
+            <!-- 技术栈 -->
+            <div class="project-tech-stack" id="modalTechStack"></div>
+
+            <!-- 项目概述 -->
+            <div class="project-modal-section">
+                <h3><span class="section-icon">📋</span> 项目概述</h3>
+                <p class="project-modal-desc" id="modalDesc"></p>
+            </div>
+
+            <!-- 核心亮点 -->
+            <div class="project-modal-section">
+                <h3><span class="section-icon">✨</span> 核心亮点</h3>
+                <ul class="project-features" id="modalFeatures"></ul>
+            </div>
+
+            <!-- 技术详情 -->
+            <div class="project-modal-section">
+                <h3><span class="section-icon">🔧</span> 技术详情</h3>
+                <div class="project-modal-detail" id="modalDetail"></div>
+            </div>
+
+            <!-- 链接按钮组 -->
+            <div class="project-modal-actions" id="modalActions"></div>
+
+            <!-- 评论区 -->
+            <div class="comments-section">
+                <h3 class="comments-title">评论区</h3>
+                <div class="comment-form">
+                    <div class="comment-input-group">
+                        <input type="text" class="comment-input" id="commentAuthor" placeholder="你的昵称">
+                    </div>
+                    <textarea class="comment-textarea" id="commentContent" placeholder="写下你的评论..."></textarea>
+                    <button class="comment-submit-btn" onclick="submitComment()">发表评论</button>
+                </div>
+                <div class="comment-list" id="commentList">
+                    <div class="no-comments">暂无评论，快来抢沙发吧！</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="copyright">
+            <div>© 2026 Design by <a href="" target="_blank">杨翰卿</a></div>
+        </div>
+    </div>
+    <div class="widget">
+        <div class="shape-light"></div>
+        <div class="shape-star">
+            <div class="rising-stars rising-stars-visible">
+                <div style="height:1px;width:1px"></div>
+                <div style="height:2px;width:2px"></div>
+                <div style="height:1px;width:1px"></div>
+            </div>
+        </div>
+        <div class="shape-earth"></div>
+    </div>
+
+    <!-- 全站背景音乐播放器 -->
+    <div class="full-width-player" id="player">
+        <audio id="bgMusic" preload="auto"></audio>
+        <div class="player-content">
+            <div class="song-switch-area">
+                <button class="ctrl-btn" id="prevBtn" title="上一首">⏮</button>
+            </div>
+            <div class="player-controls">
+                <button class="ctrl-btn play-btn" id="playPauseBtn" title="点击播放">▶</button>
+                <div class="playing-indicator" id="playingIndicator">
+                    <span></span><span></span><span></span><span></span>
+                </div>
+            </div>
+            <div class="song-switch-area">
+                <button class="ctrl-btn" id="nextBtn" title="下一首">⏭</button>
+            </div>
+            <div class="song-info-area">
+                <div class="song-title-main" id="songTitleDisplay">准备就绪</div>
+                <div class="song-artist-main" id="songArtistDisplay">点击播放音乐</div>
+            </div>
+            <div class="volume-area">
+                <button class="ctrl-btn" id="muteBtn" style="font-size:14px;" title="静音切换">🔊</button>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.6">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===================== 作品数据定义 =====================
+        let currentProjectIndex = -1;
+        const projects = [
+            {
+                title: '智瞳',
+                tag: 'Hardware · 嵌入式AI',
+                desc: 'SLV239 智能热成像测温模组 —— 基于STM32与红外传感器的全栈硬件项目，从原理图设计到PCB Layout再到嵌入式固件开发，完整走通电子硬件产品研发全流程。',
+                detail: '智瞳是一款面向工业与安防场景的智能热成像测温模组，核心芯片采用海曼HTPA 32×24红外阵列传感器，主控为STM32F407。项目涵盖原理图设计（Schematic）、四层PCB Layout走线、BOM物料选型与成本核算、嵌入式固件（C语言/HAL库）开发，以及上位机可视化软件（Python + PyQt5）的全链路实现。热成像数据通过I2C总线读取后，经双线性插值算法上采样至128×96分辨率，再通过伪彩色映射渲染为直观的温度热力图。模组支持-40°C~300°C测温范围，精度±0.5°C，刷新率最高16fps。',
+                features: [
+                    { icon: '📐', title: '全栈硬件设计', desc: '原理图设计 + 四层PCB Layout + BOM选型，完整硬件研发流程' },
+                    { icon: '🌡️', title: '高精度测温', desc: '-40°C~300°C 范围，±0.5°C精度，16fps实时刷新' },
+                    { icon: '🎨', title: '伪彩色渲染', desc: '双线性插值上采样 + 6种伪彩色映射模式（铁红/彩虹/白热等）' },
+                    { icon: '🖥️', title: '上位机可视化', desc: 'Python + PyQt5 桌面软件，实时温度曲线与热力图显示' }
+                ],
+                techStack: ['STM32F407', 'HAL库', 'C语言', 'I2C', '四层PCB', 'Python', 'PyQt5', '热成像'],
+                images: ['./assets/work/智瞳.png', './assets/work/PCB_PCB_SLV239-热成像项目.png', './assets/work/Schematic_SLV239-热成像项目.png'],
+                video: '',
+                links: []
+            },
+            {
+                title: '数坞',
+                tag: 'Match · 工业互联网',
+                desc: '负碳建材生产线智能检测与维保平台，融合物联网与AI视觉技术，为绿色建材行业提供从数据采集到智能决策的全链路解决方案。',
+                detail: '项目基于HarmonyOS与Spring Cloud微服务架构，搭建了从传感器数据采集、边缘计算到云端分析的完整链路。针对负碳建材生产环境，定制了高温粉尘下的视觉检测算法，设备故障预警准确率达到96%。系统支持Modbus/OPC-UA等工业协议，可接入超过20种产线设备。云端采用时序数据库TDengine存储海量传感器数据，结合流式计算引擎实现毫秒级异常检测。荣获省级智能制造创新应用奖。',
+                features: [
+                    { icon: '🔍', title: 'AI视觉检测', desc: '高温粉尘环境下定制化缺陷检测算法，准确率96%+' },
+                    { icon: '📡', title: '多协议接入', desc: '支持Modbus/OPC-UA/MQTT等20+工业协议' },
+                    { icon: '⚡', title: '实时预警', desc: '基于流式计算引擎，毫秒级异常检测与推送' },
+                    { icon: '📊', title: '数据看板', desc: '产线OEE / 能耗 / 碳排放 三维可视化大屏' }
+                ],
+                techStack: ['HarmonyOS', 'Spring Cloud', 'Vue3', 'TDengine', 'MQTT', 'Docker', 'AI视觉'],
+                images: ['./assets/work/数坞.png', './assets/work/数坞项目界面.png'],
+                video: '',
+                links: [
+                    { label: '项目演示', url: 'https://example.com/shuwu-demo' },
+                    { label: 'GitHub', url: 'https://github.com/example/shuwu' }
+                ]
+            },
+            {
+                title: '鲁遇',
+                tag: 'Developer · 文旅数字化',
+                desc: '文旅管理系统，为景区提供票务、导览、数据分析一体化解决方案，助力传统景区完成数字化转型升级。',
+                detail: '采用Vue3 + TypeScript + Node.js全栈开发，集成微信支付与地图SDK，支持多景区分权管理。后端采用NestJS框架，数据库使用PostgreSQL + Redis缓存层，通过消息队列处理高并发订单场景。前端基于Vite构建，使用Pinia状态管理，配合MapLibre GL实现景区手绘地图导览。通过用户行为埋点分析优化游览路线推荐，帮助合作景区实现线上转化率提升40%。已部署于3个5A级景区，日均处理订单超5000笔。',
+                features: [
+                    { icon: '🎫', title: '智能票务', desc: '微信/支付宝支付，扫码入园，分时预约调度' },
+                    { icon: '🗺️', title: '手绘导览', desc: 'MapLibre GL 自研景区地图，语音讲解+AR导航' },
+                    { icon: '📈', title: '数据分析', desc: '游客画像 / 热力图 / 转化漏斗 实时分析' },
+                    { icon: '🏗️', title: '多租户架构', desc: '一套系统管理多个景区，权限隔离，独立配置' }
+                ],
+                techStack: ['Vue3', 'TypeScript', 'NestJS', 'PostgreSQL', 'Redis', 'MapLibre GL', 'Docker'],
+                images: ['./assets/work/鲁遇.png'],
+                video: './assets/work/鲁遇演示.mp4',
+                links: [
+                    { label: '在线体验', url: 'https://example.com/luyu' }
+                ]
+            },
+            {
+                title: '程序设计大赛一等奖',
+                tag: 'ToB · 算法竞赛',
+                desc: '在省级程序设计大赛中凭借高性能算法设计与工程实现能力斩获一等奖，展现了扎实的算法功底与团队协作能力。',
+                detail: '比赛题目涵盖动态规划优化、图论建模、大数据处理等方向。团队在4小时内完成全部7道高难度试题，其中"城市紧急物资调度"一题采用改进的最大流算法，将时间复杂度从O(n³)优化至O(n²logn)，获得评委高度评价。另一道"多源异构数据实时融合"题中，我们设计了一套基于滑动窗口的增量计算方案，在10万QPS压力测试下仍保持毫秒级响应。最终以总分第2名的成绩获得一等奖（Top 3%），并获邀在颁奖典礼上做技术分享。',
+                features: [
+                    { icon: '🏆', title: '7题全部AC', desc: '4小时内完成全部高难度试题，正确率100%' },
+                    { icon: '⚡', title: '算法优化', desc: '最大流问题 O(n³) → O(n²logn)，评委特别嘉奖' },
+                    { icon: '🔬', title: '工程落地', desc: '10万QPS压力下毫秒级响应的增量计算方案' },
+                    { icon: '🎤', title: '技术分享', desc: '受邀在颁奖典礼面向200+选手做算法思路分享' }
+                ],
+                techStack: ['C++', 'Python', '算法设计', '动态规划', '图论', '数据结构'],
+                images: ['./assets/work/程序设计大赛.jpg'],
+                video: '',
+                links: []
+            },
+            {
+                title: '蓝桥杯一等奖',
+                tag: 'Other · 学科竞赛',
+                desc: '蓝桥杯全国软件和信息技术专业人才大赛省级一等奖，Java软件开发方向，全省Top 5%。',
+                detail: '参赛方向为Java软件开发大学A组，赛题涵盖数据结构、算法设计、并发编程及JVM调优。在备赛期间系统刷了LeetCode 300+题，深入研读了《Java并发编程实战》与《深入理解Java虚拟机》。决赛中凭借对GC日志的精准分析和内存泄漏的快速定位，在一道JVM调优综合题中拿到满分。该经历极大提升了代码严谨性与问题抽象能力，也为后续团队项目打下了扎实基础。',
+                features: [
+                    { icon: '📚', title: '系统备赛', desc: '刷题300+，深入研读JVM与并发编程经典著作' },
+                    { icon: '☕', title: 'Java专精', desc: 'JVM调优满分解题，GC日志精准分析' },
+                    { icon: '🎯', title: 'Top 5%', desc: '大学A组省级一等奖，全省排名前5%' },
+                    { icon: '🧠', title: '能力沉淀', desc: '问题抽象与工程化思维大幅提升' }
+                ],
+                techStack: ['Java', 'JVM调优', '并发编程', '数据结构', '算法'],
+                images: ['./assets/work/蓝桥杯.jpg'],
+                video: '',
+                links: []
+            }
+        ];
+
+        // ===================== DOM 引用缓存 =====================
+        const $ = (id) => document.getElementById(id);
+        const dom = {};
+
+        function cacheDomRefs() {
+            dom.mask = $('projectModalMask');
+            dom.modal = dom.mask.querySelector('.project-modal');
+            dom.title = $('modalTitle');
+            dom.tag = $('modalTag');
+            dom.desc = $('modalDesc');
+            dom.detail = $('modalDetail');
+            dom.features = $('modalFeatures');
+            dom.techStack = $('modalTechStack');
+            dom.gallery = $('modalGallery');
+            dom.mainImg = $('modalMainImage');
+            dom.thumbs = $('modalThumbs');
+            dom.videoSection = $('modalVideoSection');
+            dom.videoWrapper = $('modalVideoWrapper');
+            dom.actions = $('modalActions');
+        }
+
+        // ===================== 预渲染缓存 =====================
+        const renderCache = {};
+
+        function buildProjectHTML(p, idx) {
+            if (renderCache[idx]) return renderCache[idx];
+
+            let featuresHTML = p.features.map(f =>
+                '<li><span class="feat-icon">' + f.icon + '</span><strong>' + f.title + '</strong>' + f.desc + '</li>'
+            ).join('');
+
+            let techStackHTML = p.techStack.map(t =>
+                '<span class="project-tech-tag">' + t + '</span>'
+            ).join('');
+
+            let actionsHTML = '';
+            if (p.links && p.links.length > 0) {
+                actionsHTML = p.links.map(function(l) {
+                    return '<a class="project-modal-link" href="' + l.url + '" target="_blank">' + l.label +
+                        '<svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm4 12v5H4V6h5V4H2v18h18v-7h-2z"/></svg></a>';
+                }).join('');
+            }
+
+            let thumbsHTML = '';
+            if (p.images && p.images.length > 1) {
+                thumbsHTML = p.images.map(function(img, i) {
+                    return '<img class="project-gallery-thumb' + (i === 0 ? ' active' : '') + '" src="' + img + '" data-idx="' + i + '" alt="缩略图' + (i + 1) + '">';
+                }).join('');
+            }
+
+            let videoHTML = '';
+            if (p.video) {
+                var v = p.video;
+                if (v.indexOf('<iframe') !== -1 || v.indexOf('youtube') !== -1 || v.indexOf('bilibili') !== -1) {
+                    videoHTML = v;
+                } else if (v.endsWith('.mp4') || v.endsWith('.webm')) {
+                    videoHTML = '<video controls src="' + v + '" poster="' + (p.images ? p.images[0] : '') + '"></video>';
+                } else {
+                    var embed = v;
+                    if (v.indexOf('youtube.com/watch') !== -1 || v.indexOf('youtu.be') !== -1) {
+                        var vid = v.split('/').pop().split('?')[0].replace('watch?v=', '');
+                        embed = '<iframe src="https://www.youtube.com/embed/' + vid + '" allowfullscreen></iframe>';
+                    } else if (v.indexOf('bilibili.com') !== -1) {
+                        var bvid = v.split('/').pop().split('?')[0];
+                        embed = '<iframe src="https://player.bilibili.com/player.html?bvid=' + bvid + '" allowfullscreen></iframe>';
+                    }
+                    videoHTML = embed;
+                }
+            }
+
+            renderCache[idx] = {
+                title: p.title,
+                tag: p.tag,
+                desc: p.desc,
+                detail: p.detail,
+                featuresHTML: featuresHTML,
+                techStackHTML: techStackHTML,
+                actionsHTML: actionsHTML,
+                thumbsHTML: thumbsHTML,
+                videoHTML: videoHTML,
+                hasImages: !!(p.images && p.images.length),
+                mainImg: (p.images && p.images[0]) || '',
+                hasVideo: !!p.video,
+                imageCount: (p.images && p.images.length) || 0
+            };
+
+            return renderCache[idx];
+        }
+
+        // 启动时预构建所有HTML
+        projects.forEach(function(p, i) { buildProjectHTML(p, i); });
+
+        // ===================== 打开 / 关闭弹窗 =====================
+        function showProjectDetail(index) {
+            var project = projects[index];
+            if (!project) return;
+
+            var cached = renderCache[index];
+            if (!cached) return;
+
+            // 同一个项目不重复切换
+            if (currentProjectIndex === index && dom.mask.classList.contains('active')) return;
+            currentProjectIndex = index;
+
+            // 文本内容（轻量操作）
+            dom.title.textContent = cached.title;
+            dom.tag.textContent = cached.tag;
+            dom.desc.textContent = cached.desc;
+            dom.detail.textContent = cached.detail;
+
+            // 预渲染HTML直接注入
+            dom.features.innerHTML = cached.featuresHTML;
+            dom.techStack.innerHTML = cached.techStackHTML;
+            dom.actions.innerHTML = cached.actionsHTML;
+
+            // 图片
+            if (cached.hasImages) {
+                dom.gallery.style.display = '';
+                dom.mainImg.src = cached.mainImg;
+                dom.mainImg.alt = project.title;
+                dom.thumbs.innerHTML = cached.thumbsHTML;
+                dom.thumbs.style.display = cached.imageCount > 1 ? '' : 'none';
+                dom.thumbs.onclick = function(e) {
+                    var thumb = e.target.closest('.project-gallery-thumb');
+                    if (!thumb) return;
+                    var i = parseInt(thumb.dataset.idx);
+                    dom.mainImg.src = projects[currentProjectIndex].images[i];
+                    dom.thumbs.querySelectorAll('.project-gallery-thumb').forEach(function(t, j) {
+                        t.classList.toggle('active', j === i);
+                    });
+                };
+            } else {
+                dom.gallery.style.display = 'none';
+            }
+
+            // 视频
+            if (cached.hasVideo) {
+                dom.videoSection.style.display = '';
+                dom.videoWrapper.innerHTML = cached.videoHTML;
+            } else {
+                dom.videoSection.style.display = 'none';
+                dom.videoWrapper.innerHTML = '';
+            }
+
+            // rAF + 先显示
+            requestAnimationFrame(function() {
+                dom.mask.classList.add('active');
+                dom.modal.scrollTop = 0;
+                document.body.style.overflow = 'hidden';
+                loadComments(index);
+            });
+        }
+
+        function closeProjectDetail() {
+            dom.mask.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(function() {
+                dom.videoWrapper.innerHTML = '';
+            }, 300);
+        }
+
+        // ===================== 初始化 =====================
+        cacheDomRefs();
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeProjectDetail();
+        });
+
+        window.addEventListener("mousemove", function(e) {
+            document.querySelectorAll(".magical").forEach(function(element) {
+                var rect = element.getBoundingClientRect();
+                element.style.setProperty("--mouse-x", (e.clientX - rect.left) + 'px');
+                element.style.setProperty("--mouse-y", (e.clientY - rect.top) + 'px');
+            });
+        });
+
+        // 转义HTML防止XSS攻击
+        function escapeHtml(text) {
+            var div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+    <!-- Firebase SDK -->
+    <script type="module">
+        // ===================== Firebase 配置（请在 Firebase 控制台获取） =====================
+        // 请将下面的配置替换为你自己的 Firebase 项目配置
+        // 获取方式：Firebase 控制台 → 项目设置 → 添加应用 → Web应用 → 复制配置代码
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // 初始化 Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 加载评论（使用 Firestore）
+        window.loadComments = function(projectIndex) {
+            const commentList = document.getElementById('commentList');
+            const commentsRef = collection(db, 'projects', projectIndex.toString(), 'comments');
+            const q = query(commentsRef, orderBy('timestamp', 'desc'));
+
+            // 实时监听评论变化
+            onSnapshot(q, (snapshot) => {
+                const comments = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        author: data.author,
+                        content: data.content,
+                        time: data.timestamp ? data.timestamp.toDate().toLocaleString('zh-CN') : ''
+                    };
+                });
+
+                if (comments.length === 0) {
+                    commentList.innerHTML = '<div class="no-comments">暂无评论，快来抢沙发吧！</div>';
+                    return;
+                }
+
+                commentList.innerHTML = comments.map(comment => `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">${escapeHtml(comment.author)}</span>
+                            <span class="comment-time">${comment.time}</span>
+                        </div>
+                        <div class="comment-content">${escapeHtml(comment.content)}</div>
+                    </div>
+                `).join('');
+            }, (error) => {
+                console.error('加载评论失败:', error);
+                commentList.innerHTML = '<div class="no-comments">评论加载失败，请检查 Firebase 配置</div>';
+            });
+        };
+
+        // 提交评论（使用 Firestore）
+        window.submitComment = function() {
+            const authorInput = document.getElementById('commentAuthor');
+            const contentInput = document.getElementById('commentContent');
+            const author = authorInput.value.trim();
+            const content = contentInput.value.trim();
+
+            if (!author) {
+                alert('请输入你的昵称！');
+                authorInput.focus();
+                return;
+            }
+            if (!content) {
+                alert('请输入评论内容！');
+                contentInput.focus();
+                return;
+            }
+
+            const commentsRef = collection(db, 'projects', currentProjectIndex.toString(), 'comments');
+
+            addDoc(commentsRef, {
+                author: author,
+                content: content,
+                timestamp: serverTimestamp()
+            })
+            .then(() => {
+                // 清空输入框
+                authorInput.value = '';
+                contentInput.value = '';
+            })
+            .catch((error) => {
+                console.error('提交评论失败:', error);
+                alert('提交评论失败，请检查网络连接或 Firebase 配置');
+            });
+        };
+    </script>
+
+    <script src="./js/main.min.js"></script>
+    <script src='./js/anime.js'></script>
+    <script src='./js/firework.js'></script>
+<script src='./js/meteor-shower.js'></script>
+    <script src='./js/music-player.js'></script>
+    <script src="./js/ai-assistant.js"></script>
+</body>
+</html>
