@@ -12,7 +12,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	mode: "local",
 
 	// 默认音量 (0-1)
-	volume: 0.7,
+	volume: 0.6,
 
 	// 播放模式：'list'=列表循环, 'one'=单曲循环, 'random'=随机播放
 	playMode: "list",
@@ -48,11 +48,19 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	local: {
 		playlist: [
 			{
-				name: "使一颗心免于哀伤",
-				artist: "知更鸟 / HOYO-MiX / Chevy",
-				url: "/assets/music/使一颗心免于哀伤-哼唱.mp3",
-				cover: "/assets/music/cover/109951169585655912.webp",
-				lrc: "",
+				name: "我本将心向明月",
+				artist: "传统诗词 · 轻音乐",
+				url: "/assets/music/我本将心向明月.mp3",
+			},
+			{
+				name: "SS那个石家庄人",
+				artist: "小帅老师小曲",
+				url: "/assets/music/SS那个石家庄人.mp3",
+			},
+			{
+				name: "《两 难》-海山来了",
+				artist: "加木",
+				url: "/assets/music/加木《两 难》-海山来了.mp3",
 			},
 		],
 	},

@@ -1,27 +1,49 @@
-# 关于我 / About Me
+# 关于杨翰卿
 
-你好！我是 **夏叶** ，一个在数字世界中默默无闻的一片叶子。
+我是一名关注 **Java 后端、AI 应用、智能硬件和行业数字化** 的实践者。比起只停留在概念层面，我更喜欢把一个想法拆成可运行的页面、接口、数据流和演示系统。
 
-## 🛠️ 关于本站
+我做过文旅管理系统、负碳建材生产线智能检测与维保平台、智能热成像测温模组，也持续学习 Spring Boot、Vue、Python、大模型应用、云边协同与嵌入式开发。
 
-这个网站使用 **Astro** 框架构建，采用了 [Firefly](https://github.com/CuteLeaf/Firefly) 模板，Firefly 是基于 [Fuwari](https://github.com/saicaca/fuwari) 的二次开发。
+这个博客记录我的项目、学习路线和方法论。我希望它既能展示个人能力，也能帮助更多同学意识到：新时代的竞争力，不只是“会不会用某个工具”，而是能不能用 AI 和编程解决真实问题。
 
-**Firefly** 是一款基于 Astro 框架和 Fuwari 模板开发的清新美观且现代化个人博客主题模板，专为技术爱好者和内容创作者设计。该主题融合了现代 Web 技术栈，提供了丰富的功能模块和高度可定制的界面，让您能够轻松打造出专业且美观的个人博客网站。
+## 联系我
 
+- Email：[15165883828@163.com](mailto:15165883828@163.com)
+- GitHub：[hqdream26-commits/yanghanqing](https://github.com/hqdream26-commits/yanghanqing)
+- 微信：DreamHQ
+- 所在地：[济南创新谷](https://map.baidu.com/search/济南创新谷/@13378382.5,3552410.5,12z)
 
-**🖥️在线预览： [Firefly - Demo site](https://firefly.cuteleaf.cn/)**
+![微信二维码](/assets/images/about/wechat.png)
 
-**📝Firefly使用文档： [https://docs-firefly.cuteleaf.cn](https://docs-firefly.cuteleaf.cn/)**
+## 我在做什么
 
-**⭐Firefly开源地址：[https://github.com/CuteLeaf/Firefly](https://github.com/CuteLeaf/Firefly)** 
+| 方向 | 实践内容 |
+| --- | --- |
+| AI 应用 | Transformer、Prompt 工程、LangChain、开源模型问答助手 |
+| 后端与全栈 | Java、Spring Boot、Vue、数据库、部署运维 |
+| 智能硬件 | STM32、红外阵列传感器、PCB、嵌入式固件、上位机 |
+| 工业互联网 | 边缘采集、工业协议、时序数据、设备检测与故障预警 |
 
-**⭐Fuwari开源地址：[https://github.com/saicaca/fuwari](https://github.com/saicaca/fuwari)**
+## 成长经历
 
-::github{repo="CuteLeaf/Firefly"}
+### 2025.12 至今：AI、云边协同与智能硬件
 
-::github{repo="saicaca/fuwari"}
+- 学习阿里云 ECS、边缘计算节点部署与 STM32 开发，完成温湿度采集与远程控制的边缘端原型。
+- 推进“智瞳”热成像模组与“数坞”工业互联网平台，把软件、硬件、数据与行业问题放进同一套系统中思考。
+- “建行杯”山东省大学生创新大赛（2026）获一项省金、一项省银。
 
----
+### 2025.02 至 2025.10：组织、全栈项目与 AI 实践
 
-*感谢你的来访！希望在这里能找到对你有用的内容！*
+- 担任校团委科创赛事服务部部长，牵头赛事宣传、报名、组织与团队协作。
+- 系统学习 Java 与 Python，完成图书管理、数据可视化等练习，并参与“鲁遇”等完整项目。
+- 学习 Transformer、Prompt 工程与 LangChain，基于开源模型搭建智能问答助手。
+- 获程序设计大赛一等奖、蓝桥杯一等奖。
 
+### 2024.06 至 2024.11：工业控制启蒙
+
+- 学习西门子 S7-1200、三菱 FX3U、梯形图编程与触摸屏组态。
+- 完成电机正反转、传送带控制等 8 个工业控制仿真项目，第一次真正理解代码如何进入物理世界。
+
+## 关于本站
+
+本站基于 [Astro](https://astro.build/) 与 [Firefly](https://github.com/CuteLeaf/Firefly) 构建，托管目标为 Cloudflare Pages。文章内容采用 CC BY-NC-SA 4.0 许可，项目与代码仓库中的许可说明以各自文件为准。

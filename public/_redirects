@@ -1,0 +1,6 @@
+/index.html / 301
+/blog.html /archive/ 301
+/work.html /projects/ 301
+/about.html /about/ 301
+/zh/blog/:slug/ /posts/:slug/ 301
+/en/blog/:slug/ /posts/:slug-en/ 301
