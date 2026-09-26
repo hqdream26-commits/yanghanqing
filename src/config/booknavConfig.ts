@@ -3,10 +3,10 @@ import type { BooknavGroup, BooknavPageConfig } from "../types/booknavConfig";
 // 书签导航页面配置
 export const booknavPageConfig: BooknavPageConfig = {
 	// 页面标题，如果留空则使用 i18n 中的翻译
-	title: "",
+	title: "网址导航",
 
 	// 页面描述文本，如果留空则使用 i18n 中的翻译
-	description: "",
+	description: "常用的 AI、开发、学习与作品平台，整理成可搜索的个人导航。",
 
 	// favicon 自动获取配置
 	favicon: {
@@ -25,19 +25,49 @@ export const booknavPageConfig: BooknavPageConfig = {
 // 每个数组项是一个分类组，分类组内的 items 是该分类下的书签
 export const booknavConfig: BooknavGroup[] = [
 	{
+		id: "ai",
+		name: "AI 工具",
+		icon: "material-symbols:auto-awesome",
+		desc: "日常学习、编程与资料整理会用到的 AI 平台",
+		weight: 120,
+		items: [
+			{
+				title: "ChatGPT",
+				url: "https://chatgpt.com",
+				desc: "通用 AI 助手，用来梳理思路、写作和代码协作",
+				weight: 10,
+			},
+			{
+				title: "DeepSeek",
+				url: "https://chat.deepseek.com",
+				desc: "中文推理和代码分析常用工具",
+				weight: 9,
+			},
+			{
+				title: "Cursor",
+				url: "https://cursor.com",
+				desc: "AI 编程编辑器，适合项目级代码协作",
+				weight: 8,
+			},
+			{
+				title: "Kimi",
+				url: "https://kimi.moonshot.cn",
+				desc: "长文档阅读、资料提炼和中文写作辅助",
+				weight: 7,
+			},
+		],
+	},
+	{
 		id: "dev",
-		name: "开发",
+		name: "开发平台",
 		icon: "material-symbols:code-rounded",
-		desc: "写代码时离不开的站点",
-		weight: 100,
+		desc: "代码托管、技术文档和开发生态",
+		weight: 110,
 		items: [
 			{
 				title: "GitHub",
 				url: "https://github.com",
 				desc: "全球最大的代码托管平台",
-				// icon 字段可以使用 astro-icon 图标库的图标名称
-				// 也可以使用图片 URL 和本地图片路径
-				// 不填则会通过接口自动获取目标站点的 favicon 图标（需要在上面配置）
 				icon: "fa7-brands:github",
 				weight: 10,
 			},
@@ -54,40 +84,51 @@ export const booknavConfig: BooknavGroup[] = [
 				weight: 8,
 			},
 			{
-				title: "Svelte",
-				url: "https://svelte.dev",
-				desc: "把组件编译成高效原生 JS 的框架",
+				title: "Cloudflare Pages",
+				url: "https://pages.cloudflare.com",
+				desc: "静态站点托管和全球边缘部署",
 				weight: 7,
 			},
 			{
-				title: "Tailwind CSS",
-				url: "https://tailwindcss.com",
-				desc: "一个功能强大且灵活的 CSS 框架",
+				title: "Vercel",
+				url: "https://vercel.com",
+				desc: "前端部署、预览和域名管理平台",
 				weight: 6,
 			},
 		],
 	},
 	{
-		id: "opensource",
-		name: "项目",
-		icon: "material-symbols:code-rounded",
-		desc: "好用的开源项目",
-		weight: 90,
+		id: "study",
+		name: "学习资料",
+		icon: "material-symbols:school",
+		desc: "课程、教程和知识检索入口",
+		weight: 100,
 		items: [
 			{
-				title: "Firefly",
-				url: "https://github.com/CuteLeaf/Firefly",
-				desc: "清晰美观的 Astro 个人博客主题模板",
-				icon: "/favicon/firefly-32.png",
+				title: "菜鸟教程",
+				url: "https://www.runoob.com",
+				desc: "编程语言和 Web 技术入门查询",
 				weight: 10,
+			},
+			{
+				title: "Bilibili",
+				url: "https://www.bilibili.com",
+				desc: "技术课程、项目实战和学习记录",
+				weight: 9,
+			},
+			{
+				title: "知乎",
+				url: "https://www.zhihu.com",
+				desc: "技术经验、行业问题和学习路线参考",
+				weight: 8,
 			},
 		],
 	},
 	{
-		id: "design",
-		name: "设计",
+		id: "design-tools",
+		name: "设计与图标",
 		icon: "material-symbols:palette-outline-rounded",
-		desc: "配色、图标与灵感来源",
+		desc: "界面设计、配色和图标资源",
 		weight: 90,
 		items: [
 			{
@@ -106,9 +147,9 @@ export const booknavConfig: BooknavGroup[] = [
 	},
 	{
 		id: "tools",
-		name: "工具",
+		name: "效率工具",
 		icon: "material-symbols:build-outline-rounded",
-		desc: "顺手的在线小工具",
+		desc: "写文章、整理素材和调试站点时的工具箱",
 		weight: 80,
 		items: [
 			{
@@ -124,32 +165,39 @@ export const booknavConfig: BooknavGroup[] = [
 				weight: 9,
 			},
 			{
-				title: "Carbon",
-				url: "https://carbon.now.sh",
-				desc: "把代码片段生成漂亮的图片",
+				title: "PageSpeed Insights",
+				url: "https://pagespeed.web.dev",
+				desc: "检查网页性能、可访问性和 SEO",
 				weight: 8,
 			},
 		],
 	},
 	{
-		id: "resources",
-		name: "资源",
-		icon: "material-symbols:auto-stories-outline-rounded",
-		desc: "文档、教程与阅读",
+		id: "blog-stack",
+		name: "本站相关",
+		icon: "material-symbols:deployed-code",
+		desc: "这个博客迁移和维护直接相关的项目",
 		weight: 70,
 		items: [
+			{
+				title: "YHQ LAB",
+				url: "https://www.yanghanqing.top",
+				desc: "杨翰卿的个人 AI 实验室",
+				weight: 10,
+			},
+			{
+				title: "Firefly",
+				url: "https://github.com/CuteLeaf/Firefly",
+				desc: "当前博客使用的 Astro 主题模板",
+				icon: "/favicon/firefly-32.png",
+				weight: 9,
+			},
 			{
 				title: "Firefly Docs",
 				url: "https://docs-firefly.cuteleaf.cn",
 				desc: "Firefly 主题模板文档",
 				icon: "https://docs-firefly.cuteleaf.cn/logo.png",
-				weight: 10,
-			},
-			{
-				title: "夏夜流萤",
-				url: "https://blog.cuteleaf.cn",
-				desc: "飞萤之火自无梦的长夜亮起",
-				weight: 9,
+				weight: 8,
 			},
 		],
 	},

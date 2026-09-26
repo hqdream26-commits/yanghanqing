@@ -1,0 +1,123 @@
+.lab-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 1rem;
+}
+
+.lab-card {
+	position: relative;
+	padding: 1.25rem;
+	overflow: hidden;
+}
+
+.lab-card::before {
+	position: absolute;
+	inset: 0 auto auto 0;
+	width: 0.25rem;
+	height: 100%;
+	background: var(--primary);
+	content: "";
+	opacity: 0.78;
+}
+
+.lab-card-title {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	margin-bottom: 0.5rem;
+	color: var(--deep-text);
+	font-weight: 700;
+}
+
+.lab-card-title svg {
+	color: var(--primary);
+	font-size: 1.35rem;
+}
+
+.lab-card-desc {
+	margin: 0;
+	color: var(--content-meta);
+	font-size: 0.9rem;
+	line-height: 1.7;
+}
+
+.lab-meta-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.85rem;
+}
+
+.lab-chip {
+	border: 1px solid var(--line-divider);
+	border-radius: 0.25rem;
+	background: var(--btn-regular-bg);
+	color: var(--btn-content);
+	font-size: 0.75rem;
+	line-height: 1;
+	padding: 0.4rem 0.55rem;
+}
+
+.lab-timeline {
+	position: relative;
+	display: grid;
+	gap: 1rem;
+	padding-left: 1.25rem;
+}
+
+.lab-timeline::before {
+	position: absolute;
+	top: 0.25rem;
+	bottom: 0.25rem;
+	left: 0.35rem;
+	width: 2px;
+	border-radius: 999px;
+	background: var(--line-divider);
+	content: "";
+}
+
+.lab-timeline-item {
+	position: relative;
+	padding: 1rem 1.15rem;
+}
+
+.lab-timeline-item::before {
+	position: absolute;
+	top: 1.35rem;
+	left: -1.2rem;
+	width: 0.75rem;
+	height: 0.75rem;
+	border: 2px solid var(--card-bg);
+	border-radius: 999px;
+	background: var(--primary);
+	box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 18%, transparent);
+	content: "";
+}
+
+.lab-timeline-date {
+	color: var(--primary);
+	font-size: 0.8rem;
+	font-weight: 700;
+}
+
+.lab-progress {
+	height: 0.45rem;
+	margin-top: 0.9rem;
+	overflow: hidden;
+	border-radius: 999px;
+	background: var(--btn-regular-bg);
+}
+
+.lab-progress-bar {
+	display: block;
+	height: 100%;
+	border-radius: inherit;
+	background: linear-gradient(90deg, var(--primary), color-mix(in oklch, var(--primary) 55%, white));
+}
+
+@media (max-width: 640px) {
+	.lab-card,
+	.lab-timeline-item {
+		padding: 1rem;
+	}
+}

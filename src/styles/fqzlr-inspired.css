@@ -1,0 +1,145 @@
+/*
+ * YHQ LAB editorial layer.
+ * Inspired by the compact, warm reading rhythm of fqzlr.top without copying
+ * its content, artwork, or component code.
+ */
+
+:root {
+  --radius-large: 0.5rem;
+  --primary: oklch(0.62 0.19 25);
+  --page-bg: oklch(0.975 0.008 55);
+  --card-bg: oklch(0.995 0.003 55);
+  --card-bg-transparent: oklch(0.995 0.003 55 / 0.94);
+  --btn-content: oklch(0.53 0.15 25);
+  --btn-regular-bg: oklch(0.94 0.035 35);
+  --btn-regular-bg-hover: oklch(0.9 0.07 30);
+  --btn-regular-bg-active: oklch(0.85 0.1 28);
+  --btn-plain-bg-hover: oklch(0.96 0.018 45);
+  --btn-plain-bg-active: oklch(0.92 0.04 35);
+  --line-divider: oklch(0.88 0.012 55);
+  --line-color: oklch(0.84 0.016 50);
+  --deep-text: oklch(0.27 0.02 35);
+  --content-meta: oklch(0.5 0.02 45);
+  --shadow-sm: 0 1px 2px rgb(71 49 31 / 0.04);
+  --shadow-md: 0 8px 24px rgb(71 49 31 / 0.06);
+}
+
+:root.dark {
+  --primary: oklch(0.74 0.16 28);
+  --page-bg: oklch(0.18 0.012 35);
+  --card-bg: oklch(0.22 0.012 35);
+  --card-bg-transparent: oklch(0.22 0.012 35 / 0.94);
+  --line-divider: oklch(0.34 0.012 35);
+  --line-color: oklch(0.39 0.012 35);
+  --deep-text: oklch(0.91 0.01 55);
+  --content-meta: oklch(0.72 0.012 55);
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--deep-text);
+}
+
+html[data-wallpaper-mode="none"] #navbar > div,
+#navbar > div {
+  background: color-mix(in oklch, var(--card-bg) 96%, var(--page-bg)) !important;
+  border: 0;
+  border-bottom: 1px solid var(--line-divider);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+#navbar.navbar-sticky-shadow {
+  box-shadow: 0 4px 18px rgb(71 49 31 / 0.06) !important;
+}
+
+#navbar .btn-plain {
+  border-radius: 0.375rem;
+}
+
+#navbar .btn-plain:hover,
+#navbar .current-theme-btn {
+  color: var(--primary);
+  background: var(--btn-plain-bg-hover);
+}
+
+.card-base,
+.card-base-transparent,
+.btn-card,
+.float-panel {
+  border: 1px solid var(--line-divider) !important;
+  border-radius: var(--radius-large) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.card-base:hover,
+.btn-card:hover {
+  border-color: color-mix(in oklch, var(--primary) 28%, var(--line-divider));
+  box-shadow: var(--shadow-md) !important;
+}
+
+.post-card {
+  border-radius: var(--radius-large) !important;
+}
+
+.post-card img {
+  filter: saturate(0.88) contrast(1.02);
+}
+
+.post-card:hover img {
+  filter: saturate(1.04) contrast(1.03);
+}
+
+.post-card h1,
+.post-card h2,
+.post-card h3,
+.post-card h4,
+.post-card a:hover {
+  color: var(--primary);
+}
+
+.widget,
+.sidebar-widget {
+  border-radius: var(--radius-large) !important;
+}
+
+.category-bar a,
+.tag,
+.post-tag {
+  border-radius: 0.25rem !important;
+}
+
+.banner-home-text-overlay,
+.top-gradient-highlight {
+  display: none !important;
+}
+
+.float-panel {
+  background: var(--card-bg) !important;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--primary) 22%, transparent);
+}
+
+@media (min-width: 1024px) {
+  #navbar > div {
+    height: 4rem !important;
+  }
+
+  #main-grid {
+    column-gap: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  #navbar > div {
+    height: 3.75rem !important;
+  }
+
+  .card-base,
+  .card-base-transparent,
+  .btn-card {
+    border-radius: 0.375rem !important;
+  }
+}

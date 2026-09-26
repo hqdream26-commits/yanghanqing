@@ -1,0 +1,74 @@
+---
+import { Icon } from "astro-icon/components";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/pages/common.css";
+import "@/styles/pages/lab-page.css";
+
+const title = "我的设备";
+const description = "记录当前学习、开发、写作和部署会用到的工作台配置。";
+
+const devices = [
+	{
+		name: "Windows 工作站",
+		icon: "material-symbols:computer-outline",
+		desc: "本地开发、工程软件、博客调试和资料整理的主力环境。",
+		tags: ["Windows", "PowerShell", "Local Dev"],
+	},
+	{
+		name: "云端部署链路",
+		icon: "material-symbols:cloud-done",
+		desc: "GitHub 托管源码，Cloudflare Pages 承载静态站点和自定义域名。",
+		tags: ["GitHub", "Cloudflare", "Pages"],
+	},
+	{
+		name: "AI 协作工具箱",
+		icon: "material-symbols:auto-awesome",
+		desc: "用于文章构思、代码审阅、学习路线拆解和项目方案推演。",
+		tags: ["ChatGPT", "Cursor", "DeepSeek"],
+	},
+	{
+		name: "工程实践环境",
+		icon: "material-symbols:precision-manufacturing",
+		desc: "面向智能硬件、工业控制、CAD 建模和项目文档的综合实践环境。",
+		tags: ["CAD", "IoT", "Hardware"],
+	},
+];
+---
+
+<MainGridLayout title={title} description={description}>
+	<section class="page-shell">
+		<header class="card-base page-header">
+			<div class="page-heading">
+				<div class="page-icon" aria-hidden="true">
+					<Icon name="material-symbols:devices" />
+				</div>
+				<div>
+					<h2>{title}</h2>
+					<p>{description}</p>
+				</div>
+			</div>
+			<div class="page-count" aria-label={title}>
+				<Icon name="material-symbols:devices" />
+				<strong>{devices.length}</strong>
+				<span>项</span>
+			</div>
+		</header>
+
+		<div class="lab-grid">
+			{devices.map((device) => (
+				<article class="card-base lab-card">
+					<h3 class="lab-card-title">
+						<Icon name={device.icon} />
+						<span>{device.name}</span>
+					</h3>
+					<p class="lab-card-desc">{device.desc}</p>
+					<div class="lab-meta-list" aria-label={`${device.name} 标签`}>
+						{device.tags.map((tag) => (
+							<span class="lab-chip">{tag}</span>
+						))}
+					</div>
+				</article>
+			))}
+		</div>
+	</section>
+</MainGridLayout>

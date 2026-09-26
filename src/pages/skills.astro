@@ -1,0 +1,95 @@
+---
+import { Icon } from "astro-icon/components";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/pages/common.css";
+import "@/styles/pages/lab-page.css";
+
+const title = "技能";
+const description = "把正在长期投入的技术方向做成可扫描的技能矩阵。";
+
+const skills = [
+	{
+		name: "AI 应用与提示工程",
+		icon: "material-symbols:psychology",
+		desc: "围绕学习、写作、代码、行业方案和工作流自动化建立可复用方法。",
+		level: 88,
+		tags: ["AI", "Prompt", "Workflow"],
+	},
+	{
+		name: "Java 全栈开发",
+		icon: "material-symbols:data-object",
+		desc: "关注后端接口、数据库、前端页面和项目交付中的完整链路。",
+		level: 82,
+		tags: ["Java", "Web", "Database"],
+	},
+	{
+		name: "Astro 与静态站点",
+		icon: "material-symbols:deployed-code",
+		desc: "使用 Astro、Markdown 内容集合和 Cloudflare Pages 搭建轻量博客。",
+		level: 80,
+		tags: ["Astro", "Markdown", "Pages"],
+	},
+	{
+		name: "智能硬件与工程实践",
+		icon: "material-symbols:memory",
+		desc: "结合嵌入式、传感器、工业控制和工程制图沉淀项目经验。",
+		level: 74,
+		tags: ["IoT", "CAD", "Control"],
+	},
+	{
+		name: "技术写作与知识整理",
+		icon: "material-symbols:edit-note",
+		desc: "把复杂问题拆成学习路线、项目复盘和可复用笔记。",
+		level: 86,
+		tags: ["Writing", "Notes", "Review"],
+	},
+	{
+		name: "部署与域名维护",
+		icon: "material-symbols:language",
+		desc: "维护域名、DNS、静态部署、构建脚本和站点可访问性。",
+		level: 78,
+		tags: ["DNS", "Cloudflare", "SEO"],
+	},
+];
+---
+
+<MainGridLayout title={title} description={description}>
+	<section class="page-shell">
+		<header class="card-base page-header">
+			<div class="page-heading">
+				<div class="page-icon" aria-hidden="true">
+					<Icon name="material-symbols:auto-awesome" />
+				</div>
+				<div>
+					<h2>{title}</h2>
+					<p>{description}</p>
+				</div>
+			</div>
+			<div class="page-count" aria-label={title}>
+				<Icon name="material-symbols:workspaces" />
+				<strong>{skills.length}</strong>
+				<span>方向</span>
+			</div>
+		</header>
+
+		<div class="lab-grid">
+			{skills.map((skill) => (
+				<article class="card-base lab-card">
+					<h3 class="lab-card-title">
+						<Icon name={skill.icon} />
+						<span>{skill.name}</span>
+					</h3>
+					<p class="lab-card-desc">{skill.desc}</p>
+					<div class="lab-progress" aria-label={`${skill.name} 熟悉度 ${skill.level}%`}>
+						<span class="lab-progress-bar" style={`width: ${skill.level}%`}></span>
+					</div>
+					<div class="lab-meta-list" aria-label={`${skill.name} 标签`}>
+						{skill.tags.map((tag) => (
+							<span class="lab-chip">{tag}</span>
+						))}
+					</div>
+				</article>
+			))}
+		</div>
+	</section>
+</MainGridLayout>

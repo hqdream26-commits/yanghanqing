@@ -1,0 +1,76 @@
+---
+import { Icon } from "astro-icon/components";
+import MainGridLayout from "@/layouts/MainGridLayout.astro";
+import "@/styles/pages/common.css";
+import "@/styles/pages/lab-page.css";
+
+const title = "时间线";
+const description =
+	"把重要节点按时间收束起来，记录这个 AI 实验室如何一点点长出来。";
+
+const events = [
+	{
+		date: "2026-09",
+		title: "迁移到 Firefly 风格",
+		desc: "把原博客内容迁移到 Astro + Firefly，并接入 Cloudflare Pages，统一文章、项目、动态和导航入口。",
+		tags: ["Firefly", "Cloudflare Pages", "Blog"],
+	},
+	{
+		date: "2026-06",
+		title: "聚焦 AI 应用与智能硬件",
+		desc: "围绕 AI 学习路线、行业应用、Java 全栈和智能硬件项目重新整理内容方向。",
+		tags: ["AI", "Java", "Hardware"],
+	},
+	{
+		date: "2026-05",
+		title: "整理个人域名与部署链路",
+		desc: "以 yanghanqing.top 作为长期入口，逐步把站点、作品和学习记录聚合到同一处。",
+		tags: ["Domain", "DNS", "Pages"],
+	},
+	{
+		date: "2024-06",
+		title: "个人技术记录起点",
+		desc: "开始沉淀项目笔记、课程实践和技术探索，为后续的个人知识库做准备。",
+		tags: ["Notes", "Projects"],
+	},
+];
+---
+
+<MainGridLayout title={title} description={description}>
+	<section class="page-shell">
+		<header class="card-base page-header">
+			<div class="page-heading">
+				<div class="page-icon" aria-hidden="true">
+					<Icon name="material-symbols:timeline" />
+				</div>
+				<div>
+					<h2>{title}</h2>
+					<p>{description}</p>
+				</div>
+			</div>
+			<div class="page-count" aria-label={title}>
+				<Icon name="material-symbols:calendar-today" />
+				<strong>{events.length}</strong>
+				<span>节点</span>
+			</div>
+		</header>
+
+		<div class="lab-timeline">
+			{events.map((event) => (
+				<article class="card-base lab-timeline-item">
+					<div class="lab-timeline-date">{event.date}</div>
+					<h3 class="lab-card-title">
+						<Icon name="material-symbols:keep" />
+						<span>{event.title}</span>
+					</h3>
+					<p class="lab-card-desc">{event.desc}</p>
+					<div class="lab-meta-list" aria-label={`${event.title} 标签`}>
+						{event.tags.map((tag) => (
+							<span class="lab-chip">{tag}</span>
+						))}
+					</div>
+				</article>
+			))}
+		</div>
+	</section>
+</MainGridLayout>

@@ -4,3 +4,7 @@
 /about.html /about/ 301
 /zh/blog/:slug/ /posts/:slug/ 301
 /en/blog/:slug/ /posts/:slug-en/ 301
+/moments/ /dynamic/ 301
+/anime/ /bangumi/ 301
+/compass/ /booknav/ 301
+/albums/ /gallery/ 301
