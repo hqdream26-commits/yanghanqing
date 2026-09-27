@@ -2,7 +2,6 @@
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "@/components/common/ImageWrapper.astro";
 import { profileConfig } from "@/config/profileConfig";
-import { encodeMailto, MAILTO_ONCLICK_SCRIPT } from "@/utils/email-utils";
 import { url } from "@/utils/url-utils";
 
 interface Props {
@@ -61,12 +60,12 @@ const className = Astro.props.class;
                         : "btn-regular rounded-lg h-10 w-10 active:scale-90";
 
                     if (item.url.startsWith("mailto:")) {
-                        const encodedEmail = encodeMailto(item.url);
-                        return <a rel="me" aria-label={item.name} href="#" data-encoded-email={encodedEmail} onclick={MAILTO_ONCLICK_SCRIPT},
+                        const email = item.url.replace(/^mailto:/, "");
+                        return <button type="button" aria-label={`${item.name}，悬停复制`} data-profile-copy-email={email}
                                     class={className}>
                             <Icon name={item.icon} class="text-[1.5rem]"></Icon>
                             {showName && item.name}
-                        </a>
+                        </button>
                     } else {
                         return <a rel="me" aria-label={item.name} href={item.url} target="_blank" class={className}>
                             <Icon name={item.icon} class="text-[1.5rem]"></Icon>
@@ -77,12 +76,12 @@ const className = Astro.props.class;
             )}
             {profileConfig.links.length == 1 && (function(item){
                 if (item.url.startsWith("mailto:")) {
-                        const encodedEmail = encodeMailto(item.url);
-                        return <a rel="me" aria-label={item.name} href="#" data-encoded-email={encodedEmail} onclick={MAILTO_ONCLICK_SCRIPT},
+                        const email = item.url.replace(/^mailto:/, "");
+                        return <button type="button" aria-label={`${item.name}，悬停复制`} data-profile-copy-email={email}
                                     class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
                             <Icon name={item.icon} class="text-[1.5rem]"></Icon>
                             {item.name}
-                        </a>
+                        </button>
                     } else {
                         return <a rel="me" aria-label={item.name} href={item.url} target="_blank"
                                             class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
@@ -94,3 +93,29 @@ const className = Astro.props.class;
         </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll<HTMLButtonElement>("[data-profile-copy-email]").forEach((button) => {
+      let copied = false;
+      const copy = async () => {
+        if (copied) return;
+        copied = true;
+        try {
+          await navigator.clipboard.writeText(button.dataset.profileCopyEmail || "");
+          button.title = "邮箱已复制";
+        } catch {
+          button.title = button.dataset.profileCopyEmail || "";
+        }
+        window.setTimeout(() => {
+          copied = false;
+          button.title = "悬停复制邮箱";
+        }, 1600);
+      };
+      button.title = "悬停复制邮箱";
+      button.addEventListener("mouseenter", copy);
+      button.addEventListener("focus", copy);
+      button.addEventListener("click", copy);
+    });
+  });
+</script>

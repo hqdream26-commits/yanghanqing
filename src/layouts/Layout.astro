@@ -363,6 +363,21 @@ const ogImageAlt = propsOgImageAlt ?? pageTitle;
       const DARK_MODE = "dark";
       const SYSTEM_MODE = "system";
 
+      // Apply the refreshed site defaults once without overriding later choices.
+      const displayDefaultsVersion = "yhq-display-defaults-2026-09-28-v1";
+      if (localStorage.getItem(displayDefaultsVersion) !== "applied") {
+        localStorage.setItem("hue", "170");
+        localStorage.setItem("postListLayout", "list");
+        localStorage.setItem("cardBorderEnabled", "true");
+        localStorage.setItem("cardFollowThemeEnabled", "true");
+        localStorage.setItem("wallpaperMode", "overlay");
+        localStorage.setItem("overlayOpacity", "1");
+        localStorage.setItem("overlayBlur", "0");
+        localStorage.setItem("overlayCardOpacity", "0.2");
+        localStorage.setItem("sakuraEnabled", "true");
+        localStorage.setItem(displayDefaultsVersion, "applied");
+      }
+
       // 获取存储的主题，如果没有则使用默认值
       const theme = localStorage.getItem("theme") || defaultMode;
 

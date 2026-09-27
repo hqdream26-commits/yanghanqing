@@ -108,12 +108,30 @@ const stats = [
 		dynamic: true,
 		id: "last-update",
 	},
+	{
+		icon: "material-symbols:visibility-outline-rounded",
+		label: "本页浏览",
+		value: 0,
+		suffix: "次",
+		dynamic: true,
+		id: "page-views",
+	},
+	{
+		icon: "material-symbols:bar-chart-rounded",
+		label: "访问次数",
+		value: 0,
+		suffix: "次",
+		dynamic: true,
+		id: "site-visits",
+	},
 ];
 ---
 
 <WidgetLayout name={i18n(I18nKey.siteStats)} showTitle={showTitle} id="site-stats" class={className} style={style}>
   <div class="flex flex-col gap-2">
-    {stats.map((stat) => (
+    {stats.map((stat, index) => (
+      <>
+      {index === 6 && <div class="my-1 border-t border-dashed border-black/10 dark:border-white/15" />}
       <div class="flex items-center justify-between px-3 py-1.5">
         <div class="flex items-center gap-2.5">
           <div class="text-(--primary) text-xl">
@@ -137,6 +155,7 @@ const stats = [
           )}
         </div>
       </div>
+      </>
     ))}
   </div>
 </WidgetLayout>
@@ -176,6 +195,21 @@ const stats = [
         }
       });
     }
+
+    try {
+      const pageKey = "yhq-page-view:" + window.location.pathname;
+      const totalKey = "yhq-site-visits";
+      const pageViews = Number(localStorage.getItem(pageKey) || "0") + 1;
+      const siteVisits = Number(localStorage.getItem(totalKey) || "0") + 1;
+      localStorage.setItem(pageKey, String(pageViews));
+      localStorage.setItem(totalKey, String(siteVisits));
+      document.querySelectorAll('[data-stat-id="page-views"]').forEach((element) => {
+        element.textContent = pageViews.toString();
+      });
+      document.querySelectorAll('[data-stat-id="site-visits"]').forEach((element) => {
+        element.textContent = siteVisits.toString();
+      });
+    } catch {}
   }
 
   // 页面加载时更新

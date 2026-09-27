@@ -6,10 +6,10 @@ export const profileConfig: ProfileConfig = {
 	// 1. public 目录（以 "/" 开头，不优化）："/assets/images/avatar.webp"
 	// 2. src 目录（不以 "/" 开头，自动优化但会增加构建时间，推荐）："assets/images/avatar.webp"
 	// 3. 远程 URL："https://example.com/avatar.jpg"
-	avatar: "/assets/images/avatar.svg",
+	avatar: "/assets/images/profile/avatar-cat.jpg",
 
 	// 名字
-	name: "杨翰卿",
+	name: "DreamHQ",
 
 	// 个人签名
 	bio: "用工程实践连接软件、硬件、AI 与真实行业。",
@@ -21,6 +21,12 @@ export const profileConfig: ProfileConfig = {
 	// `pnpm add @iconify-json/<icon-set-name>`
 	// showName: true 时显示图标和名称，false 时只显示图标
 	links: [
+		{
+			name: "微信 15165883828",
+			icon: "fa7-brands:weixin",
+			url: "weixin://",
+			showName: false,
+		},
 		{
 			name: "GitHub",
 			icon: "fa7-brands:github",
@@ -40,9 +46,9 @@ export const profileConfig: ProfileConfig = {
 			showName: false,
 		},
 		{
-			name: "Atom",
-			icon: "fa7-solid:atom",
-			url: "/atom/",
+			name: "B站",
+			icon: "simple-icons:bilibili",
+			url: "https://space.bilibili.com/3461565827254836",
 			showName: false,
 		},
 	],

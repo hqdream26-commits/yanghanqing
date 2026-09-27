@@ -7,10 +7,6 @@ import { i18n } from "@/i18n/translation";
 import MainGridLayout from "@/layouts/MainGridLayout.astro";
 import "@/styles/pages/common.css";
 import { getSortedProjects } from "@/utils/content-utils";
-import {
-	getProjectStatusMeta,
-	PROJECT_STATUS_KEYS,
-} from "@/utils/projects-utils";
 import { getFileDirFromPath, removeFileExtension } from "@/utils/url-utils";
 import "@/styles/pages/card-grid.css";
 
@@ -19,8 +15,8 @@ if (!siteConfig.pages.projects) {
 	return Astro.redirect("/404/");
 }
 
-const title = i18n(I18nKey.projects);
-const description = i18n(I18nKey.projectsDescription);
+const title = "作品";
+const description = "整理开发项目、比赛成就与学术成果。";
 
 const projects = await getSortedProjects();
 const projectMeta = projects.map((p) => ({
@@ -35,11 +31,19 @@ const projectMeta = projects.map((p) => ({
 	status: p.data.status,
 }));
 
-// 筛选：显示全部已知状态（带图标）
-const statusFilters = PROJECT_STATUS_KEYS.map((key) => {
-	const meta = getProjectStatusMeta(key);
-	return { key, label: meta.label, icon: meta.icon };
-});
+const statusFilters = [
+	{ key: "开发项目", label: "开发项目", icon: "material-symbols:code-rounded" },
+	{
+		key: "比赛成就",
+		label: "比赛成就",
+		icon: "material-symbols:star-rounded",
+	},
+	{
+		key: "学术成果",
+		label: "学术成果",
+		icon: "material-symbols:school",
+	},
+];
 ---
 
 <MainGridLayout title={title} description={description}>

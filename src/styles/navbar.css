@@ -325,3 +325,64 @@ html[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-sha
 :root.dark[data-has-wallpaper] #navbar[data-transparent-mode="semi"].navbar-sticky-shadow>div {
     box-shadow: inset 0 1px 0 var(--navbar-glass-highlight), 0 1px 0 var(--navbar-glass-hairline) !important;
 }
+
+/* ============================================
+ * YHQ desktop navigation polish
+ * Keep Chinese labels horizontal and compact, matching the reference layout.
+ * ============================================ */
+@media (min-width: 1024px) {
+    #navbar .dropdown-container {
+        flex: 0 0 auto;
+    }
+
+    #navbar .navbar-menu-link {
+        height: 3rem;
+        min-width: max-content;
+        padding-inline: 0.85rem;
+        border-radius: 0.75rem;
+        white-space: nowrap;
+        word-break: keep-all;
+        line-height: 1;
+        letter-spacing: 0;
+        color: color-mix(in oklch, var(--primary) 78%, var(--deep-text, currentColor));
+    }
+
+    #navbar .dropdown-trigger.navbar-menu-link {
+        padding-right: 2.15rem;
+    }
+
+    #navbar .navbar-menu-label {
+        flex-wrap: nowrap;
+        min-width: max-content;
+        white-space: nowrap;
+        word-break: keep-all;
+    }
+
+    #navbar .navbar-icon {
+        display: inline-flex !important;
+        flex: 0 0 auto;
+        margin-right: 0.15rem;
+    }
+
+    #navbar .navbar-menu-link:hover,
+    #navbar .navbar-menu-link:focus-visible,
+    #navbar .navbar-menu-link[data-nav-active="true"] {
+        color: var(--primary);
+        background: color-mix(in oklch, var(--primary) 14%, transparent);
+    }
+
+    #navbar .navbar-menu-link[data-nav-active="true"]::after {
+        content: "";
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        bottom: 0.25rem;
+        height: 0.18rem;
+        border-radius: 999px;
+        background: var(--primary);
+    }
+
+    #navbar .dropdown-arrow {
+        right: 0.75rem;
+    }
+}

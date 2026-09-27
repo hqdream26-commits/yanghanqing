@@ -5,7 +5,7 @@ draft: false
 order: 70
 description: "省级程序设计大赛一等奖，围绕算法设计、性能优化与团队协作完成竞赛任务。"
 image: "/assets/images/projects/程序设计大赛.jpg"
-status: "published"
+status: "比赛成就"
 tags: ["C++", "Python", "算法", "动态规划", "图论"]
 lang: "zh_CN"
 ---

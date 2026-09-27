@@ -5,7 +5,7 @@ draft: false
 order: 90
 description: "面向负碳建材生产线的智能检测与维保平台，连接设备、边缘计算、AI 视觉与云端分析。"
 image: "/assets/images/projects/数坞.png"
-status: "developing"
+status: "比赛成就"
 tags: ["工业互联网", "Spring Cloud", "HarmonyOS", "TDengine", "AI 视觉"]
 lang: "zh_CN"
 ---

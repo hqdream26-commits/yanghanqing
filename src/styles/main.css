@@ -9,7 +9,6 @@
 @import './display-settings.css';
 @import './categories.css';
 @import './layout-base.css';
-@import './fqzlr-inspired.css';
 
 @plugin '@tailwindcss/typography';
 

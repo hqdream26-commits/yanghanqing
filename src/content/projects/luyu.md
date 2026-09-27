@@ -5,7 +5,7 @@ draft: false
 order: 80
 description: "面向景区的票务、导览与数据分析系统，用一套产品连接游客体验和运营管理。"
 image: "/assets/images/projects/鲁遇.png"
-status: "published"
+status: "开发项目"
 tags: ["Vue", "Spring Boot", "MySQL", "微信小程序", "文旅数字化"]
 lang: "zh_CN"
 ---

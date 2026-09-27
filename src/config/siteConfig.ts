@@ -11,7 +11,7 @@ const pages = resolvePageToggles({
 	// ── 社交 (Social) ──────────────────────────────────
 
 	// 友链页面开关
-	friends: true,
+	friends: false,
 	// 留言板页面开关，需要配置评论系统
 	guestbook: false,
 
@@ -28,7 +28,7 @@ const pages = resolvePageToggles({
 	// 哔哩哔哩追番页面开关
 	bilibili: false,
 	// 番组计划页面开关
-	bangumi: true,
+	bangumi: false,
 	// VNDB页面开关
 	vndb: false,
 	// MyAnimeList页面开关
@@ -45,23 +45,23 @@ export const siteConfig: SiteConfig = {
 	title: "YHQ LAB",
 
 	// 站点副标题
-	subtitle: "杨翰卿的个人 AI 实验室",
+	subtitle: "DreamHQ 的个人 AI 实验室",
 
 	// 站点 URL
 	site_url: "https://www.yanghanqing.top",
 
 	// 站点描述
 	description:
-		"杨翰卿的个人技术博客，记录 AI 应用、智能硬件、Java 全栈项目与面向大学生的 AI 学习路线。",
+		"DreamHQ 的个人技术博客，记录 AI 应用、智能硬件、后端全栈项目与面向大学生的 AI 学习路线。",
 
 	// 站点关键词
 	keywords: [
-		"杨翰卿",
+		"DreamHQ",
 		"YHQ LAB",
 		"Astro",
 		"AI 应用",
 		"智能硬件",
-		"Java",
+		"后端全栈",
 		"工业互联网",
 		"博客",
 		"技术博客",
@@ -71,7 +71,7 @@ export const siteConfig: SiteConfig = {
 	// 主题色
 	themeColor: {
 		// 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
-		hue: 25,
+		hue: 170,
 		// 默认模式："light" 亮色，"dark" 暗色，"system" 跟随系统
 		defaultMode: "light",
 	},
@@ -162,7 +162,7 @@ export const siteConfig: SiteConfig = {
 	// ── 文章列表布局配置 ──────────────────────────────────
 	postListLayout: {
 		// 默认布局模式："list" 列表模式（单列布局），"grid" 网格模式（多列布局）
-		defaultMode: "grid",
+		defaultMode: "list",
 		// 移动端默认布局模式，不设置则跟随 defaultMode
 		mobileDefaultMode: "list",
 		// 列表模式下封面图显示在哪一侧："right" 右侧，"left" 左侧

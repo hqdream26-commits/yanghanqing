@@ -20,17 +20,41 @@ if (!link) {
 const processedLink = link;
 
 const hasChildren = processedLink.children && processedLink.children.length > 0;
+
+function normalizePath(path: string) {
+	if (!path || path === "#") return "";
+	const pathname = path.startsWith("http")
+		? new URL(path).pathname
+		: new URL(path, Astro.url).pathname;
+	return pathname !== "/" ? pathname.replace(/\/$/, "") : pathname;
+}
+
+const currentPath = normalizePath(Astro.url.pathname);
+
+function isCurrentNavLink(navLink: NavBarLink) {
+	if (navLink.external || !navLink.url || navLink.url === "#") return false;
+	const linkPath = normalizePath(url(navLink.url));
+	if (!linkPath) return false;
+	return linkPath === "/"
+		? currentPath === "/"
+		: currentPath === linkPath || currentPath.startsWith(`${linkPath}/`);
+}
+
+const isActive =
+	isCurrentNavLink(processedLink) ||
+	!!processedLink.children?.some((child) => isCurrentNavLink(child));
 ---
 
 <div class:list={["dropdown-container", className]} data-dropdown>
 	{hasChildren ? (
 		<button 
-			class="btn-plain scale-animation rounded-lg h-10 font-bold px-4 pr-8 active:scale-95 dropdown-trigger relative"
+			class="navbar-menu-link btn-plain scale-animation rounded-lg h-10 font-bold px-4 pr-8 active:scale-95 dropdown-trigger relative"
 			aria-expanded="false"
 			aria-haspopup="true"
+			data-nav-active={isActive ? "true" : "false"}
 			data-dropdown-trigger
 		>
-			<div class="flex items-center gap-1.5">
+			<div class="navbar-menu-label flex items-center gap-1.5">
 				{processedLink.icon && <Icon name={processedLink.icon} class="text-[1.1rem] mr-1.5 navbar-icon" />}
 				{processedLink.name}
 			</div>
@@ -57,11 +81,13 @@ const hasChildren = processedLink.children && processedLink.children.length > 0;
 	) : (
 		<a 
 			aria-label={processedLink.name} 
+			aria-current={isActive ? "page" : undefined}
 			href={processedLink.external ? processedLink.url : url(processedLink.url)} 
 			target={processedLink.external ? "_blank" : null}
-			class="btn-plain scale-animation rounded-lg h-10 font-bold px-4 active:scale-95"
+			class="navbar-menu-link btn-plain scale-animation rounded-lg h-10 font-bold px-4 active:scale-95"
+			data-nav-active={isActive ? "true" : "false"}
 		>
-			<div class="flex items-center gap-1.5">
+			<div class="navbar-menu-label flex items-center gap-1.5">
 				{processedLink.icon && <Icon name={processedLink.icon} class="text-[1.1rem] mr-1.5 navbar-icon" />}
 				{processedLink.name}
 				{processedLink.external && <Icon name="fa7-solid:arrow-up-right-from-square" class="text-[0.875rem] transition -translate-y-px ml-1 text-black/20 dark:text-white/20" />}

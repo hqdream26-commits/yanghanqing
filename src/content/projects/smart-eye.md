@@ -5,7 +5,7 @@ draft: false
 order: 100
 description: "基于 STM32 与红外阵列传感器的智能热成像测温模组，覆盖原理图、四层 PCB、固件与上位机。"
 image: "/assets/images/projects/智瞳.png"
-status: "developing"
+status: "开发项目"
 tags: ["STM32F407", "嵌入式 AI", "热成像", "PyQt5"]
 lang: "zh_CN"
 ---

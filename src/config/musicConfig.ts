@@ -9,7 +9,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	showInSidebar: true,
 
 	// 使用方式："meting" 使用 Meting API，"local" 使用本地音乐列表
-	mode: "local",
+	mode: "meting",
 
 	// 默认音量 (0-1)
 	volume: 0.6,
@@ -30,7 +30,7 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 		// 类型：song=单曲, playlist=歌单, album=专辑, search=搜索, artist=艺术家
 		type: "playlist",
 		// 歌单/专辑/单曲 ID 或搜索关键词
-		id: "10046455237",
+		id: "18425248901",
 		// 认证 token（可选）
 		auth: "",
 		// 备用 API 配置（当主 API 失败时使用）
@@ -46,22 +46,6 @@ export const musicPlayerConfig: MusicPlayerConfig = {
 	// 2. 或者直接填入歌词字符串内容
 	// lrc: "[00:00.00]歌词内容...",
 	local: {
-		playlist: [
-			{
-				name: "我本将心向明月",
-				artist: "传统诗词 · 轻音乐",
-				url: "/assets/music/我本将心向明月.mp3",
-			},
-			{
-				name: "SS那个石家庄人",
-				artist: "小帅老师小曲",
-				url: "/assets/music/SS那个石家庄人.mp3",
-			},
-			{
-				name: "《两 难》-海山来了",
-				artist: "加木",
-				url: "/assets/music/加木《两 难》-海山来了.mp3",
-			},
-		],
+		playlist: [],
 	},
 };

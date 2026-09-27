@@ -105,6 +105,24 @@ const PROJECT_STATUS_META: Record<
 			"bg-neutral-200/80 text-neutral-600 dark:bg-neutral-700/60 dark:text-neutral-300",
 		coverClassName: "bg-neutral-500/85 text-white dark:bg-neutral-600/85",
 	},
+	开发项目: {
+		key: I18nKey.projectStatusDeveloping,
+		icon: "material-symbols:code-rounded",
+		className: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
+		coverClassName: "bg-sky-600/90 text-white dark:bg-sky-700/90",
+	},
+	比赛成就: {
+		key: I18nKey.projectStatusPublished,
+		icon: "material-symbols:star-rounded",
+		className: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+		coverClassName: "bg-amber-500/90 text-white dark:bg-amber-600/90",
+	},
+	学术成果: {
+		key: I18nKey.projectStatusArchived,
+		icon: "material-symbols:school",
+		className: "bg-violet-500/15 text-violet-600 dark:text-violet-400",
+		coverClassName: "bg-violet-600/90 text-white dark:bg-violet-700/90",
+	},
 };
 
 // 已知状态 key 列表（供列表页生成筛选按钮）
@@ -143,7 +161,10 @@ export function getProjectStatusMeta(status: string): {
 			known: false,
 		};
 	return {
-		label: i18n(meta.key),
+		label:
+			status === "开发项目" || status === "比赛成就" || status === "学术成果"
+				? status
+				: i18n(meta.key),
 		icon: meta.icon,
 		className: meta.className,
 		coverClassName: meta.coverClassName,

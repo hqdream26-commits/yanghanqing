@@ -1,10 +1,51 @@
 ---
 import ArchivePanel from "@components/controls/ArchivePanel.astro";
-import I18nKey from "@i18n/i18nKey";
-import { i18n } from "@i18n/translation";
+import { Icon } from "astro-icon/components";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
+
+const title = "知识整理";
+const description =
+	"按哲学随想、技术教程、读书感悟和行业学习整理知识与阶段性思考。";
+const knowledgeCategories = [
+	{
+		name: "哲学随想",
+		desc: "七位哲学家的核心思想，以及在现代学习、技术和生活中的启示。",
+		icon: "material-symbols:psychology-outline-rounded",
+	},
+	{
+		name: "技术教程",
+		desc: "AI 学习路线、工程实践方法和可复用的技术知识。",
+		icon: "material-symbols:integration-instructions-outline-rounded",
+	},
+	{
+		name: "读书感悟",
+		desc: "《罪与罚》《围城》《百年孤独》《活着》等作品带来的思考。",
+		icon: "material-symbols:menu-book-outline-rounded",
+	},
+	{
+		name: "行业学习",
+		desc: "AI 与各行业结合的学习路径、应用场景和实践方向。",
+		icon: "material-symbols:domain-verification-outline-rounded",
+	},
+];
 ---
 
-<MainGridLayout title={i18n(I18nKey.archive)}>
+<MainGridLayout title={title} description={description}>
+  <section class="grid gap-3 md:grid-cols-2 mb-4">
+    {knowledgeCategories.map((item) => (
+      <a
+        href={`/archive/?category=${encodeURIComponent(item.name)}`}
+        class="card-base p-4 flex items-start gap-3 hover:border-(--primary) transition-colors"
+      >
+        <span class="text-(--primary) text-2xl shrink-0">
+          <Icon name={item.icon} />
+        </span>
+        <span class="min-w-0">
+          <span class="block font-bold text-90">{item.name}</span>
+          <span class="block text-sm text-50 mt-1 leading-relaxed">{item.desc}</span>
+        </span>
+      </a>
+    ))}
+  </section>
   <ArchivePanel />
 </MainGridLayout>

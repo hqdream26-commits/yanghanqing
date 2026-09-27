@@ -244,6 +244,55 @@ const logoVariants = await Promise.all(
 
 <script>
 function loadButtonScript() {
+    function normalizeNavPath(value) {
+        try {
+            var parsed = new URL(value, window.location.href);
+            var path = parsed.pathname;
+            return path !== "/" ? path.replace(/\/$/, "") : path;
+        } catch {
+            return "";
+        }
+    }
+
+    function isNavPathActive(href) {
+        var currentPath = normalizeNavPath(window.location.pathname);
+        var linkPath = normalizeNavPath(href);
+        if (!linkPath) return false;
+        return linkPath === "/"
+            ? currentPath === "/"
+            : currentPath === linkPath || currentPath.indexOf(linkPath + "/") === 0;
+    }
+
+    function updateNavbarActiveStates() {
+        document.querySelectorAll("#navbar .navbar-menu-link").forEach(function (item) {
+            var active = false;
+            if (item instanceof HTMLAnchorElement) {
+                active = isNavPathActive(item.href);
+                if (active) item.setAttribute("aria-current", "page");
+                else item.removeAttribute("aria-current");
+            } else {
+                var container = item.closest("[data-dropdown]");
+                if (container) {
+                    container.querySelectorAll("a[href]").forEach(function (child) {
+                        if (child instanceof HTMLAnchorElement && isNavPathActive(child.href)) {
+                            active = true;
+                        }
+                    });
+                }
+            }
+            item.setAttribute("data-nav-active", active ? "true" : "false");
+        });
+    }
+
+    updateNavbarActiveStates();
+
+    if (!window.__yhqNavbarActiveSync) {
+        window.__yhqNavbarActiveSync = true;
+        document.addEventListener("swup:contentReplaced", updateNavbarActiveStates);
+        document.addEventListener("astro:page-load", updateNavbarActiveStates);
+        window.addEventListener("popstate", updateNavbarActiveStates);
+    }
+
     let settingBtn = document.getElementById("display-settings-switch");
     if (settingBtn) {
         settingBtn.onclick = function () {
